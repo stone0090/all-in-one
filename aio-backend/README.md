@@ -31,9 +31,7 @@
 - 权限管理
 
 ## 容器支持
-- 执行项目根路径下的 `docker-build.sh` 即可容器化启动本项目
-
-## 日志规范
+- 执行项目根路径下的 `cmd/docker/build.sh` 即可容器化启动本项目
 
 ## 参考资料
-- https://www.w3cschool.cn/shiro/andc1if0.html
+- shiro：https://www.w3cschool.cn/shiro/andc1if0.html
