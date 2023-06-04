@@ -30,7 +30,6 @@
         <module>aio-manager</module>
         <module>aio-service</module>
         <module>aio-web</module>
-        <module>start</module>
     </modules>
 
     <dependencies>

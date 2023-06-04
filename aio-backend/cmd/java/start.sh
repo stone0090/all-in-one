@@ -11,7 +11,7 @@ chmod -R 755 /home/admin/${APP_NAME}
 
 cd /home/admin
 su admin -c "/home/admin/${APP_NAME}/bin/appctl.sh restart"
-#su admin -c "java -jar /home/admin/java-scaffold/target/java-scaffold.jar"
+
 sleep 5
 
 while true; do

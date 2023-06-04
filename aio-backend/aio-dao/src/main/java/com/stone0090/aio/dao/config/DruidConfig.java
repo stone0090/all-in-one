@@ -1,4 +1,4 @@
-package com.stone0090.aio.dao.mybatis.config;
+package com.stone0090.aio.dao.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
