@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @Api(value = "ShiroController", tags = "登陆管理")
-@RequestMapping("/shiro")
+@RequestMapping("/aio/shiro")
 public class ShiroController {
 
     @ApiOperation("登陆")

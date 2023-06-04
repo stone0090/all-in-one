@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Api(value = "PermissionController", tags = "权限管理")
-@RequestMapping("/permission")
+@RequestMapping("/aio/permission")
 public class PermissionController {
 
     @Autowired

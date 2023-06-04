@@ -14,7 +14,7 @@ import com.stone0090.aio.api.request.PermissionQueryRequest;
 import com.stone0090.aio.api.response.PermissionVO;
 import com.stone0090.aio.api.response.RoleVO;
 import com.stone0090.aio.api.response.UserDetailVO;
-import com.stone0090.aio.manager.SpringUtils;
+import com.stone0090.aio.manager.util.SpringUtil;
 import com.stone0090.aio.service.PermissionService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -61,7 +61,7 @@ public class ShiroUrlFilter extends AccessControlFilter {
 
             String requestURI = getPathWithinApplication(request);
             if (!permissionUrlList.contains(requestURI)) {
-                PermissionService permissionService = (PermissionService)SpringUtils.getBean("permissionServiceImpl");
+                PermissionService permissionService = (PermissionService) SpringUtil.getBean("permissionServiceImpl");
                 PermissionQueryRequest queryRequest = new PermissionQueryRequest();
                 queryRequest.setPermissionUrl(requestURI);
                 PageResult<PermissionVO> pageResult = permissionService.listPermissions(queryRequest, new PageRequest());
@@ -71,7 +71,7 @@ public class ShiroUrlFilter extends AccessControlFilter {
             }
 
         } catch (Exception e) {
-            HandlerExceptionResolver resolver = (HandlerExceptionResolver)SpringUtils.getBean("handlerExceptionResolver");
+            HandlerExceptionResolver resolver = (HandlerExceptionResolver) SpringUtil.getBean("handlerExceptionResolver");
             resolver.resolveException((HttpServletRequest)request, (HttpServletResponse)response, null, e);
             return false;
         }

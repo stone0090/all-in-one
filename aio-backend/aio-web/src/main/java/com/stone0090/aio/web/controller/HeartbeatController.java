@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Api(value = "HeartbeatController", tags = "心跳检测")
-@RequestMapping("/heartbeat")
+@RequestMapping("/aio/heartbeat")
 public class HeartbeatController {
 
     @ApiOperation("健康检查")

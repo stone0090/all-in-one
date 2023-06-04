@@ -1,7 +1,7 @@
 FROM shi0090/centos-java-8u301:7.9.2009
 
 ENV APP_NAME aio
-ENV HEALTH_URL http://localhost:9090/demo/heartbeat/status
+ENV HEALTH_URL http://localhost:9090/aio/heartbeat/status
 
 # 将应用启动脚本复制到镜像中
 COPY ../java/ /home/admin/${APP_NAME}/bin/

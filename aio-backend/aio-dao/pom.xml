@@ -13,7 +13,15 @@
 
     <dependencies>
         <!-- 二方包 -->
+        <dependency>
+            <groupId>com.stone0090</groupId>
+            <artifactId>aio-manager</artifactId>
+        </dependency>
         <!-- 三方包 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>

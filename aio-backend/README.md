@@ -18,7 +18,7 @@
 - h2数据库：
   - 访问入口：http://127.0.0.1:9090/h2-console
   - 账号密码：san /（没有密码）
-  - jdbcurl：jdbc:h2:file:./demo
+  - jdbcurl：jdbc:h2:file:./aio
 - druid监控：
   - 访问入口：http://localhost:9090/druid/index.html
   - 账号密码：stone / 123456

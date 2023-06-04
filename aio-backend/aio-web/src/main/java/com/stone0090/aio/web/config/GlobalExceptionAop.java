@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @author stone
  */
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionAop {
 
     /**
      * 统一处理 hibernate Validator 抛出来的参数校验异常
@@ -44,6 +44,7 @@ public class GlobalExceptionHandler {
     public @ResponseBody
     RestResult handleRuntimeException(RuntimeException e) {
         return RestResult.failure(ResultCodeEnum.CUSTOM_ERROR.getCode(), e.getMessage());
+        //return RestResult.failure("系统繁忙，请稍后再试！");
     }
 
     @ExceptionHandler(Exception.class)
