@@ -8,7 +8,7 @@ COPY cmd/java /home/admin/${APP_NAME}/bin/
 RUN mv /home/admin/${APP_NAME}/bin/start.sh /start.sh
 
 # copy 复制文件到容器地址 , 目标路径不存在时，会自动创建
-COPY ../../aio-web/target/${APP_NAME}.jar /home/admin/${APP_NAME}/target/${APP_NAME}.jar
+COPY aio-web/target/${APP_NAME}.jar /home/admin/${APP_NAME}/target/${APP_NAME}.jar
 
 EXPOSE 9090
 
