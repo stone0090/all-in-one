@@ -10,7 +10,6 @@ HOME="$(getent passwd "$UID" | awk -F":" '{print $6}')" # fix "$HOME" by "$UID"
 MIDDLEWARE_LOGS="${HOME}/logs"
 
 # os env
-
 export CPU_COUNT="$(grep -c 'cpu[0-9][0-9]*' /proc/stat)"
 ulimit -c unlimited
 

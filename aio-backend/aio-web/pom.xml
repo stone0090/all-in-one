@@ -9,7 +9,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>aio-web</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${aio.version}</version>
 
     <dependencies>
         <!-- 二方包 -->
@@ -59,7 +59,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.stone0090.aio.Application</mainClass>
+                    <mainClass>com.stone0090.aio.web.Application</mainClass>
                     <skip>false</skip>
                 </configuration>
                 <executions>

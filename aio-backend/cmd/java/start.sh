@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 if [ ! -d "/home/admin/${APP_NAME}/logs" ];then
 mkdir -p /home/admin/${APP_NAME}/logs
@@ -24,4 +24,3 @@ while true; do
   fi
   sleep 5
 done
-

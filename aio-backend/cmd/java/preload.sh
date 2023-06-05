@@ -1,6 +1,6 @@
-#! /bin/bash
+#!/bin/bash
 
-health_url="http://localhost:9090/status"
+health_url="http://localhost:9090/aio/heartbeat/status"
 if [ "$HEALTH_URL" ];then
     health_url="${HEALTH_URL}"
 fi

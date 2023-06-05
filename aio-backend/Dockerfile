@@ -4,7 +4,7 @@ ENV APP_NAME aio
 ENV HEALTH_URL http://localhost:9090/aio/heartbeat/status
 
 # 将应用启动脚本复制到镜像中
-COPY ../java/ /home/admin/${APP_NAME}/bin/
+COPY cmd/java /home/admin/${APP_NAME}/bin/
 RUN mv /home/admin/${APP_NAME}/bin/start.sh /start.sh
 
 # copy 复制文件到容器地址 , 目标路径不存在时，会自动创建

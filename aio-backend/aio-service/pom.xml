@@ -9,7 +9,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>aio-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${aio.version}</version>
 
     <dependencies>
         <!-- 二方包 -->

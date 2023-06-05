@@ -2,6 +2,9 @@
 
 PROG_NAME=$0
 ACTION=$1
+echo "PROG_NAME: $PROG_NAME"
+echo "ACTION: $ACTION"
+
 if [ "$UID" -eq 0 ]; then
     echo "can't run as root, please use: sudo -u admin $0 $@"
     exit 3 # bad user
@@ -24,8 +27,10 @@ usage() {
 start() {
     echo "[ INFO] -- start java process"
     JAVA_OUT=${APP_HOME}/logs/server.log
+    echo "$JAVA_HOME/bin/java -jar ${APP_HOME}/target/${APP_NAME}.jar &>$JAVA_OUT"
     nohup $JAVA_HOME/bin/java -jar ${APP_HOME}/target/${APP_NAME}.jar &>$JAVA_OUT &
-#    nohup $JAVA_HOME/bin/java -jar $JAVA_OPTS  ${APP_HOME}/target/${APP_NAME}.jar &>$JAVA_OUT &
+#    echo "$JAVA_HOME/bin/java -jar $JAVA_OPTS ${APP_HOME}/target/${APP_NAME}.jar &>$JAVA_OUT"
+#    nohup $JAVA_HOME/bin/java -jar $JAVA_OPTS ${APP_HOME}/target/${APP_NAME}.jar &>$JAVA_OUT &
 }
 
 stop() {
