@@ -32,11 +32,12 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="JWS_USER" domainObjectName="UserDO"/>
+        <table tableName="jws_user" domainObjectName="UserDO"/>
         <table tableName="jws_role" domainObjectName="RoleDO"/>
         <table tableName="jws_permission" domainObjectName="PermissionDO"/>
         <table tableName="jws_user_role_relation" domainObjectName="UserRoleRelationDO"/>
         <table tableName="jws_role_permission_relation" domainObjectName="RolePermissionRelationDO"/>
+        <table tableName="jws_common_config" domainObjectName="CommonConfig"/>
 
     </context>
 </generatorConfiguration>

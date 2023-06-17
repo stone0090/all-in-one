@@ -59,3 +59,14 @@ CREATE TABLE IF NOT EXISTS `jws_role_permission_relation` (
 PRIMARY KEY (`id`),
 UNIQUE KEY `uk_role_permission` (`role_code`, `permission_code`, `is_deleted`)
 ); -- ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+CREATE TABLE IF NOT EXISTS `jws_common_config` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+`gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', -- ON UPDATE CURRENT_TIMESTAMP
+`is_deleted` int(11) NOT NULL DEFAULT 0 COMMENT '删除标记',
+`config_key` varchar(50) NOT NULL COMMENT '配置项',
+`config_value` varchar(4000) NOT NULL COMMENT '配置值',
+PRIMARY KEY (`id`),
+UNIQUE KEY `uk_config_key` (`config_key`, `is_deleted`)
+); -- ENGINE=InnoDB DEFAULT CHARSET=utf8

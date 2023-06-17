@@ -22,14 +22,7 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
     />
     <title>Ant Design Pro</title>
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="/umi.abc5d12c.css" />
-    <script>
-      window.routerBase = "/";
-    </script>
-    <script>
-      //! umi version: 3.5.41
-    </script>
+    <link rel="icon" href="<%= context.config.publicPath +'favicon.ico'%>" type="image/x-icon" />
   </head>
   <body>
     <noscript>Out-of-the-box mid-stage front/design solution!</noscript>
@@ -67,15 +60,13 @@
           text-align: center;
           list-style: none;
           opacity: 0;
-          -webkit-transition: -webkit-transform 0.3s
-            cubic-bezier(0.78, 0.14, 0.15, 0.86);
-          transition: -webkit-transform 0.3s
-            cubic-bezier(0.78, 0.14, 0.15, 0.86);
+          -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+          transition: -webkit-transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
           transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
           transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86),
             -webkit-transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
-          -webkit-font-feature-settings: "tnum";
-          font-feature-settings: "tnum";
+          -webkit-font-feature-settings: 'tnum';
+          font-feature-settings: 'tnum';
         }
 
         .ant-spin-spinning {
@@ -198,7 +189,7 @@
           min-height: 420px;
         "
       >
-        <img src="/pro_icon.svg" alt="logo" width="256" />
+        <img src="<%= context.config.publicPath +'pro_icon.svg'%>" alt="logo" width="256" />
         <div class="page-loading-warp">
           <div class="ant-spin ant-spin-lg ant-spin-spinning">
             <span class="ant-spin-dot ant-spin-dot-spin"
@@ -207,9 +198,7 @@
             ></span>
           </div>
         </div>
-        <div
-          style="display: flex; align-items: center; justify-content: center"
-        >
+        <div style="display: flex; align-items: center; justify-content: center">
           <img
             src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"
             width="32"
@@ -219,7 +208,5 @@
         </div>
       </div>
     </div>
-
-    <script src="/umi.bec6f521.js"></script>
   </body>
 </html>
