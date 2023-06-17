@@ -1,14 +1,14 @@
 package com.stone0090.aio.service.converter;
 
 
-import com.stone0090.aio.api.request.SystemConfigSaveRequest;
-import com.stone0090.aio.api.response.SystemConfigVO;
+import com.stone0090.aio.api.request.ConfigSaveRequest;
+import com.stone0090.aio.api.response.ConfigVO;
 import com.stone0090.aio.dao.mybatis.entity.SystemConfigDO;
 
 public class CommonConverter {
 
-    public static SystemConfigVO toSystemConfigVO(SystemConfigDO param) {
-        SystemConfigVO result = new SystemConfigVO();
+    public static ConfigVO toSystemConfigVO(SystemConfigDO param) {
+        ConfigVO result = new ConfigVO();
         result.setId(param.getId());
         result.setGmtModified(param.getGmtModified());
         result.setConfigKey(param.getConfigKey());
@@ -16,7 +16,7 @@ public class CommonConverter {
         return result;
     }
 
-    public static SystemConfigDO toSystemConfigDO(SystemConfigSaveRequest param) {
+    public static SystemConfigDO toSystemConfigDO(ConfigSaveRequest param) {
         SystemConfigDO result = new SystemConfigDO();
         result.setId(param.getId());
         result.setConfigKey(param.getConfigKey());

@@ -7,7 +7,7 @@ import com.stone0090.aio.api.request.IdentifierRequest;
 import com.stone0090.aio.api.request.RoleQueryRequest;
 import com.stone0090.aio.api.request.RoleSaveRequest;
 import com.stone0090.aio.api.response.RoleVO;
-import com.stone0090.aio.service.RoleService;
+import com.stone0090.aio.service.user.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,36 +31,36 @@ public class RoleController {
 
     @ApiOperation("获取角色列表")
     @GetMapping("/list")
-    public RestResult listUsers(RoleQueryRequest queryRequest, PageRequest pageRequest) {
-        PageResult<RoleVO> result = roleService.listRoles(queryRequest, pageRequest);
+    public RestResult list(RoleQueryRequest queryRequest, PageRequest pageRequest) {
+        PageResult<RoleVO> result = roleService.list(queryRequest, pageRequest);
         return RestResult.success(result);
     }
 
     @ApiOperation("获取单个角色")
     @GetMapping("/get")
-    public RestResult getRole(IdentifierRequest request) {
-        RoleVO result = roleService.getRole(request);
+    public RestResult get(IdentifierRequest request) {
+        RoleVO result = roleService.get(request);
         return RestResult.success(result);
     }
 
     @ApiOperation("新增角色")
     @PostMapping("/add")
-    public RestResult addRole(@RequestBody RoleSaveRequest request) {
-        int count = roleService.saveRole(request);
+    public RestResult add(@RequestBody RoleSaveRequest request) {
+        int count = roleService.save(request);
         return RestResult.success(count);
     }
 
     @ApiOperation("编辑角色")
     @PostMapping("/edit")
-    public RestResult editRole(@RequestBody RoleSaveRequest request) {
-        int count = roleService.saveRole(request);
+    public RestResult edit(@RequestBody RoleSaveRequest request) {
+        int count = roleService.save(request);
         return RestResult.success(count);
     }
 
     @ApiOperation("移除角色")
     @PostMapping("/remove")
-    public RestResult removeRole(@RequestBody IdentifierRequest request) {
-        int count = roleService.removeRole(request);
+    public RestResult remove(@RequestBody IdentifierRequest request) {
+        int count = roleService.remove(request);
         return RestResult.success(count);
     }
 

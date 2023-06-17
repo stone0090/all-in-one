@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 import com.stone0090.aio.api.response.PermissionVO;
 import com.stone0090.aio.api.response.RoleVO;
 import com.stone0090.aio.api.response.UserDetailVO;
-import com.stone0090.aio.service.UserService;
+import com.stone0090.aio.service.user.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -35,7 +35,7 @@ public class ShiroRealm extends AuthorizingRealm {
         if (StringUtils.isEmpty(username)) {
             return null;
         }
-        UserDetailVO userDetailVO = userService.getUser(username);
+        UserDetailVO userDetailVO = userService.getDetail(username);
         if (userDetailVO == null) {
             return null;
         }

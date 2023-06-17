@@ -1,19 +1,8 @@
 ﻿export default [
   {
-    path: '/user',
+    path: '/login',
     layout: false,
-    routes: [
-      {
-        path: '/user',
-        routes: [
-          {
-            name: 'login',
-            path: '/user/login',
-            component: './user/Login',
-          },
-        ],
-      },
-    ],
+    component: './login',
   },
   {
     path: '/',
@@ -21,41 +10,38 @@
   },
   {
     path: '/welcome',
-    name: 'welcome',
-    icon: 'smile',
-    component: './Welcome',
+    name: '欢迎',
+    component: './welcome',
   },
   {
     path: '/usermgr',
     name: '用户管理',
-    icon: 'team',
     routes: [
       {
-        path: '/usermgr/list',
+        path: '/usermgr/user',
         name: '用户列表',
-        component: './user/Manager',
+        component: './usermgr/user',
       },
       {
         path: '/usermgr/role',
         name: '角色列表',
-        component: './user/Role',
+        component: './usermgr/role',
       },
       {
         path: '/usermgr/permission',
         name: '权限列表',
-        component: './user/Permission',
+        component: './usermgr/permission',
       },
     ],
   },
   {
     path: '/system',
     name: '系统管理',
-    icon: 'team',
     routes: [
       {
         path: '/system/config',
         name: '配置列表',
-        component: './system/Config',
+        component: './system/config',
       },
     ],
   },

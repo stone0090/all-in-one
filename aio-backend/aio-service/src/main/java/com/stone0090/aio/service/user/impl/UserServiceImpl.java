@@ -1,0 +1,149 @@
+package com.stone0090.aio.service.user.impl;
+
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.stone0090.aio.api.protocal.PageRequest;
+import com.stone0090.aio.api.protocal.PageResult;
+import com.stone0090.aio.api.request.IdentifierRequest;
+import com.stone0090.aio.api.request.UserQueryRequest;
+import com.stone0090.aio.api.request.UserSaveRequest;
+import com.stone0090.aio.api.response.UserBriefVO;
+import com.stone0090.aio.api.response.UserDetailVO;
+import com.stone0090.aio.dao.mybatis.entity.UserDO;
+import com.stone0090.aio.dao.mybatis.entity.UserDOExample;
+import com.stone0090.aio.dao.mybatis.entity.UserDOExample.Criteria;
+import com.stone0090.aio.dao.mybatis.mapper.UserDOMapper;
+import com.stone0090.aio.service.user.RoleService;
+import com.stone0090.aio.service.user.UserService;
+import com.stone0090.aio.service.converter.UserConverter;
+import com.github.pagehelper.PageHelper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserDOMapper userDOMapper;
+    @Autowired
+    private RoleService roleService;
+
+
+    @Override
+    public PageResult<UserBriefVO> list(UserQueryRequest queryRequest, PageRequest pageRequest) {
+        UserDOExample example = new UserDOExample();
+        Criteria criteria = example.createCriteria();
+        criteria.andIsDeletedEqualTo(0);
+        if (!StringUtils.isEmpty(queryRequest.getUsername())) {
+            criteria.andUsernameLike("%" + queryRequest.getUsername() + "%");
+        }
+        if (!StringUtils.isEmpty(queryRequest.getNickname())) {
+            criteria.andNicknameLike("%" + queryRequest.getNickname() + "%");
+        }
+        PageHelper.startPage(pageRequest.getCurrent(), pageRequest.getPageSize());
+        List<UserDO> result = userDOMapper.selectByExample(example);
+        PageResult<UserBriefVO> pageResult = PageResult.buildPageResult(result);
+        pageResult.setList(result.stream().map(userDO -> {
+            UserBriefVO userBriefVO = UserConverter.toBriefVO(userDO);
+            userBriefVO.setRoles(roleService.listByUsername(userDO.getUsername()));
+            return userBriefVO;
+        }).collect(Collectors.toList()));
+        return pageResult;
+    }
+
+    @Override
+    public UserDetailVO getDetail(IdentifierRequest request) {
+        UserDO result = getById(request.getId());
+        if (result == null) {
+            return null;
+        }
+        UserDetailVO userDetailVO = UserConverter.toDetailVO(result);
+        userDetailVO.setRoles(roleService.listByUsername(userDetailVO.getUsername()));
+        return userDetailVO;
+    }
+
+    @Override
+    public UserDetailVO getDetail(String username) {
+        UserDO result = getByUsername(username);
+        if (result == null) {
+            return null;
+        }
+        UserDetailVO userDetailVO = UserConverter.toDetailVO(result);
+        userDetailVO.setRoles(roleService.listByUsername(userDetailVO.getUsername()));
+        return userDetailVO;
+    }
+
+    @Override
+    public int add(UserSaveRequest request) {
+        if (countByUsername(request.getUsername()) > 0) {
+            throw new RuntimeException("username已存在！");
+        }
+        UserDO userDO = UserConverter.toUserDO(request);
+        // 新增时不允许指定id，只能自增
+        userDO.setId(null);
+        return userDOMapper.insertSelective(userDO);
+    }
+
+    @Override
+    public int edit(UserSaveRequest request) {
+        UserDO userDO = UserConverter.toUserDO(request);
+        // 不允许修改业务唯一标识
+        userDO.setUsername(null);
+        userDO.setGmtModified(new Date());
+        return userDOMapper.updateByPrimaryKeySelective(userDO);
+    }
+
+    @Override
+    public int remove(IdentifierRequest request) {
+        UserDO userDO = new UserDO();
+        userDO.setId(request.getId());
+        userDO.setIsDeleted((int) System.currentTimeMillis());
+        userDO.setGmtModified(new Date());
+        return userDOMapper.updateByPrimaryKeySelective(userDO);
+    }
+
+    private int countByUsername(String username) {
+        UserDO condition = new UserDO();
+        condition.setUsername(username);
+        UserDOExample example = buildCondition(condition);
+        return userDOMapper.countByExample(example);
+    }
+
+    private UserDO getByUsername(String username) {
+        UserDO condition = new UserDO();
+        condition.setUsername(username);
+        return getByCondition(buildCondition(condition));
+    }
+
+    private UserDO getById(Integer id) {
+        UserDO condition = new UserDO();
+        condition.setId(id);
+        return getByCondition(buildCondition(condition));
+    }
+
+    private UserDO getByCondition(UserDOExample example) {
+        List<UserDO> result = userDOMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(result)) {
+            return null;
+        }
+        return result.get(0);
+    }
+
+    private UserDOExample buildCondition(UserDO userDO) {
+        UserDOExample example = new UserDOExample();
+        Criteria criteria = example.createCriteria();
+        criteria.andIsDeletedEqualTo(0);
+        if (userDO.getId() != null && userDO.getId() > 0) {
+            criteria.andIdEqualTo(userDO.getId());
+        }
+        if (!StringUtils.isEmpty(userDO.getUsername())) {
+            criteria.andUsernameEqualTo(userDO.getUsername());
+        }
+        return example;
+    }
+
+}

@@ -7,7 +7,7 @@ import com.stone0090.aio.api.request.IdentifierRequest;
 import com.stone0090.aio.api.request.UserQueryRequest;
 import com.stone0090.aio.api.request.UserSaveRequest;
 import com.stone0090.aio.api.response.UserBriefVO;
-import com.stone0090.aio.service.UserService;
+import com.stone0090.aio.service.user.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,36 +31,36 @@ public class UserController {
 
     @ApiOperation("获取用户列表")
     @GetMapping("/list")
-    public RestResult listUsers(UserQueryRequest queryRequest, PageRequest pageRequest) {
-        PageResult<UserBriefVO> result = userService.listUsers(queryRequest, pageRequest);
+    public RestResult list(UserQueryRequest queryRequest, PageRequest pageRequest) {
+        PageResult<UserBriefVO> result = userService.list(queryRequest, pageRequest);
         return RestResult.success(result);
     }
 
     @ApiOperation("获取单个用户")
     @GetMapping("/get")
-    public RestResult getUser(IdentifierRequest request) {
-        UserBriefVO result = userService.getUser(request);
+    public RestResult get(IdentifierRequest request) {
+        UserBriefVO result = userService.getDetail(request);
         return RestResult.success(result);
     }
 
     @ApiOperation("新增用户")
     @PostMapping("/add")
-    public RestResult addUser(@RequestBody UserSaveRequest request) {
-        int id = userService.addUser(request);
+    public RestResult add(@RequestBody UserSaveRequest request) {
+        int id = userService.add(request);
         return RestResult.success(id);
     }
 
     @ApiOperation("编辑用户")
     @PostMapping("/edit")
-    public RestResult editUser(@RequestBody UserSaveRequest request) {
-        int count = userService.editUser(request);
+    public RestResult edit(@RequestBody UserSaveRequest request) {
+        int count = userService.edit(request);
         return RestResult.success(count);
     }
 
     @ApiOperation("移除用户")
     @PostMapping("/remove")
-    public RestResult removeUser(@RequestBody IdentifierRequest request) {
-        int count = userService.removeUser(request);
+    public RestResult remove(@RequestBody IdentifierRequest request) {
+        int count = userService.remove(request);
         return RestResult.success(count);
     }
 

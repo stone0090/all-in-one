@@ -9,7 +9,7 @@ import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import { requestGet } from '@/services/api';
 
 const isDev = process.env.NODE_ENV === 'development';
-const loginPath = '/user/login';
+const loginPath = '/login';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -72,8 +72,8 @@ export async function getInitialState(): Promise<{
     202: A request has entered the background queue (asynchronous task). ',
     204: Data deleted successfully. ',
     400: 'There was an error in the request sent, and the server did not create or modify data. ',
-    401: The user does not have permission (token, username, password error). ',
-    403: The user is authorized, but access is forbidden. ',
+    401: The usermgr does not have permission (token, username, password error). ',
+    403: The usermgr is authorized, but access is forbidden. ',
     404: The request sent was for a record that did not exist. ',
     405: The request method is not allowed. ',
     406: The requested format is not available. ',

@@ -1,0 +1,1 @@
+rm -rf ../aio-web/src/main/resources/static

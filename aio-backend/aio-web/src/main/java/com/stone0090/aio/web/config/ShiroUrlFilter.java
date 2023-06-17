@@ -15,7 +15,7 @@ import com.stone0090.aio.api.response.PermissionVO;
 import com.stone0090.aio.api.response.RoleVO;
 import com.stone0090.aio.api.response.UserDetailVO;
 import com.stone0090.aio.manager.util.SpringUtil;
-import com.stone0090.aio.service.PermissionService;
+import com.stone0090.aio.service.user.PermissionService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
@@ -64,7 +64,7 @@ public class ShiroUrlFilter extends AccessControlFilter {
                 PermissionService permissionService = (PermissionService) SpringUtil.getBean("permissionServiceImpl");
                 PermissionQueryRequest queryRequest = new PermissionQueryRequest();
                 queryRequest.setPermissionUrl(requestURI);
-                PageResult<PermissionVO> pageResult = permissionService.listPermissions(queryRequest, new PageRequest());
+                PageResult<PermissionVO> pageResult = permissionService.list(queryRequest, new PageRequest());
                 if (pageResult.getTotal() > 0) {
                     throw new RuntimeException("您无权访问接口：" + requestURI);
                 }
