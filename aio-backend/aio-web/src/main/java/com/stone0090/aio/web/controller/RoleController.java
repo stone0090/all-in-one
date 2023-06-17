@@ -36,30 +36,30 @@ public class RoleController {
         return RestResult.success(result);
     }
 
-    @ApiOperation("获取单个列表")
+    @ApiOperation("获取单个角色")
     @GetMapping("/get")
-    public RestResult getUser(IdentifierRequest request) {
+    public RestResult getRole(IdentifierRequest request) {
         RoleVO result = roleService.getRole(request);
         return RestResult.success(result);
     }
 
     @ApiOperation("新增角色")
     @PostMapping("/add")
-    public RestResult addUser(@RequestBody RoleSaveRequest request) {
+    public RestResult addRole(@RequestBody RoleSaveRequest request) {
         int count = roleService.saveRole(request);
         return RestResult.success(count);
     }
 
     @ApiOperation("编辑角色")
     @PostMapping("/edit")
-    public RestResult editUser(@RequestBody RoleSaveRequest request) {
+    public RestResult editRole(@RequestBody RoleSaveRequest request) {
         int count = roleService.saveRole(request);
         return RestResult.success(count);
     }
 
     @ApiOperation("移除角色")
     @PostMapping("/remove")
-    public RestResult removeUser(@RequestBody IdentifierRequest request) {
+    public RestResult removeRole(@RequestBody IdentifierRequest request) {
         int count = roleService.removeRole(request);
         return RestResult.success(count);
     }

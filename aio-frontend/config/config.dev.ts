@@ -1,5 +1,6 @@
 // https://umijs.org/config/
-import { defineConfig } from 'umi';
+import {defineConfig} from 'umi';
+import proxy from "./proxy";
 
 export default defineConfig({
   plugins: [
@@ -12,9 +13,5 @@ export default defineConfig({
     babelPlugins: [],
     babelOptions: {},
   },
-  // mfsu: {},
-  // webpack5: {
-  //   // lazyCompilation: {},
-  // },
-  outputPath: './resources/static',
+  proxy: proxy.dev,
 });

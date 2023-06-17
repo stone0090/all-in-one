@@ -22,10 +22,16 @@ Ant Design Pro provides some useful script to help you quick start and build wit
 
 Scripts provided in `package.json`. It's safe to modify or add additional script:
 
+### Local debug
+
+```bash
+npm run dev
+```
+
 ### Start project
 
 ```bash
-npm start
+npm run start
 ```
 
 ### Build project

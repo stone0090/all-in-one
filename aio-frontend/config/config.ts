@@ -3,10 +3,7 @@ import { defineConfig } from 'umi';
 import { join } from 'path';
 
 import defaultSettings from './defaultSettings';
-import proxy from './proxy';
 import routes from './routes';
-
-const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
   hash: true,
@@ -66,11 +63,4 @@ export default defineConfig({
   ],
   outputPath: '../aio-backend/aio-web/src/main/resources/static',
   history: { type: 'hash' }, // 默认是 browsers
-  proxy: {
-    '/aio': {
-      'target': 'http://localhost:8080',
-      'changeOrigin': true,
-      // 'pathRewrite': { '/aio' : '/api' },
-    },
-  },
 });

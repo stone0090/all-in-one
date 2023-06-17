@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.stone0090.aio.dao.mybatis.mapper.RolePermissionRelationDOMapper" >
-  <resultMap id="BaseResultMap" type="com.stone0090.aio.dao.mybatis.entity.RolePermissionRelationDO" >
+<mapper namespace="com.stone0090.aio.dao.mybatis.mapper.SystemConfigDOMapper" >
+  <resultMap id="BaseResultMap" type="com.stone0090.aio.dao.mybatis.entity.SystemConfigDO" >
     <id column="ID" property="id" jdbcType="INTEGER" />
     <result column="GMT_CREATE" property="gmtCreate" jdbcType="TIMESTAMP" />
     <result column="GMT_MODIFIED" property="gmtModified" jdbcType="TIMESTAMP" />
     <result column="IS_DELETED" property="isDeleted" jdbcType="INTEGER" />
-    <result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
-    <result column="PERMISSION_CODE" property="permissionCode" jdbcType="VARCHAR" />
+    <result column="CONFIG_KEY" property="configKey" jdbcType="VARCHAR" />
+    <result column="CONFIG_VALUE" property="configValue" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -68,15 +68,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    ID, GMT_CREATE, GMT_MODIFIED, IS_DELETED, ROLE_CODE, PERMISSION_CODE
+    ID, GMT_CREATE, GMT_MODIFIED, IS_DELETED, CONFIG_KEY, CONFIG_VALUE
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.stone0090.aio.dao.mybatis.entity.RolePermissionRelationDOExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.stone0090.aio.dao.mybatis.entity.SystemConfigDOExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from AIO_ROLE_PERMISSION_RELATION
+    from AIO_SYSTEM_CONFIG
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -87,29 +87,29 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from AIO_ROLE_PERMISSION_RELATION
+    from AIO_SYSTEM_CONFIG
     where ID = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from AIO_ROLE_PERMISSION_RELATION
+    delete from AIO_SYSTEM_CONFIG
     where ID = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.stone0090.aio.dao.mybatis.entity.RolePermissionRelationDOExample" >
-    delete from AIO_ROLE_PERMISSION_RELATION
+  <delete id="deleteByExample" parameterType="com.stone0090.aio.dao.mybatis.entity.SystemConfigDOExample" >
+    delete from AIO_SYSTEM_CONFIG
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.stone0090.aio.dao.mybatis.entity.RolePermissionRelationDO" >
-    insert into AIO_ROLE_PERMISSION_RELATION (ID, GMT_CREATE, GMT_MODIFIED, 
-      IS_DELETED, ROLE_CODE, PERMISSION_CODE
+  <insert id="insert" parameterType="com.stone0090.aio.dao.mybatis.entity.SystemConfigDO" >
+    insert into AIO_SYSTEM_CONFIG (ID, GMT_CREATE, GMT_MODIFIED, 
+      IS_DELETED, CONFIG_KEY, CONFIG_VALUE
       )
     values (#{id,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
-      #{isDeleted,jdbcType=INTEGER}, #{roleCode,jdbcType=VARCHAR}, #{permissionCode,jdbcType=VARCHAR}
+      #{isDeleted,jdbcType=INTEGER}, #{configKey,jdbcType=VARCHAR}, #{configValue,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.stone0090.aio.dao.mybatis.entity.RolePermissionRelationDO" >
-    insert into AIO_ROLE_PERMISSION_RELATION
+  <insert id="insertSelective" parameterType="com.stone0090.aio.dao.mybatis.entity.SystemConfigDO" >
+    insert into AIO_SYSTEM_CONFIG
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         ID,
@@ -123,11 +123,11 @@
       <if test="isDeleted != null" >
         IS_DELETED,
       </if>
-      <if test="roleCode != null" >
-        ROLE_CODE,
+      <if test="configKey != null" >
+        CONFIG_KEY,
       </if>
-      <if test="permissionCode != null" >
-        PERMISSION_CODE,
+      <if test="configValue != null" >
+        CONFIG_VALUE,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -143,22 +143,22 @@
       <if test="isDeleted != null" >
         #{isDeleted,jdbcType=INTEGER},
       </if>
-      <if test="roleCode != null" >
-        #{roleCode,jdbcType=VARCHAR},
+      <if test="configKey != null" >
+        #{configKey,jdbcType=VARCHAR},
       </if>
-      <if test="permissionCode != null" >
-        #{permissionCode,jdbcType=VARCHAR},
+      <if test="configValue != null" >
+        #{configValue,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.stone0090.aio.dao.mybatis.entity.RolePermissionRelationDOExample" resultType="java.lang.Integer" >
-    select count(*) from AIO_ROLE_PERMISSION_RELATION
+  <select id="countByExample" parameterType="com.stone0090.aio.dao.mybatis.entity.SystemConfigDOExample" resultType="java.lang.Integer" >
+    select count(*) from AIO_SYSTEM_CONFIG
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update AIO_ROLE_PERMISSION_RELATION
+    update AIO_SYSTEM_CONFIG
     <set >
       <if test="record.id != null" >
         ID = #{record.id,jdbcType=INTEGER},
@@ -172,11 +172,11 @@
       <if test="record.isDeleted != null" >
         IS_DELETED = #{record.isDeleted,jdbcType=INTEGER},
       </if>
-      <if test="record.roleCode != null" >
-        ROLE_CODE = #{record.roleCode,jdbcType=VARCHAR},
+      <if test="record.configKey != null" >
+        CONFIG_KEY = #{record.configKey,jdbcType=VARCHAR},
       </if>
-      <if test="record.permissionCode != null" >
-        PERMISSION_CODE = #{record.permissionCode,jdbcType=VARCHAR},
+      <if test="record.configValue != null" >
+        CONFIG_VALUE = #{record.configValue,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -184,19 +184,19 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update AIO_ROLE_PERMISSION_RELATION
+    update AIO_SYSTEM_CONFIG
     set ID = #{record.id,jdbcType=INTEGER},
       GMT_CREATE = #{record.gmtCreate,jdbcType=TIMESTAMP},
       GMT_MODIFIED = #{record.gmtModified,jdbcType=TIMESTAMP},
       IS_DELETED = #{record.isDeleted,jdbcType=INTEGER},
-      ROLE_CODE = #{record.roleCode,jdbcType=VARCHAR},
-      PERMISSION_CODE = #{record.permissionCode,jdbcType=VARCHAR}
+      CONFIG_KEY = #{record.configKey,jdbcType=VARCHAR},
+      CONFIG_VALUE = #{record.configValue,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.stone0090.aio.dao.mybatis.entity.RolePermissionRelationDO" >
-    update AIO_ROLE_PERMISSION_RELATION
+  <update id="updateByPrimaryKeySelective" parameterType="com.stone0090.aio.dao.mybatis.entity.SystemConfigDO" >
+    update AIO_SYSTEM_CONFIG
     <set >
       <if test="gmtCreate != null" >
         GMT_CREATE = #{gmtCreate,jdbcType=TIMESTAMP},
@@ -207,22 +207,22 @@
       <if test="isDeleted != null" >
         IS_DELETED = #{isDeleted,jdbcType=INTEGER},
       </if>
-      <if test="roleCode != null" >
-        ROLE_CODE = #{roleCode,jdbcType=VARCHAR},
+      <if test="configKey != null" >
+        CONFIG_KEY = #{configKey,jdbcType=VARCHAR},
       </if>
-      <if test="permissionCode != null" >
-        PERMISSION_CODE = #{permissionCode,jdbcType=VARCHAR},
+      <if test="configValue != null" >
+        CONFIG_VALUE = #{configValue,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.stone0090.aio.dao.mybatis.entity.RolePermissionRelationDO" >
-    update AIO_ROLE_PERMISSION_RELATION
+  <update id="updateByPrimaryKey" parameterType="com.stone0090.aio.dao.mybatis.entity.SystemConfigDO" >
+    update AIO_SYSTEM_CONFIG
     set GMT_CREATE = #{gmtCreate,jdbcType=TIMESTAMP},
       GMT_MODIFIED = #{gmtModified,jdbcType=TIMESTAMP},
       IS_DELETED = #{isDeleted,jdbcType=INTEGER},
-      ROLE_CODE = #{roleCode,jdbcType=VARCHAR},
-      PERMISSION_CODE = #{permissionCode,jdbcType=VARCHAR}
+      CONFIG_KEY = #{configKey,jdbcType=VARCHAR},
+      CONFIG_VALUE = #{configValue,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

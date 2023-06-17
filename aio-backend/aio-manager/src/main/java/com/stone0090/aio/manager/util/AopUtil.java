@@ -16,19 +16,21 @@ public class AopUtil {
         Signature signature = joinPoint.getSignature();
         String methodName = signature.getName();
         String serviceName = signature.getDeclaringType().getSimpleName();
-        String[] parameterNames;
+        String[] parameterNames = null;
         try {
             parameterNames = ClassUtil.getFiledName(klass, methodName);
         } catch (NotFoundException e) {
-            throw new RuntimeException(e);
+            // do nothing
         }
         Object[] args = joinPoint.getArgs();
 
         // 2. 请求日志
-        if (StringUtils.isEmpty(url)) {
-            logger.info("{}#{}, req:{}", serviceName, methodName, merge(parameterNames, args));
-        } else {
-            logger.info("[{}], {}#{}, req:{}", url, serviceName, methodName, merge(parameterNames, args));
+        if (parameterNames != null){
+            if (StringUtils.isEmpty(url)) {
+                logger.info("{}#{}, req:{}", serviceName, methodName, merge(parameterNames, args));
+            } else {
+                logger.info("[{}], {}#{}, req:{}", url, serviceName, methodName, merge(parameterNames, args));
+            }
         }
 
         // 3. 耗时日志

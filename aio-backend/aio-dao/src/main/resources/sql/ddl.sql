@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `jws_user` (
+CREATE TABLE IF NOT EXISTS `aio_user` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', -- ON UPDATE CURRENT_TIMESTAMP
@@ -15,7 +15,7 @@ PRIMARY KEY (`id`),
 UNIQUE KEY `uk_username` (`username`, `is_deleted`)
 ); -- ENGINE=InnoDB DEFAULT CHARSET=utf8
 
-CREATE TABLE IF NOT EXISTS `jws_role` (
+CREATE TABLE IF NOT EXISTS `aio_role` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', -- ON UPDATE CURRENT_TIMESTAMP
@@ -26,7 +26,7 @@ PRIMARY KEY (`id`),
 UNIQUE KEY `uk_role` (`role_code`, `is_deleted`)
 ); -- ENGINE=InnoDB DEFAULT CHARSET=utf8
 
-CREATE TABLE IF NOT EXISTS `jws_permission` (
+CREATE TABLE IF NOT EXISTS `aio_permission` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', -- ON UPDATE CURRENT_TIMESTAMP
@@ -38,7 +38,7 @@ PRIMARY KEY (`id`),
 UNIQUE KEY `uk_permission` (`permission_code`, `is_deleted`)
 ); -- ENGINE=InnoDB DEFAULT CHARSET=utf8
 
-CREATE TABLE IF NOT EXISTS `jws_user_role_relation` (
+CREATE TABLE IF NOT EXISTS `aio_user_role_relation` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', -- ON UPDATE CURRENT_TIMESTAMP
@@ -49,7 +49,7 @@ PRIMARY KEY (`id`),
 UNIQUE KEY `uk_username_role` (`username`, `role_code`, `is_deleted`)
 ); -- ENGINE=InnoDB DEFAULT CHARSET=utf8
 
-CREATE TABLE IF NOT EXISTS `jws_role_permission_relation` (
+CREATE TABLE IF NOT EXISTS `aio_role_permission_relation` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', -- ON UPDATE CURRENT_TIMESTAMP
@@ -60,7 +60,7 @@ PRIMARY KEY (`id`),
 UNIQUE KEY `uk_role_permission` (`role_code`, `permission_code`, `is_deleted`)
 ); -- ENGINE=InnoDB DEFAULT CHARSET=utf8
 
-CREATE TABLE IF NOT EXISTS `jws_common_config` (
+CREATE TABLE IF NOT EXISTS `aio_system_config` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', -- ON UPDATE CURRENT_TIMESTAMP

@@ -67,7 +67,7 @@ const Login: React.FC = () => {
     }
     setSubmitting(false);
   };
-  const { success: status, data: userInfo } = userLoginState;
+  const { success: status} = userLoginState;
 
   return (
     <div className={styles.container}>
@@ -78,10 +78,10 @@ const Login: React.FC = () => {
         <div className={styles.top}>
           <div className={styles.header}>
             <img alt="logo" className={styles.logo} src="/github.svg" />
-            <span className={styles.title}>Java Scaffold</span>
+            <span className={styles.title}>All In One</span>
           </div>
           <div className={styles.desc}>
-            https://github.com/stone0090/java-scaffold
+            https://github.com/stone0090/all-in-one
           </div>
         </div>
 

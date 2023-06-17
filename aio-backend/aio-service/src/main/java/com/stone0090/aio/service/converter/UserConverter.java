@@ -11,7 +11,6 @@ import com.stone0090.aio.api.response.UserDetailVO;
 import com.stone0090.aio.dao.mybatis.entity.PermissionDO;
 import com.stone0090.aio.dao.mybatis.entity.RoleDO;
 import com.stone0090.aio.dao.mybatis.entity.UserDO;
-import com.stone0090.aio.dao.mybatis.entity.UserRoleRelationDO;
 
 public class UserConverter {
 

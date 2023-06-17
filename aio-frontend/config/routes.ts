@@ -48,6 +48,18 @@
     ],
   },
   {
+    path: '/system',
+    name: '系统管理',
+    icon: 'team',
+    routes: [
+      {
+        path: '/system/config',
+        name: '配置列表',
+        component: './system/Config',
+      },
+    ],
+  },
+  {
     component: './404',
   },
 ];
