@@ -1,6 +1,6 @@
 package com.stone0090.aio.api.response;
 
-import java.util.List;
+import java.io.Serializable;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import lombok.Data;
  * @date 2021/07/26
  */
 @Data
-public class UserVO {
+public class UserVO implements Serializable {
     private String name;
     private String avatar;
     private String userid;

@@ -56,6 +56,7 @@
     "classnames": "^2.2.6",
     "lodash": "^4.17.11",
     "moment": "^2.25.3",
+    "monaco-editor": "^0.39.0",
     "omit.js": "^2.0.2",
     "rc-field-form": "^1.32.2",
     "react": "^17.0.0",

@@ -68,5 +68,23 @@ CREATE TABLE IF NOT EXISTS `aio_system_config` (
 `config_key` varchar(50) NOT NULL COMMENT '配置项',
 `config_value` varchar(4000) NOT NULL COMMENT '配置值',
 PRIMARY KEY (`id`),
-UNIQUE KEY `uk_config_key` (`config_key`, `is_deleted`)
+UNIQUE KEY `uk_system_config` (`config_key`, `is_deleted`)
+); -- ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+-- 核心算子
+CREATE TABLE IF NOT EXISTS `aio_core_operator` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+`gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', -- ON UPDATE CURRENT_TIMESTAMP
+`is_deleted` int(11) NOT NULL DEFAULT 0 COMMENT '删除标记',
+`op_code` varchar(20) NOT NULL COMMENT '标识',
+`op_name` varchar(20) NOT NULL COMMENT '名称',
+`algo_language` varchar(20) NOT NULL COMMENT '编程语言',
+`algo_code` varchar(20000) NOT NULL COMMENT '算子代码',
+`algo_path` varchar(1000) NOT NULL COMMENT '算子地址',
+`input_param` varchar(4000) NOT NULL COMMENT '输入参数',
+`output_param` varchar(4000) NOT NULL COMMENT '输出参数',
+`is_disabled` int(11) NOT NULL DEFAULT 0 COMMENT '禁用标记',
+PRIMARY KEY (`id`),
+UNIQUE KEY `uk_core_operator` (`op_code`, `is_deleted`)
 ); -- ENGINE=InnoDB DEFAULT CHARSET=utf8

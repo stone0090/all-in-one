@@ -3,7 +3,7 @@ package com.stone0090.aio.web.controller;
 import com.stone0090.aio.api.protocal.PageRequest;
 import com.stone0090.aio.api.protocal.PageResult;
 import com.stone0090.aio.api.protocal.RestResult;
-import com.stone0090.aio.api.request.IdentifierRequest;
+import com.stone0090.aio.api.request.IdRequest;
 import com.stone0090.aio.api.request.PermissionQueryRequest;
 import com.stone0090.aio.api.request.PermissionSaveRequest;
 import com.stone0090.aio.api.response.PermissionVO;
@@ -27,40 +27,40 @@ import org.springframework.web.bind.annotation.RestController;
 public class PermissionController {
 
     @Autowired
-    private PermissionService permissionService;
+    private PermissionService service;
 
     @ApiOperation("获取权限列表")
     @GetMapping("/list")
     public RestResult list(PermissionQueryRequest queryRequest, PageRequest pageRequest) {
-        PageResult<PermissionVO> result = permissionService.list(queryRequest, pageRequest);
+        PageResult<PermissionVO> result = service.list(queryRequest, pageRequest);
         return RestResult.success(result);
     }
 
     @ApiOperation("获取单个权限")
     @GetMapping("/get")
-    public RestResult get(IdentifierRequest request) {
-        PermissionVO result = permissionService.get(request);
+    public RestResult get(IdRequest request) {
+        PermissionVO result = service.get(request);
         return RestResult.success(result);
     }
 
     @ApiOperation("新增权限")
     @PostMapping("/add")
     public RestResult add(@RequestBody PermissionSaveRequest request) {
-        int count = permissionService.save(request);
+        int count = service.save(request);
         return RestResult.success(count);
     }
 
     @ApiOperation("编辑权限")
     @PostMapping("/edit")
     public RestResult edit(@RequestBody PermissionSaveRequest request) {
-        int count = permissionService.save(request);
+        int count = service.save(request);
         return RestResult.success(count);
     }
 
     @ApiOperation("移除权限")
     @PostMapping("/remove")
-    public RestResult remove(@RequestBody IdentifierRequest request) {
-        int count = permissionService.remove(request);
+    public RestResult remove(@RequestBody IdRequest request) {
+        int count = service.remove(request);
         return RestResult.success(count);
     }
 

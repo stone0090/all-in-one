@@ -2,35 +2,25 @@
   {
     path: '/login',
     layout: false,
-    component: './login',
+    component: './Login',
   },
   {
     path: '/',
-    redirect: '/welcome',
+    redirect: '/Welcome',
   },
   {
     path: '/welcome',
     name: '欢迎',
-    component: './welcome',
+    component: './Welcome',
   },
   {
-    path: '/usermgr',
-    name: '用户管理',
+    path: '/core',
+    name: '算法开发',
     routes: [
       {
-        path: '/usermgr/user',
-        name: '用户列表',
-        component: './usermgr/user',
-      },
-      {
-        path: '/usermgr/role',
-        name: '角色列表',
-        component: './usermgr/role',
-      },
-      {
-        path: '/usermgr/permission',
-        name: '权限列表',
-        component: './usermgr/permission',
+        path: '/core/operator',
+        name: '算子管理',
+        component: './core/Operator',
       },
     ],
   },
@@ -39,9 +29,24 @@
     name: '系统管理',
     routes: [
       {
+        path: '/system/user',
+        name: '用户管理',
+        component: './user/User',
+      },
+      {
+        path: '/system/role',
+        name: '角色管理',
+        component: './user/Role',
+      },
+      {
+        path: '/system/permission',
+        name: '权限管理',
+        component: './user/Permission',
+      },
+      {
         path: '/system/config',
-        name: '配置列表',
-        component: './system/config',
+        name: '配置管理',
+        component: './system/Config',
       },
     ],
   },

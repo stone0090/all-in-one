@@ -17,11 +17,11 @@ public class ConfigSaveRequest {
 
     @NotNull(message = "配置项不能为空")
     @Size(min = 3, max = 50, message = "配置项必须介于3到50位字符之间")
-    @Pattern(regexp = "^\\w+$", message = "账号只能包含英文字母、数字、下划线")
+    @Pattern(regexp = "^\\w+$", message = "配置项只能包含英文字母、数字、下划线")
     private String configKey;
 
     @NotNull(message = "配置值不能为空")
-    @Size(min = 1, max = 4000, message = "配置值必须介于3到4000位字符之间")
+    @Size(min = 1, max = 4000, message = "配置值必须介于1到4000位字符之间")
     private String configValue;
 
 }

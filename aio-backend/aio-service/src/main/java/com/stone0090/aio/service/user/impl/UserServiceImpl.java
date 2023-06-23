@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import com.stone0090.aio.api.protocal.PageRequest;
 import com.stone0090.aio.api.protocal.PageResult;
-import com.stone0090.aio.api.request.IdentifierRequest;
+import com.stone0090.aio.api.request.IdRequest;
 import com.stone0090.aio.api.request.UserQueryRequest;
 import com.stone0090.aio.api.request.UserSaveRequest;
 import com.stone0090.aio.api.response.UserBriefVO;
@@ -17,7 +17,7 @@ import com.stone0090.aio.dao.mybatis.entity.UserDOExample.Criteria;
 import com.stone0090.aio.dao.mybatis.mapper.UserDOMapper;
 import com.stone0090.aio.service.user.RoleService;
 import com.stone0090.aio.service.user.UserService;
-import com.stone0090.aio.service.converter.UserConverter;
+import com.stone0090.aio.service.common.Converter;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,6 @@ public class UserServiceImpl implements UserService {
     private UserDOMapper userDOMapper;
     @Autowired
     private RoleService roleService;
-
 
     @Override
     public PageResult<UserBriefVO> list(UserQueryRequest queryRequest, PageRequest pageRequest) {
@@ -48,7 +47,7 @@ public class UserServiceImpl implements UserService {
         List<UserDO> result = userDOMapper.selectByExample(example);
         PageResult<UserBriefVO> pageResult = PageResult.buildPageResult(result);
         pageResult.setList(result.stream().map(userDO -> {
-            UserBriefVO userBriefVO = UserConverter.toBriefVO(userDO);
+            UserBriefVO userBriefVO = Converter.toBriefVO(userDO);
             userBriefVO.setRoles(roleService.listByUsername(userDO.getUsername()));
             return userBriefVO;
         }).collect(Collectors.toList()));
@@ -56,12 +55,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetailVO getDetail(IdentifierRequest request) {
+    public UserDetailVO getDetail(IdRequest request) {
         UserDO result = getById(request.getId());
         if (result == null) {
             return null;
         }
-        UserDetailVO userDetailVO = UserConverter.toDetailVO(result);
+        UserDetailVO userDetailVO = Converter.toDetailVO(result);
         userDetailVO.setRoles(roleService.listByUsername(userDetailVO.getUsername()));
         return userDetailVO;
     }
@@ -72,7 +71,7 @@ public class UserServiceImpl implements UserService {
         if (result == null) {
             return null;
         }
-        UserDetailVO userDetailVO = UserConverter.toDetailVO(result);
+        UserDetailVO userDetailVO = Converter.toDetailVO(result);
         userDetailVO.setRoles(roleService.listByUsername(userDetailVO.getUsername()));
         return userDetailVO;
     }
@@ -82,7 +81,7 @@ public class UserServiceImpl implements UserService {
         if (countByUsername(request.getUsername()) > 0) {
             throw new RuntimeException("username已存在！");
         }
-        UserDO userDO = UserConverter.toUserDO(request);
+        UserDO userDO = Converter.toUserDO(request);
         // 新增时不允许指定id，只能自增
         userDO.setId(null);
         return userDOMapper.insertSelective(userDO);
@@ -90,20 +89,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int edit(UserSaveRequest request) {
-        UserDO userDO = UserConverter.toUserDO(request);
+        UserDO data = Converter.toUserDO(request);
         // 不允许修改业务唯一标识
-        userDO.setUsername(null);
-        userDO.setGmtModified(new Date());
-        return userDOMapper.updateByPrimaryKeySelective(userDO);
+        data.setUsername(null);
+        data.setGmtModified(new Date());
+        return userDOMapper.updateByPrimaryKeySelective(data);
     }
 
     @Override
-    public int remove(IdentifierRequest request) {
-        UserDO userDO = new UserDO();
-        userDO.setId(request.getId());
-        userDO.setIsDeleted((int) System.currentTimeMillis());
-        userDO.setGmtModified(new Date());
-        return userDOMapper.updateByPrimaryKeySelective(userDO);
+    public int remove(IdRequest request) {
+        UserDO data = new UserDO();
+        data.setId(request.getId());
+        data.setIsDeleted((int) System.currentTimeMillis());
+        data.setGmtModified(new Date());
+        return userDOMapper.updateByPrimaryKeySelective(data);
     }
 
     private int countByUsername(String username) {

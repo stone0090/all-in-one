@@ -20,7 +20,7 @@ public interface UserService  {
     PageResult<UserBriefVO> list(@NotNull(message = "查询条件不能为空") @Valid UserQueryRequest queryRequest,
                                  @NotNull(message = "分页参数不能为空") @Valid PageRequest pageRequest);
 
-    UserDetailVO getDetail(@NotNull(message = "入参不能为空") @Valid IdentifierRequest request);
+    UserDetailVO getDetail(@NotNull(message = "入参不能为空") @Valid IdRequest request);
 
     UserDetailVO getDetail(@NotNull(message = "入参不能为空") String username);
 
@@ -37,5 +37,5 @@ public interface UserService  {
     /**
      * @return 返回操作记录数
      */
-    int remove(@NotNull(message = "入参不能为空") @Valid IdentifierRequest request);
+    int remove(@NotNull(message = "入参不能为空") @Valid IdRequest request);
 }

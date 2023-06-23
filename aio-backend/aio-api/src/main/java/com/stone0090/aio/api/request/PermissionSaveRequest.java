@@ -23,11 +23,11 @@ public class PermissionSaveRequest implements Serializable {
     private String permissionCode;
 
     @NotNull(message = "权限名称不能为空")
-    @Size(min = 1, max = 20, message = "权限名称必须介于3到10位字符之间")
+    @Size(min = 1, max = 20, message = "权限名称必须介于1到20位字符之间")
     private String permissionName;
 
     @NotNull(message = "权限url不能为空")
-    @Size(min = 3, max = 20, message = "权限url必须介于3到20位字符之间")
+    @Size(min = 1, max = 20, message = "权限url必须介于1到20位字符之间")
     private String permissionUrl;
 
 }

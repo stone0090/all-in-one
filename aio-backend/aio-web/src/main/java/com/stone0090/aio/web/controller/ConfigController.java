@@ -21,40 +21,40 @@ import org.springframework.web.bind.annotation.*;
 public class ConfigController {
 
     @Autowired
-    private ConfigService configService;
+    private ConfigService service;
 
     @ApiOperation("获取配置列表")
     @GetMapping("/list")
     public RestResult list(ConfigQueryRequest queryRequest, PageRequest pageRequest) {
-        PageResult<ConfigVO> result = configService.list(queryRequest, pageRequest);
+        PageResult<ConfigVO> result = service.list(queryRequest, pageRequest);
         return RestResult.success(result);
     }
 
     @ApiOperation("获取单个配置")
     @GetMapping("/get")
-    public RestResult get(IdentifierRequest request) {
-        ConfigVO result = configService.get(request);
+    public RestResult get(IdRequest request) {
+        ConfigVO result = service.get(request);
         return RestResult.success(result);
     }
 
     @ApiOperation("新增配置")
     @PostMapping("/add")
     public RestResult add(@RequestBody ConfigSaveRequest request) {
-        int count = configService.save(request);
+        int count = service.save(request);
         return RestResult.success(count);
     }
 
     @ApiOperation("编辑配置")
     @PostMapping("/edit")
     public RestResult edit(@RequestBody ConfigSaveRequest request) {
-        int count = configService.save(request);
+        int count = service.save(request);
         return RestResult.success(count);
     }
 
     @ApiOperation("移除配置")
     @PostMapping("/remove")
-    public RestResult removeConfig(@RequestBody IdentifierRequest request) {
-        int count = configService.remove(request);
+    public RestResult removeConfig(@RequestBody IdRequest request) {
+        int count = service.remove(request);
         return RestResult.success(count);
     }
 

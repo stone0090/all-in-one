@@ -5,13 +5,13 @@ import com.stone0090.aio.api.protocal.PageRequest;
 import com.stone0090.aio.api.protocal.PageResult;
 import com.stone0090.aio.api.request.ConfigQueryRequest;
 import com.stone0090.aio.api.request.ConfigSaveRequest;
-import com.stone0090.aio.api.request.IdentifierRequest;
+import com.stone0090.aio.api.request.IdRequest;
 import com.stone0090.aio.api.response.ConfigVO;
 import com.stone0090.aio.dao.mybatis.entity.SystemConfigDO;
 import com.stone0090.aio.dao.mybatis.entity.SystemConfigDOExample;
 import com.stone0090.aio.dao.mybatis.mapper.SystemConfigDOMapper;
 import com.stone0090.aio.service.system.ConfigService;
-import com.stone0090.aio.service.converter.CommonConverter;
+import com.stone0090.aio.service.common.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -45,36 +45,36 @@ public class ConfigServiceImpl implements ConfigService {
         PageHelper.startPage(pageRequest.getCurrent(), pageRequest.getPageSize());
         List<SystemConfigDO> result = systemConfigDOMapper.selectByExample(example);
         PageResult<ConfigVO> pageResult = PageResult.buildPageResult(result);
-        pageResult.setList(result.stream().map(CommonConverter::toSystemConfigVO).collect(Collectors.toList()));
+        pageResult.setList(result.stream().map(Converter::toSystemConfigVO).collect(Collectors.toList()));
         return pageResult;
     }
 
     @Override
-    public ConfigVO get(IdentifierRequest request) {
+    public ConfigVO get(IdRequest request) {
         SystemConfigDOExample example = new SystemConfigDOExample();
         example.createCriteria().andIsDeletedEqualTo(0).andIdEqualTo(request.getId());
         List<SystemConfigDO> result = systemConfigDOMapper.selectByExample(example);
-        return CollectionUtils.isEmpty(result) ? null : CommonConverter.toSystemConfigVO(result.get(0));
+        return CollectionUtils.isEmpty(result) ? null : Converter.toSystemConfigVO(result.get(0));
     }
 
     @Override
     public int save(ConfigSaveRequest request) {
-        SystemConfigDO configDO = CommonConverter.toSystemConfigDO(request);
-        if (configDO.getId() == null) {
-            return systemConfigDOMapper.insertSelective(configDO);
+        SystemConfigDO data = Converter.toSystemConfigDO(request);
+        if (data.getId() == null) {
+            return systemConfigDOMapper.insertSelective(data);
         } else {
-            configDO.setGmtModified(new Date());
-            return systemConfigDOMapper.updateByPrimaryKeySelective(configDO);
+            data.setGmtModified(new Date());
+            return systemConfigDOMapper.updateByPrimaryKeySelective(data);
         }
     }
 
     @Override
-    public int remove(IdentifierRequest request) {
-        SystemConfigDO configDO = new SystemConfigDO();
-        configDO.setId(request.getId());
-        configDO.setIsDeleted((int)System.currentTimeMillis());
-        configDO.setGmtModified(new Date());
-        return systemConfigDOMapper.updateByPrimaryKeySelective(configDO);
+    public int remove(IdRequest request) {
+        SystemConfigDO data = new SystemConfigDO();
+        data.setId(request.getId());
+        data.setIsDeleted((int)System.currentTimeMillis());
+        data.setGmtModified(new Date());
+        return systemConfigDOMapper.updateByPrimaryKeySelective(data);
     }
 
 }

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 import com.stone0090.aio.api.protocal.PageRequest;
 import com.stone0090.aio.api.protocal.PageResult;
-import com.stone0090.aio.api.request.IdentifierRequest;
+import com.stone0090.aio.api.request.IdRequest;
 import com.stone0090.aio.api.request.PermissionQueryRequest;
 import com.stone0090.aio.api.request.PermissionSaveRequest;
 import com.stone0090.aio.api.response.PermissionVO;
@@ -21,7 +21,7 @@ import com.stone0090.aio.dao.mybatis.entity.RolePermissionRelationDOExample;
 import com.stone0090.aio.dao.mybatis.mapper.PermissionDOMapper;
 import com.stone0090.aio.dao.mybatis.mapper.RolePermissionRelationDOMapper;
 import com.stone0090.aio.service.user.PermissionService;
-import com.stone0090.aio.service.converter.UserConverter;
+import com.stone0090.aio.service.common.Converter;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,37 +57,37 @@ public class PermissionServiceImpl implements PermissionService {
         PageHelper.startPage(pageRequest.getCurrent(), pageRequest.getPageSize());
         List<PermissionDO> result = permissionDOMapper.selectByExample(example);
         PageResult<PermissionVO> pageResult = PageResult.buildPageResult(result);
-        pageResult.setList(result.stream().map(UserConverter::toPermissionVO).collect(Collectors.toList()));
+        pageResult.setList(result.stream().map(Converter::toPermissionVO).collect(Collectors.toList()));
         return pageResult;
     }
 
     @Override
-    public PermissionVO get(IdentifierRequest request) {
+    public PermissionVO get(IdRequest request) {
         PermissionDOExample example = new PermissionDOExample();
         example.createCriteria().andIsDeletedEqualTo(0).andIdEqualTo(request.getId());
         List<PermissionDO> result = permissionDOMapper.selectByExample(example);
-        return CollectionUtils.isEmpty(result) ? null : UserConverter.toPermissionVO(result.get(0));
+        return CollectionUtils.isEmpty(result) ? null : Converter.toPermissionVO(result.get(0));
     }
 
     @Override
     public int save(PermissionSaveRequest request) {
-        PermissionDO permissionDO = UserConverter.toPermissionDO(request);
-        if (permissionDO.getId() == null) {
-            return permissionDOMapper.insertSelective(permissionDO);
+        PermissionDO data = Converter.toPermissionDO(request);
+        if (data.getId() == null) {
+            return permissionDOMapper.insertSelective(data);
         } else {
-            permissionDO.setPermissionCode(null);
-            permissionDO.setGmtModified(new Date());
-            return permissionDOMapper.updateByPrimaryKeySelective(permissionDO);
+            data.setPermissionCode(null);
+            data.setGmtModified(new Date());
+            return permissionDOMapper.updateByPrimaryKeySelective(data);
         }
     }
 
     @Override
-    public int remove(IdentifierRequest request) {
-        PermissionDO permissionDO = new PermissionDO();
-        permissionDO.setId(request.getId());
-        permissionDO.setIsDeleted((int)System.currentTimeMillis());
-        permissionDO.setGmtModified(new Date());
-        return permissionDOMapper.updateByPrimaryKeySelective(permissionDO);
+    public int remove(IdRequest request) {
+        PermissionDO data = new PermissionDO();
+        data.setId(request.getId());
+        data.setIsDeleted((int)System.currentTimeMillis());
+        data.setGmtModified(new Date());
+        return permissionDOMapper.updateByPrimaryKeySelective(data);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class PermissionServiceImpl implements PermissionService {
             .collect(Collectors.toMap(PermissionDO::getPermissionCode, Function.identity(), (x, y) -> x));
         Map<String, List<PermissionVO>> roleCodePermissionVOMap = relationDOList.stream()
             .collect(Collectors.groupingBy(RolePermissionRelationDO::getRoleCode, Collectors.mapping(
-                x -> UserConverter.toPermissionVO(permissionDOMap.get(x.getPermissionCode())), Collectors.toList())));
+                x -> Converter.toPermissionVO(permissionDOMap.get(x.getPermissionCode())), Collectors.toList())));
         return roleCodePermissionVOMap;
     }
 
