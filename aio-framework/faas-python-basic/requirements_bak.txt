@@ -1,0 +1,36 @@
+absl-py 0.9.0algo-sdk latestaliyun-python-sdk-core 2.13.36aliyun-python-sdk-core-v3 2.13.33aliyun-python-sdk-kms 2.16.0appdirs 1.4.3astor 0.8.1astroid 2.6.6autoopt-client 0.2.2backports.zoneinfo 0.2.1bitarray 2.3.4certifi 2020.4.5.1
+pure-sasl 0.6.2py4i 0.10.9.7pycparser 2.21pycryptodome 3.11.0pydash 4.7.6pydatahub 2.17.2PyHive 0.6.4pylint 2.9.6PyMyS0L 1.0.2pyodps 0.9.0.1Pyomo .5.6.9pyparsing 2.4.7pypmml 0.9.12pyswarm 0.6python-dateutil 2.8.1pytz 2020.1pytz-deprecation-shim 0.1.0.post0PvUtilib 5.8.0
+cffi 1.15.1
+chardet 3.0.4click 7.1.2clickhouse-driver 0.2.2concurrent-log-handler 0.9.16configparser 5.2.0control 0.8.0cprotobuf 0.1.9
+PyWavelets 1.1.1PyYAML 5.3.1redis 3.5.3requests 2.18.4sasl 0.3.1scikit-fuzzy 0.4.2scikit-image 0.17.2scikit-learn 0.23.1scipy 1.2.1scs 2.1.2
+crcmod 1.7
+cryptography 40.0.2cvxpy 1.0.18cycler 0.10.05 decorator 4.4.2
+ecos 2.0.7.post1fastcache 1.1.0
+dill 0.3.1.1
+nose 1.3.7.numba 0.53.1numpy 1.16.2odps 3.5.1ortools 8.0.8283osqp 0.6.1oss2 2.13.0pandas 0.23.4patool 1.12patsy 0.5.3Pillow 8.4.0pip 20.0.2ply 3.11portalocker 1.7.0protobuf 3.17.3
+seaborn 0.11.2setuptools 41.0.1simpleison 3.19.1six 1.14.0sklearn 0.0sklearn-pandas 2.2.0sklearn2pmml 0.76.0sko 0.5.7slycot 0.3.5SOLAlchemy 1.3.5statsmodels 0.12.2suds-py3 1.4.4.1
+Flask 1.0.2
+0
+funcsigs 1.0.2
+future 0.18.2
+32 gast 0.3.3
+33 gevent 1.3.3
+34 googleapis-common-protos 1.6.0
+35 greenlet 0.4.15
+36grpc101.23.0
+38 h5py 2.10.0
+39idna 2.6
+40 image10 2.15.0
+sympy 1.5.1tensorboard 1.13.1tensorflow 1.13.1tensorflow-estimator 1.13.0termcolor 1.1.0threadpoolctl 3.1.0thrift 0.15.0thrift-sasl 0.4.3thriftpy 0.3.9tifffile 2020.9.3toml 0.10.2typed-ast·1.4.3typing-extensions 4.1.1tzdata 2023.3tzlocal 4.2urllib3 1.22Werkzeug 1.0.1wheel 0.34.2wrapt 1.12.1xgboost 1.2.0xlrd 1.2.0zipp 3.6.0
+importlib-resources 5.4.0impyla 0.17.0isort 4.3.21imespath 0.10.0joblib 1.1.0Keras 2.3.1Keras-Applications 1.0.8Keras-Preprocessing 1.1.0kiwisolver 1.2.0lazy-object-proxy 1.7.1lightgbm 3.1.1llvmlite 0.36.01z4 3.1.10Markdown 3.2.1matplotlib 3.0.2mccabe 0.6.1minio 6.0.0mock 4.0.2mpmath 1.1.0multiprocess 0.70.9natsort 7.0.1networkx 1.11
+A
+absl-py 0.9.0algo-sdk latestaliyun-python-sdk-core 2.13.36aliyun-python-sdk-core-v3 2.13.33aliyun-python-sdk-kms 2.16.0appdirs 1.4.3astor 0.8.1astroid 2.6.6autoopt-client 0.2.2backports.zoneinfo 0.2.1bitarray 2.3.4certifi 2020.4.5.1
+pure-sasl 0.6.2py4i 0.10.9.7pycparser 2.21pycryptodome 3.11.0pydash 4.7.6pydatahub 2.17.2PyHive 0.6.4pylint 2.9.6PyMyS0L 1.0.2pyodps 0.9.0.1Pyomo .5.6.9pyparsing 2.4.7pypmml 0.9.12pyswarm 0.6python-dateutil 2.8.1pytz 2020.1pytz-deprecation-shim 0.1.0.post0PvUtilib 5.8.0
+cffi 1.15.1
+chardet 3.0.4click 7.1.2clickhouse-driver 0.2.2concurrent-log-handler 0.9.16configparser 5.2.0control 0.8.0cprotobuf 0.1.9
+PyWavelets 1.1.1PyYAML 5.3.1redis 3.5.3requests 2.18.4sasl 0.3.1scikit-fuzzy 0.4.2scikit-image 0.17.2scikit-learn 0.23.1scipy 1.2.1scs 2.1.2
+crcmod 1.7
+cryptography 40.0.2cvxpy 1.0.18cycler 0.10.05 decorator 4.4.2
+ecos 2.0.7.post1fastcache 1.1.0
+dill 0.3.1.1
+nose 1.3.7.numba 0.53.1numpy 1.16.2odps 3.5.1ortools 8.0.8283
