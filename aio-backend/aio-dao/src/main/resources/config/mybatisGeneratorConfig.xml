@@ -38,7 +38,8 @@
         <table tableName="aio_user_role_relation" domainObjectName="UserRoleRelationDO"/>
         <table tableName="aio_role_permission_relation" domainObjectName="RolePermissionRelationDO"/>
         <table tableName="aio_system_config" domainObjectName="SystemConfigDO"/>
-        <table tableName="aio_core_operator" domainObjectName="CoreOperatorDO"/>
+        <table tableName="aio_operator" domainObjectName="OperatorDO"/>
+        <table tableName="aio_api" domainObjectName="ApiDO"/>
 
     </context>
 </generatorConfiguration>

@@ -1,17 +1,24 @@
 package com.stone0090.aio.service.core.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import com.stone0090.aio.api.protocal.PageRequest;
 import com.stone0090.aio.api.protocal.PageResult;
 import com.stone0090.aio.api.request.*;
-import com.stone0090.aio.api.response.ConfigVO;
 import com.stone0090.aio.api.response.OperatorVO;
-import com.stone0090.aio.dao.mybatis.entity.CoreOperatorDO;
-import com.stone0090.aio.dao.mybatis.entity.CoreOperatorDOExample;
-import com.stone0090.aio.dao.mybatis.mapper.CoreOperatorDOMapper;
+import com.stone0090.aio.dao.mybatis.entity.ApiDO;
+import com.stone0090.aio.dao.mybatis.entity.OperatorDO;
+import com.stone0090.aio.dao.mybatis.entity.OperatorDOExample;
+import com.stone0090.aio.dao.mybatis.entity.SystemConfigDO;
+import com.stone0090.aio.dao.mybatis.mapper.OperatorDOMapper;
+import com.stone0090.aio.manager.utils.UuidUtil;
+import com.stone0090.aio.service.common.ConfigConstants;
 import com.stone0090.aio.service.common.Converter;
 import com.stone0090.aio.service.core.OperatorService;
-import com.stone0090.aio.service.system.ConfigService;
+import com.stone0090.aio.service.enums.ApiStatusEnum;
+import com.stone0090.aio.service.enums.AlgoTypeEnum;
+import com.stone0090.aio.service.enums.InvokeTypeEnum;
+import com.stone0090.aio.service.system.impl.ConfigServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -29,20 +36,18 @@ import java.util.stream.Collectors;
 public class OperatorServiceImpl implements OperatorService {
 
     @Autowired
-    private CoreOperatorDOMapper coreOperatorDOMapper;
-
+    private OperatorDOMapper operatorDOMapper;
     @Autowired
-    private ConfigService configService;
-
-    private static final String CORE_OPERATOR_PREFIX = "core_operator_";
-    private static final String ALGO_CODE_TEMPLATE = "core_operator_algo_code_template";
-    private static final String INPUT_PARAM_TEMPLATE = "core_operator_input_param_template";
-    private static final String OUTPUT_PARAM_TEMPLATE = "core_operator_output_param_template";
+    private ApiServiceImpl apiServiceImpl;
+    @Autowired
+    private ConfigServiceImpl configServiceImpl;
+    @Autowired
+    private PythonOperatorServiceImpl pythonOperatorServiceImpl;
 
     @Override
     public PageResult<OperatorVO> list(OperatorQueryRequest queryRequest, PageRequest pageRequest) {
-        CoreOperatorDOExample example = new CoreOperatorDOExample();
-        CoreOperatorDOExample.Criteria criteria = example.createCriteria();
+        OperatorDOExample example = new OperatorDOExample();
+        OperatorDOExample.Criteria criteria = example.createCriteria();
         criteria.andIsDeletedEqualTo(0);
         if (!StringUtils.isEmpty(queryRequest.getOpCode())) {
             criteria.andOpCodeLike("%" + queryRequest.getOpCode() + "%");
@@ -51,7 +56,7 @@ public class OperatorServiceImpl implements OperatorService {
             criteria.andOpNameLike("%" + queryRequest.getOpName() + "%");
         }
         PageHelper.startPage(pageRequest.getCurrent(), pageRequest.getPageSize());
-        List<CoreOperatorDO> result = coreOperatorDOMapper.selectByExample(example);
+        List<OperatorDO> result = operatorDOMapper.selectByExample(example);
         PageResult<OperatorVO> pageResult = PageResult.buildPageResult(result);
         pageResult.setList(result.stream().map(Converter::toOperatorVO).collect(Collectors.toList()));
         return pageResult;
@@ -59,52 +64,80 @@ public class OperatorServiceImpl implements OperatorService {
 
     @Override
     public OperatorVO get(IdRequest request) {
-        CoreOperatorDOExample example = new CoreOperatorDOExample();
+        OperatorDOExample example = new OperatorDOExample();
         example.createCriteria().andIsDeletedEqualTo(0).andIdEqualTo(request.getId());
-        List<CoreOperatorDO> result = coreOperatorDOMapper.selectByExample(example);
+        List<OperatorDO> result = operatorDOMapper.selectByExample(example);
         return CollectionUtils.isEmpty(result) ? null : Converter.toOperatorVO(result.get(0));
     }
 
     @Override
     public int save(OperatorSaveRequest request) {
-        CoreOperatorDO data = Converter.toCoreOperatorDO(request);
+        OperatorDO data = Converter.toOperatorDO(request);
         if (data.getId() == null) {
             data.setAlgoPath("");
-            return coreOperatorDOMapper.insertSelective(data);
+            return operatorDOMapper.insertSelective(data);
         } else {
             data.setGmtModified(new Date());
-            return coreOperatorDOMapper.updateByPrimaryKeySelective(data);
+            return operatorDOMapper.updateByPrimaryKeySelective(data);
         }
     }
 
     @Override
     public int remove(IdRequest request) {
-        CoreOperatorDO data = new CoreOperatorDO();
+        OperatorDO data = new OperatorDO();
         data.setId(request.getId());
         data.setIsDeleted((int) System.currentTimeMillis());
         data.setGmtModified(new Date());
-        return coreOperatorDOMapper.updateByPrimaryKeySelective(data);
+        return operatorDOMapper.updateByPrimaryKeySelective(data);
     }
 
     @Override
     public OperatorVO getConfig() {
-        ConfigQueryRequest request = new ConfigQueryRequest();
-        request.setConfigKey(CORE_OPERATOR_PREFIX);
-        PageResult<ConfigVO> result = configService.list(request, new PageRequest());
-        if (result.getTotal() <= 0) {
+        List<SystemConfigDO> result = configServiceImpl.getByKeys(Lists.newArrayList(
+                ConfigConstants.ALGO_CODE_TEMPLATE,
+                ConfigConstants.INPUT_PARAM_TEMPLATE,
+                ConfigConstants.OUTPUT_PARAM_TEMPLATE));
+        if (CollectionUtils.isEmpty(result)) {
             return null;
         }
         OperatorVO operatorVO = new OperatorVO();
-        result.getList().forEach(configVO -> {
-            if (ALGO_CODE_TEMPLATE.equals(configVO.getConfigKey())) {
+        result.forEach(configVO -> {
+            if (ConfigConstants.ALGO_CODE_TEMPLATE.equals(configVO.getConfigKey())) {
                 operatorVO.setAlgoCode(configVO.getConfigValue());
-            } else if (INPUT_PARAM_TEMPLATE.equals(configVO.getConfigKey())) {
+            } else if (ConfigConstants.INPUT_PARAM_TEMPLATE.equals(configVO.getConfigKey())) {
                 operatorVO.setInputParam(configVO.getConfigValue());
-            } else if (OUTPUT_PARAM_TEMPLATE.equals(configVO.getConfigKey())) {
+            } else if (ConfigConstants.OUTPUT_PARAM_TEMPLATE.equals(configVO.getConfigKey())) {
                 operatorVO.setOutputParam(configVO.getConfigValue());
             }
         });
         return operatorVO;
+    }
+
+    @Override
+    public int publishApi(IdRequest request) {
+        OperatorVO operatorVO = get(request);
+        if (operatorVO == null) {
+            throw new RuntimeException("发布Api失败，算子不存在！");
+        }
+        ApiDO apiDO = apiServiceImpl.getByType(AlgoTypeEnum.OPERATOR.name(), operatorVO.getId());
+        if (apiDO == null) {
+            apiDO = new ApiDO();
+            apiDO.setApiCode(UuidUtil.getUuid());
+        }
+        apiDO.setApiName(operatorVO.getOpName() + "服务");
+        apiDO.setApiType(AlgoTypeEnum.OPERATOR.name());
+        apiDO.setTypeId(operatorVO.getId());
+        apiDO.setApiUrl("");
+        apiDO.setInputParam("");
+        apiDO.setOutputParam("");
+        apiDO.setInvokeType(InvokeTypeEnum.SYNC.name());
+        apiDO.setCallbackUrl("");
+        apiDO.setStatus(ApiStatusEnum.PUBLISHING.name());
+        apiServiceImpl.save(apiDO);
+        String apiUrl = pythonOperatorServiceImpl.createApi(operatorVO, apiDO);
+        apiDO.setApiUrl(apiUrl);
+        apiDO.setStatus(ApiStatusEnum.PUBLISHED.name());
+        return apiServiceImpl.save(apiDO);
     }
 
 }

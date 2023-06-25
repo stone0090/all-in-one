@@ -61,14 +61,26 @@ public class Converter {
     }
 
 
-    public static OperatorVO toOperatorVO(CoreOperatorDO param) {
+    public static OperatorVO toOperatorVO(OperatorDO param) {
         OperatorVO result = new OperatorVO();
         BeanUtils.copyProperties(param, result);
         return result;
     }
 
-    public static CoreOperatorDO toCoreOperatorDO(OperatorSaveRequest param) {
-        CoreOperatorDO result = new CoreOperatorDO();
+    public static OperatorDO toOperatorDO(OperatorSaveRequest param) {
+        OperatorDO result = new OperatorDO();
+        BeanUtils.copyProperties(param, result);
+        return result;
+    }
+
+    public static ApiDO toApiDO(ApiSaveRequest param) {
+        ApiDO result = new ApiDO();
+        BeanUtils.copyProperties(param, result);
+        return result;
+    }
+
+    public static ApiVO toApiVO(ApiDO param) {
+        ApiVO result = new ApiVO();
         BeanUtils.copyProperties(param, result);
         return result;
     }

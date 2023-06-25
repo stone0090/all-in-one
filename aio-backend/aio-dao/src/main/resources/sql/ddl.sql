@@ -66,13 +66,13 @@ CREATE TABLE IF NOT EXISTS `aio_system_config` (
 `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', -- ON UPDATE CURRENT_TIMESTAMP
 `is_deleted` int(11) NOT NULL DEFAULT 0 COMMENT '删除标记',
 `config_key` varchar(50) NOT NULL COMMENT '配置项',
-`config_value` varchar(4000) NOT NULL COMMENT '配置值',
+`config_value` varchar(20000) NOT NULL COMMENT '配置值',
 PRIMARY KEY (`id`),
 UNIQUE KEY `uk_system_config` (`config_key`, `is_deleted`)
 ); -- ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 -- 核心算子
-CREATE TABLE IF NOT EXISTS `aio_core_operator` (
+CREATE TABLE IF NOT EXISTS `aio_operator` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', -- ON UPDATE CURRENT_TIMESTAMP
@@ -86,5 +86,25 @@ CREATE TABLE IF NOT EXISTS `aio_core_operator` (
 `output_param` varchar(4000) NOT NULL COMMENT '输出参数',
 `is_disabled` int(11) NOT NULL DEFAULT 0 COMMENT '禁用标记',
 PRIMARY KEY (`id`),
-UNIQUE KEY `uk_core_operator` (`op_code`, `is_deleted`)
+UNIQUE KEY `uk_operator` (`op_code`, `is_deleted`)
+); -- ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+-- api服务
+CREATE TABLE IF NOT EXISTS `aio_api` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+`gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', -- ON UPDATE CURRENT_TIMESTAMP
+`is_deleted` int(11) NOT NULL DEFAULT 0 COMMENT '删除标记',
+`api_code` varchar(50) NOT NULL COMMENT 'api标识',
+`api_name` varchar(20) NOT NULL COMMENT 'api名称',
+`api_type` varchar(20) NOT NULL COMMENT 'api类型',
+`type_id` int(11) NOT NULL COMMENT '类型id',
+`api_url` varchar(1000) NOT NULL COMMENT 'api地址',
+`input_param` varchar(4000) NOT NULL COMMENT '输入参数',
+`output_param` varchar(4000) NOT NULL COMMENT '输出参数',
+`invoke_type` varchar(20) NOT NULL DEFAULT 0 COMMENT '调用类型',
+`callback_url` varchar(1000) NOT NULL DEFAULT 0 COMMENT '回调地址',
+`status` varchar(20) NOT NULL DEFAULT 0 COMMENT '状态',
+PRIMARY KEY (`id`),
+UNIQUE KEY `uk_api` (`api_code`, `is_deleted`)
 ); -- ENGINE=InnoDB DEFAULT CHARSET=utf8

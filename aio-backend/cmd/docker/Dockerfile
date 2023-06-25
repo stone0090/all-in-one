@@ -1,4 +1,4 @@
-FROM shi0090/centos-java-8u301:7.9.2009
+FROM shi0090/centos-7.9:java-8u301
 
 ENV APP_NAME aio
 ENV HEALTH_URL http://localhost:9090/aio/heartbeat/status

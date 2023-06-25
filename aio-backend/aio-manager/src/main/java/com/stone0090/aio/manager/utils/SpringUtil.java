@@ -1,4 +1,4 @@
-package com.stone0090.aio.manager.util;
+package com.stone0090.aio.manager.utils;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

@@ -1,6 +1,6 @@
 package com.stone0090.aio.web.config;
 
-import com.stone0090.aio.manager.util.AopUtil;
+import com.stone0090.aio.manager.utils.AopUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

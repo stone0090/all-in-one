@@ -7,7 +7,7 @@ import java.util.Date;
 
 /**
  * @author stone
- * @date 2021/07/26
+ * @date 2023/06/17
  */
 @Data
 public class ConfigVO implements Serializable {

@@ -14,7 +14,7 @@ import com.stone0090.aio.api.request.PermissionQueryRequest;
 import com.stone0090.aio.api.response.PermissionVO;
 import com.stone0090.aio.api.response.RoleVO;
 import com.stone0090.aio.api.response.UserDetailVO;
-import com.stone0090.aio.manager.util.SpringUtil;
+import com.stone0090.aio.manager.utils.SpringUtil;
 import com.stone0090.aio.service.user.PermissionService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;

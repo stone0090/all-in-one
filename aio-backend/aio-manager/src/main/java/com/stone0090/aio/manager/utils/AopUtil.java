@@ -1,4 +1,4 @@
-package com.stone0090.aio.manager.util;
+package com.stone0090.aio.manager.utils;
 
 import org.apache.ibatis.javassist.NotFoundException;
 import org.apache.logging.log4j.util.Strings;

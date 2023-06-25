@@ -1,6 +1,7 @@
 package com.stone0090.aio.service.system.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import com.stone0090.aio.api.protocal.PageRequest;
 import com.stone0090.aio.api.protocal.PageResult;
 import com.stone0090.aio.api.request.ConfigQueryRequest;
@@ -72,9 +73,20 @@ public class ConfigServiceImpl implements ConfigService {
     public int remove(IdRequest request) {
         SystemConfigDO data = new SystemConfigDO();
         data.setId(request.getId());
-        data.setIsDeleted((int)System.currentTimeMillis());
+        data.setIsDeleted((int) System.currentTimeMillis());
         data.setGmtModified(new Date());
         return systemConfigDOMapper.updateByPrimaryKeySelective(data);
+    }
+
+    public String getValueByKey(String key) {
+        List<SystemConfigDO> result = getByKeys(Lists.newArrayList(key));
+        return CollectionUtils.isEmpty(result) ? null : result.get(0).getConfigValue();
+    }
+
+    public List<SystemConfigDO> getByKeys(List<String> keys) {
+        SystemConfigDOExample example = new SystemConfigDOExample();
+        example.createCriteria().andIsDeletedEqualTo(0).andConfigKeyIn(keys);
+        return systemConfigDOMapper.selectByExample(example);
     }
 
 }

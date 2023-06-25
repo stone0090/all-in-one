@@ -67,4 +67,11 @@ public class OperatorController {
         return RestResult.success(result);
     }
 
+    @ApiOperation("发布API")
+    @PostMapping("/publish")
+    public RestResult publishApi(@RequestBody IdRequest request) {
+        int count = service.publishApi(request);
+        return RestResult.success(count);
+    }
+
 }

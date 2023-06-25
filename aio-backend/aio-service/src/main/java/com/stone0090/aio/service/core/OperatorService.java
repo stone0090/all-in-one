@@ -28,4 +28,6 @@ public interface OperatorService {
     int remove(@NotNull(message = "入参不能为空") @Valid IdRequest request);
 
     OperatorVO getConfig();
+
+    int publishApi(IdRequest request);
 }

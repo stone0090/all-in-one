@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.stone0090.aio.dao.mybatis.mapper.CoreOperatorDOMapper" >
-  <resultMap id="BaseResultMap" type="com.stone0090.aio.dao.mybatis.entity.CoreOperatorDO" >
+<mapper namespace="com.stone0090.aio.dao.mybatis.mapper.OperatorDOMapper" >
+  <resultMap id="BaseResultMap" type="com.stone0090.aio.dao.mybatis.entity.OperatorDO" >
     <id column="ID" property="id" jdbcType="INTEGER" />
     <result column="GMT_CREATE" property="gmtCreate" jdbcType="TIMESTAMP" />
     <result column="GMT_MODIFIED" property="gmtModified" jdbcType="TIMESTAMP" />
@@ -77,13 +77,13 @@
     ID, GMT_CREATE, GMT_MODIFIED, IS_DELETED, OP_CODE, OP_NAME, ALGO_LANGUAGE, ALGO_CODE, 
     ALGO_PATH, INPUT_PARAM, OUTPUT_PARAM, IS_DISABLED
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.stone0090.aio.dao.mybatis.entity.CoreOperatorDOExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.stone0090.aio.dao.mybatis.entity.OperatorDOExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from AIO_CORE_OPERATOR
+    from AIO_OPERATOR
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -94,21 +94,21 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from AIO_CORE_OPERATOR
+    from AIO_OPERATOR
     where ID = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from AIO_CORE_OPERATOR
+    delete from AIO_OPERATOR
     where ID = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.stone0090.aio.dao.mybatis.entity.CoreOperatorDOExample" >
-    delete from AIO_CORE_OPERATOR
+  <delete id="deleteByExample" parameterType="com.stone0090.aio.dao.mybatis.entity.OperatorDOExample" >
+    delete from AIO_OPERATOR
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.stone0090.aio.dao.mybatis.entity.CoreOperatorDO" >
-    insert into AIO_CORE_OPERATOR (ID, GMT_CREATE, GMT_MODIFIED, 
+  <insert id="insert" parameterType="com.stone0090.aio.dao.mybatis.entity.OperatorDO" >
+    insert into AIO_OPERATOR (ID, GMT_CREATE, GMT_MODIFIED, 
       IS_DELETED, OP_CODE, OP_NAME, 
       ALGO_LANGUAGE, ALGO_CODE, ALGO_PATH, 
       INPUT_PARAM, OUTPUT_PARAM, IS_DISABLED
@@ -119,8 +119,8 @@
       #{inputParam,jdbcType=VARCHAR}, #{outputParam,jdbcType=VARCHAR}, #{isDisabled,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.stone0090.aio.dao.mybatis.entity.CoreOperatorDO" >
-    insert into AIO_CORE_OPERATOR
+  <insert id="insertSelective" parameterType="com.stone0090.aio.dao.mybatis.entity.OperatorDO" >
+    insert into AIO_OPERATOR
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         ID,
@@ -198,14 +198,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.stone0090.aio.dao.mybatis.entity.CoreOperatorDOExample" resultType="java.lang.Integer" >
-    select count(*) from AIO_CORE_OPERATOR
+  <select id="countByExample" parameterType="com.stone0090.aio.dao.mybatis.entity.OperatorDOExample" resultType="java.lang.Integer" >
+    select count(*) from AIO_OPERATOR
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update AIO_CORE_OPERATOR
+    update AIO_OPERATOR
     <set >
       <if test="record.id != null" >
         ID = #{record.id,jdbcType=INTEGER},
@@ -249,7 +249,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update AIO_CORE_OPERATOR
+    update AIO_OPERATOR
     set ID = #{record.id,jdbcType=INTEGER},
       GMT_CREATE = #{record.gmtCreate,jdbcType=TIMESTAMP},
       GMT_MODIFIED = #{record.gmtModified,jdbcType=TIMESTAMP},
@@ -266,8 +266,8 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.stone0090.aio.dao.mybatis.entity.CoreOperatorDO" >
-    update AIO_CORE_OPERATOR
+  <update id="updateByPrimaryKeySelective" parameterType="com.stone0090.aio.dao.mybatis.entity.OperatorDO" >
+    update AIO_OPERATOR
     <set >
       <if test="gmtCreate != null" >
         GMT_CREATE = #{gmtCreate,jdbcType=TIMESTAMP},
@@ -305,8 +305,8 @@
     </set>
     where ID = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.stone0090.aio.dao.mybatis.entity.CoreOperatorDO" >
-    update AIO_CORE_OPERATOR
+  <update id="updateByPrimaryKey" parameterType="com.stone0090.aio.dao.mybatis.entity.OperatorDO" >
+    update AIO_OPERATOR
     set GMT_CREATE = #{gmtCreate,jdbcType=TIMESTAMP},
       GMT_MODIFIED = #{gmtModified,jdbcType=TIMESTAMP},
       IS_DELETED = #{isDeleted,jdbcType=INTEGER},

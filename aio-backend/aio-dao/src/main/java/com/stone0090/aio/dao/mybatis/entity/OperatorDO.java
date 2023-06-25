@@ -2,7 +2,7 @@ package com.stone0090.aio.dao.mybatis.entity;
 
 import java.util.Date;
 
-public class CoreOperatorDO {
+public class OperatorDO {
     private Integer id;
 
     private Date gmtCreate;
