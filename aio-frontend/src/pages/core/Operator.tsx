@@ -79,6 +79,14 @@ const Operator: React.FC = () => {
     }
   };
 
+  const handleInvoke = async (record: any) => {
+    const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/operator/invoke', {"id": record.id});
+    if (result?.success) {
+      setFormVisible(false);
+      message.success('调用成功！结果为：' + result.data);
+    }
+  };
+
   const columns: ProColumns[] = [
     {
       title: '算子标识',
@@ -147,7 +155,12 @@ const Operator: React.FC = () => {
         >
           发布API
         </a>,
-        <a>
+        <a
+          key="invoke"
+          onClick={() => {
+            handleInvoke(record);
+          }}
+        >
           调试API
         </a>,
         <a>
