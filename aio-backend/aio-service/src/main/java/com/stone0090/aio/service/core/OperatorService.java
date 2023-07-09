@@ -29,5 +29,4 @@ public interface OperatorService {
 
     OperatorVO getConfig();
 
-    int publishApi(IdRequest request);
 }

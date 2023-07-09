@@ -17,16 +17,17 @@ MERGE INTO `aio_role_permission_relation`(id, role_code, permission_code) VALUES
 MERGE INTO `aio_role_permission_relation`(id, role_code, permission_code) VALUES ('4', 'admin', 'select_one_user'); -- REPLACE INTO
 MERGE INTO `aio_role_permission_relation`(id, role_code, permission_code) VALUES ('5', 'admin', 'select_all_user'); -- REPLACE INTO
 MERGE INTO `aio_role_permission_relation`(id, role_code, permission_code) VALUES ('6', 'visitor', 'select_all_user'); -- REPLACE INTO
-MERGE INTO `aio_system_config`(id, config_key, config_value) VALUES ('1', 'operator_algo_code_template', '	#import start
+MERGE INTO `aio_system_config`(id, config_key, config_value) VALUES ('1', 'operator_algo_code_template', '# import start
 
-#customer code start
-def main(input_data, context)
+# customer code start
+def main(input_data, context):
     a = input_data["a"]
     b = input_data["b"]
     return {
         "sum": a + b
     }
-#customer code end'); -- REPLACE INTO
+# customer code end
+'); -- REPLACE INTO
 MERGE INTO `aio_system_config`(id, config_key, config_value) VALUES ('2', 'operator_input_param_template', '{
     "a": {
         "name": "参数a",

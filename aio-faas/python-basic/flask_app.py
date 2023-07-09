@@ -1,0 +1,56 @@
+import sys
+from flask import Flask, request
+
+from api import api_blueprint
+from aio_sdk import env_util, logger_util
+
+logger = logger_util.get_logger("platform")
+
+workspace = env_util.get_wd()
+sys.path.insert(0, workspace + "/aio_sdk")
+sys.path.insert(0, workspace + "/aio_core")
+sys.path.insert(0, workspace)
+
+logger.info('flask app start...')
+logger.info('workspace: %s' % workspace)
+
+app = Flask(__name__)
+app.register_blueprint(api_blueprint)
+
+
+@app.route('/health/status')
+def status():
+    return 'success'
+
+
+@app.before_request
+def before_request():
+    request
+    logger.info('before_request...')
+
+
+@app.after_request
+def after_request(response):
+    logger.info('after_request...')
+    return response
+
+
+@app.teardown_request
+def teardown_request(exception):
+    logger.info('teardown_request...')
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    logger.info('page_not_found...')
+    return 'This page does not exist', 404
+
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    logger.info('internal_server_error...')
+    return 'Internal server error', 500
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=6001, debug=True, threaded=True)

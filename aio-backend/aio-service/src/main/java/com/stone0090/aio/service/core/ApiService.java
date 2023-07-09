@@ -25,4 +25,8 @@ public interface ApiService {
 
     int remove(@NotNull(message = "入参不能为空") @Valid IdRequest request);
 
+    int publishApi(IdRequest request);
+
+    String invokeApi(ApiRequest request);
+
 }

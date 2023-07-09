@@ -54,7 +54,7 @@ public class K8sClient {
                 .withVolumes(Lists.newArrayList()) // TODO
                 .build();
         HashMap<String, String> labels = new HashMap<String, String>() {{
-            put("app", "faas-python-basic");
+            put("app", "aio-faas-python-basic");
         }};
         V1PodTemplateSpec v1PodTemplateSpec = new V1PodTemplateSpecBuilder()
                 .withSpec(v1PodSpec)
@@ -91,11 +91,11 @@ public class K8sClient {
     private List<V1Container> buildContainers(String bizId) {
         List<V1Container> containers = Lists.newArrayList();
         V1EnvVar v1EnvVar = new V1EnvVarBuilder()
-                .withName("bizId")
+                .withName("backend_bizId")
                 .withValue(bizId.toLowerCase())
                 .build();
         V1ContainerPort v1ContainerPort = new V1ContainerPortBuilder()
-                .withContainerPort(6001)
+                .withContainerPort(6000)
                 .build();
         Map<String, Quantity> requests = Maps.newHashMap();
         requests.put("cpu", new Quantity("0.025"));
@@ -104,8 +104,8 @@ public class K8sClient {
                 .withRequests(requests)
                 .build();
         V1Container container = new V1ContainerBuilder()
-                .withName("faas-python-basic")
-                .withImage("faas-python-basic:0.0.1")
+                .withName("aio-faas-python-basic")
+                .withImage("shi0090/aio-faas-python-basic:1.0.0")
                 .withImagePullPolicy("Never")
                 .withEnv(Lists.newArrayList(v1EnvVar))
                 .withPorts(Lists.newArrayList(v1ContainerPort))
@@ -118,11 +118,11 @@ public class K8sClient {
 
     public V1Service createService(String bizId) {
         HashMap<String, String> labels = new HashMap<String, String>() {{
-            put("app", "faas-python-basic");
+            put("app", "aio-faas-python-basic");
         }};
         V1ServicePort v1ServicePort = new V1ServicePortBuilder()
-                .withPort(6001)
-                .withTargetPort(new IntOrString(6001))
+                .withPort(6000)
+                .withTargetPort(new IntOrString(6000))
                 .build();
         V1ServiceSpec v1ServiceSpec = new V1ServiceSpecBuilder()
                 .withPorts(v1ServicePort)

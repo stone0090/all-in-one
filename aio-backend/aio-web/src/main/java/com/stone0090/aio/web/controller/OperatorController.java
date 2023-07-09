@@ -3,10 +3,12 @@ package com.stone0090.aio.web.controller;
 import com.stone0090.aio.api.protocal.PageRequest;
 import com.stone0090.aio.api.protocal.PageResult;
 import com.stone0090.aio.api.protocal.RestResult;
+import com.stone0090.aio.api.request.ApiRequest;
 import com.stone0090.aio.api.request.IdRequest;
 import com.stone0090.aio.api.request.OperatorQueryRequest;
 import com.stone0090.aio.api.request.OperatorSaveRequest;
 import com.stone0090.aio.api.response.OperatorVO;
+import com.stone0090.aio.service.core.ApiService;
 import com.stone0090.aio.service.core.OperatorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,6 +26,8 @@ public class OperatorController {
 
     @Autowired
     private OperatorService service;
+    @Autowired
+    private ApiService apiService;
 
     @ApiOperation("获取算子列表")
     @GetMapping("/list")
@@ -70,8 +74,15 @@ public class OperatorController {
     @ApiOperation("发布API")
     @PostMapping("/publish")
     public RestResult publishApi(@RequestBody IdRequest request) {
-        int count = service.publishApi(request);
+        int count = apiService.publishApi(request);
         return RestResult.success(count);
+    }
+
+    @ApiOperation("调试API")
+    @PostMapping("/invoke")
+    public RestResult invokeApi(@RequestBody ApiRequest request) {
+        String result = apiService.invokeApi(request);
+        return RestResult.success(result);
     }
 
 }

@@ -1,0 +1,19 @@
+### 健康检查
+GET http://localhost:6000/health/status
+
+### 注入代码，启动python服务
+POST http://localhost:6000/aio/scheduler/python/deploy
+Content-Type: application/json
+
+{
+    "algoCode": "# import start\n\n# customer code start\ndef main(input_data):\n    a = input_data['a']\n    b = input_data['b']\n    return {\n        'product': a * b\n    }\n# customer code end\n"
+}
+
+### 启动python服务
+POST http://localhost:6000/aio/scheduler/command/exec
+Content-Type: application/json
+
+{
+  "name": "sh",
+  "args": ["/home/admin/aio-faas/python-basic/start.sh"]
+}

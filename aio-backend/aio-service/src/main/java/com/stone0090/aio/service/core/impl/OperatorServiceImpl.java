@@ -41,8 +41,6 @@ public class OperatorServiceImpl implements OperatorService {
     private ApiServiceImpl apiServiceImpl;
     @Autowired
     private ConfigServiceImpl configServiceImpl;
-    @Autowired
-    private PythonOperatorServiceImpl pythonOperatorServiceImpl;
 
     @Override
     public PageResult<OperatorVO> list(OperatorQueryRequest queryRequest, PageRequest pageRequest) {
@@ -111,33 +109,6 @@ public class OperatorServiceImpl implements OperatorService {
             }
         });
         return operatorVO;
-    }
-
-    @Override
-    public int publishApi(IdRequest request) {
-        OperatorVO operatorVO = get(request);
-        if (operatorVO == null) {
-            throw new RuntimeException("发布Api失败，算子不存在！");
-        }
-        ApiDO apiDO = apiServiceImpl.getByType(AlgoTypeEnum.OPERATOR.name(), operatorVO.getId());
-        if (apiDO == null) {
-            apiDO = new ApiDO();
-            apiDO.setApiCode(UuidUtil.getUuid());
-        }
-        apiDO.setApiName(operatorVO.getOpName() + "服务");
-        apiDO.setApiType(AlgoTypeEnum.OPERATOR.name());
-        apiDO.setTypeId(operatorVO.getId());
-        apiDO.setApiUrl("");
-        apiDO.setInputParam("");
-        apiDO.setOutputParam("");
-        apiDO.setInvokeType(InvokeTypeEnum.SYNC.name());
-        apiDO.setCallbackUrl("");
-        apiDO.setStatus(ApiStatusEnum.PUBLISHING.name());
-        apiServiceImpl.save(apiDO);
-        String apiUrl = pythonOperatorServiceImpl.createApi(operatorVO, apiDO);
-        apiDO.setApiUrl(apiUrl);
-        apiDO.setStatus(ApiStatusEnum.PUBLISHED.name());
-        return apiServiceImpl.save(apiDO);
     }
 
 }
