@@ -1,13 +1,13 @@
 package com.stone0090.aio.web.controller;
 
-import com.stone0090.aio.api.protocal.PageRequest;
-import com.stone0090.aio.api.protocal.PageResult;
-import com.stone0090.aio.api.protocal.RestResult;
-import com.stone0090.aio.api.request.IdRequest;
-import com.stone0090.aio.api.request.RoleQueryRequest;
-import com.stone0090.aio.api.request.RoleSaveRequest;
-import com.stone0090.aio.api.response.RoleVO;
-import com.stone0090.aio.service.user.RoleService;
+import com.stone0090.aio.service.model.web.protocal.PageRequest;
+import com.stone0090.aio.service.model.web.protocal.PageResult;
+import com.stone0090.aio.service.model.web.protocal.RestResult;
+import com.stone0090.aio.service.model.web.request.IdRequest;
+import com.stone0090.aio.service.model.web.request.RoleQueryRequest;
+import com.stone0090.aio.service.model.web.request.RoleSaveRequest;
+import com.stone0090.aio.service.model.web.response.RoleVO;
+import com.stone0090.aio.service.core.system.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

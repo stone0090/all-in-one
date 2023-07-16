@@ -2,10 +2,10 @@ package com.stone0090.aio.web.controller;
 
 import javax.validation.Valid;
 
-import com.stone0090.aio.api.protocal.RestResult;
-import com.stone0090.aio.api.request.UserLoginRequest;
-import com.stone0090.aio.api.response.UserDetailVO;
-import com.stone0090.aio.api.response.UserVO;
+import com.stone0090.aio.service.model.web.protocal.RestResult;
+import com.stone0090.aio.service.model.web.request.UserLoginRequest;
+import com.stone0090.aio.service.model.web.response.UserDetailVO;
+import com.stone0090.aio.service.model.web.response.UserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;

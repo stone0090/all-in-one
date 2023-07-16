@@ -14,8 +14,6 @@ type Env struct {
 	SchedulerUrl string // 调度服务地址，http://0.0.0.0:6000
 	FaasPath     string // faas路径，/home/admin/aio-faas/python-basic
 	FaasUrl      string // faas服务地址，http://0.0.0.0:6001
-	BizId        string // 后端业务id，OPERATOR-000001
-	BackendUrl   string // 后端服务地址，http://0.0.0.0:7001
 }
 
 func GetFromOsOrConf(config *goconfig.ConfigFile, section string, key string) string {

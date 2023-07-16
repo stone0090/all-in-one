@@ -8,7 +8,7 @@ type RestResult struct {
 	Data    interface{} `json:"data"`
 }
 
-func Success(date ...interface{}) *RestResult {
+func Success(date interface{}) *RestResult {
 	return &RestResult{
 		Success: true,
 		Message: constants.Success,
@@ -16,7 +16,15 @@ func Success(date ...interface{}) *RestResult {
 	}
 }
 
-func Failure(message string, date ...interface{}) *RestResult {
+func Failure(message string) *RestResult {
+	return &RestResult{
+		Success: false,
+		Message: message,
+		Data:    nil,
+	}
+}
+
+func FailureWithData(message string, date interface{}) *RestResult {
 	return &RestResult{
 		Success: false,
 		Message: message,

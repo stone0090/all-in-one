@@ -3,7 +3,7 @@ package com.stone0090.aio.service.clients;
 import com.google.common.collect.Maps;
 
 import com.stone0090.aio.service.common.ConfigConstants;
-import com.stone0090.aio.service.system.impl.ConfigServiceImpl;
+import com.stone0090.aio.service.core.system.impl.ConfigServiceImpl;
 import io.kubernetes.client.custom.IntOrString;
 import io.kubernetes.client.custom.Quantity;
 import io.kubernetes.client.openapi.apis.AppsV1Api;
@@ -15,43 +15,55 @@ import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.Configuration;
 import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.KubeConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Component
 public class K8sClient {
 
     @Autowired
     private ConfigServiceImpl configServiceImpl;
 
-    private ApiClient apiClient;
+    private volatile ApiClient apiClient;
     private final String NAMESPACE = "aio";
 
-    @PostConstruct
-    public void init() {
-        try {
-            String config = configServiceImpl.getValueByKey(ConfigConstants.DEFAULT_K8S_KUBE_CONFIG);
-            apiClient = ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new StringReader(config))).build();
-//            apiClient = ClientBuilder.cluster().build();
-            Configuration.setDefaultApiClient(apiClient);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public ApiClient getApiClient() {
+        if (apiClient == null) {
+            synchronized (K8sClient.class) {
+                if (apiClient == null) {
+                    try {
+                        String config = configServiceImpl.getValueByKey(ConfigConstants.DEFAULT_K8S_KUBE_CONFIG);
+                        if (StringUtils.isEmpty(config)) {
+                            apiClient = ClientBuilder.cluster().build();
+                        } else {
+                            apiClient = ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new StringReader(config))).build();
+                        }
+                        Configuration.setDefaultApiClient(apiClient);
+                    } catch (IOException e) {
+                        log.error("init k8s client error", e);
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
         }
+        return apiClient;
     }
 
-    public V1Deployment createDeployment(String bizId) {
-        String deploymentName = bizId.toLowerCase();
+    public V1Deployment createDeployment(String resourceId) {
+        String deploymentName = resourceId.toLowerCase();
         V1PodSpec v1PodSpec = new V1PodSpecBuilder()
-                .withContainers(buildContainers(bizId))
+                .withContainers(buildContainers(resourceId))
                 .withHostIPC(false)
-                .withVolumes(Lists.newArrayList()) // TODO
+                .withVolumes(Lists.newArrayList())
                 .build();
         HashMap<String, String> labels = new HashMap<String, String>() {{
             put("app", "aio-faas-python-basic");
@@ -80,10 +92,11 @@ public class K8sClient {
                         .build())
                 .withSpec(v1DeploymentSpec)
                 .build();
-        AppsV1Api apiInstance = new AppsV1Api(apiClient);
+        AppsV1Api apiInstance = new AppsV1Api(this.getApiClient());
         try {
             return apiInstance.createNamespacedDeployment(NAMESPACE, v1Deployment, null, null, null);
         } catch (Exception e) {
+            log.error("create deployment error", e);
             throw new RuntimeException(e);
         }
     }
@@ -110,7 +123,7 @@ public class K8sClient {
                 .withEnv(Lists.newArrayList(v1EnvVar))
                 .withPorts(Lists.newArrayList(v1ContainerPort))
                 .withResources(v1ResourceRequirements)
-                .withVolumeMounts(Lists.newArrayList()) // TODO
+                .withVolumeMounts(Lists.newArrayList())
                 .build();
         containers.add(container);
         return containers;
@@ -120,12 +133,18 @@ public class K8sClient {
         HashMap<String, String> labels = new HashMap<String, String>() {{
             put("app", "aio-faas-python-basic");
         }};
-        V1ServicePort v1ServicePort = new V1ServicePortBuilder()
+        V1ServicePort v1ServicePort1 = new V1ServicePortBuilder()
                 .withPort(6000)
+                .withName("scheduler")
                 .withTargetPort(new IntOrString(6000))
                 .build();
+        V1ServicePort v1ServicePort2 = new V1ServicePortBuilder()
+                .withPort(6001)
+                .withName("operator")
+                .withTargetPort(new IntOrString(6001))
+                .build();
         V1ServiceSpec v1ServiceSpec = new V1ServiceSpecBuilder()
-                .withPorts(v1ServicePort)
+                .withPorts(v1ServicePort1, v1ServicePort2)
                 .withSelector(labels)
                 .withType("NodePort")
                 .build();
@@ -138,10 +157,33 @@ public class K8sClient {
                         .build())
                 .withSpec(v1ServiceSpec)
                 .build();
-        CoreV1Api coreV1Api = new CoreV1Api(apiClient);
+        CoreV1Api coreV1Api = new CoreV1Api(this.getApiClient());
         try {
             return coreV1Api.createNamespacedService(NAMESPACE, v1Service, null, null, null);
         } catch (Exception e) {
+            log.error("create service error", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteDeployment(String bizId) {
+        String deploymentName = bizId.toLowerCase();
+        AppsV1Api apiInstance = new AppsV1Api(this.getApiClient());
+        try {
+            apiInstance.deleteNamespacedDeployment(deploymentName, NAMESPACE, null, null, null, null, null, null);
+        } catch (Exception e) {
+            log.error("delete deployment error", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteService(String bizId) {
+        String serviceName = bizId.toLowerCase() + "-svc";
+        CoreV1Api coreV1Api = new CoreV1Api(this.getApiClient());
+        try {
+            coreV1Api.deleteNamespacedService(serviceName, NAMESPACE, null, null, null, null, null, null);
+        } catch (Exception e) {
+            log.error("delete service error", e);
             throw new RuntimeException(e);
         }
     }

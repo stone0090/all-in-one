@@ -9,6 +9,7 @@ import (
 )
 
 func DeployPython(deployInfo model.DeployInfo) {
+	log.Info("service.DeployPython Start")
 	file, err := os.OpenFile(global.Enver.FaasPath+"/inject_code.py", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Error("创建inject_code.py失败！" + err.Error())
@@ -31,12 +32,14 @@ func DeployPython(deployInfo model.DeployInfo) {
 		log.Error("写入inject_code.py失败！" + err.Error())
 		return
 	}
-	cmd := exec.Command("sh", global.Enver.FaasPath+"/start.sh")
-	output, err := cmd.Output()
-	if err != nil {
-		log.Error("执行start.sh失败！" + err.Error())
-		return
-	}
-	log.Info("执行start.sh成功！" + string(output))
-	// todo: 健康检查，调用aio-backend接口，通知部署成功
+	go func() {
+		cmd := exec.Command("/bin/bash", global.Enver.FaasPath+"/start.sh")
+		output, err := cmd.Output()
+		if err != nil {
+			log.Error("执行start.sh失败！" + err.Error())
+			return
+		}
+		log.Info("执行start.sh成功！" + string(output))
+	}()
+	log.Info("service.DeployPython End")
 }

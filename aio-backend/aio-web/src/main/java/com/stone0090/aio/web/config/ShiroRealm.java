@@ -2,10 +2,10 @@ package com.stone0090.aio.web.config;
 
 import javax.annotation.Resource;
 
-import com.stone0090.aio.api.response.PermissionVO;
-import com.stone0090.aio.api.response.RoleVO;
-import com.stone0090.aio.api.response.UserDetailVO;
-import com.stone0090.aio.service.user.UserService;
+import com.stone0090.aio.service.model.web.response.PermissionVO;
+import com.stone0090.aio.service.model.web.response.RoleVO;
+import com.stone0090.aio.service.model.web.response.UserDetailVO;
+import com.stone0090.aio.service.core.system.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;

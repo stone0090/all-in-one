@@ -9,6 +9,8 @@ import ProDescriptions from '@ant-design/pro-descriptions';
 import {requestGet, requestPost} from '@/services/api';
 import TextArea from "antd/es/input/TextArea";
 
+import styles from './Config.less';
+
 const Config: React.FC = () => {
 
   const actionRef = useRef<ActionType>();
@@ -84,6 +86,7 @@ const Config: React.FC = () => {
       title: '配置值',
       dataIndex: 'configValue',
       valueType: 'textarea',
+      ellipsis: true
     },
     {
       title: '更新时间',
@@ -128,7 +131,7 @@ const Config: React.FC = () => {
         bordered={true}
         rowKey="id"
         search={{
-          labelWidth: 60,
+          labelWidth: 65,
         }}
         toolBarRender={() => [
           <Button
@@ -224,7 +227,7 @@ const Config: React.FC = () => {
         closable={false}
       >
         <ProDescriptions<any>
-          column={2}
+          column={1}
           title="配置详情"
           request={async () => ({
             data: currentRow || {},
@@ -233,6 +236,7 @@ const Config: React.FC = () => {
             id: currentRow?.id,
           }}
           columns={columns as ProDescriptionsItemProps<any>[]}
+          className={styles.customProDescriptions}
         />
       </Drawer>
     </PageContainer>

@@ -2,8 +2,8 @@ package com.stone0090.aio.web.config;
 
 import javax.validation.ConstraintViolationException;
 
-import com.stone0090.aio.api.protocal.RestResult;
-import com.stone0090.aio.api.protocal.ResultCodeEnum;
+import com.stone0090.aio.service.model.web.protocal.RestResult;
+import com.stone0090.aio.service.model.web.protocal.ResultCodeEnum;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -45,7 +45,6 @@ func initEnv() {
 		SchedulerUrl: global.GetFromOsOrConf(config, "self", "schedulerUrl"),
 		FaasPath:     global.GetFromOsOrConf(config, "faas", "faasPath"),
 		FaasUrl:      global.GetFromOsOrConf(config, "faas", "faasUrl"),
-		BackendUrl:   global.GetFromOsOrConf(config, "backend", "backendUrl"),
 	}
 }
 
@@ -64,12 +63,15 @@ func initLog() {
 
 func initWeb() {
 	engine := gin.Default()
-	engine.GET("/health/status", controller.Status)
 	group := engine.Group("/aio/scheduler")
 	{
-		group.POST("/python/deploy", controller.DeployPython)
-		group.POST("/command/exec", controller.ExecCommand)
+		group.GET("/health/check", controller.Check)
+		group.POST("/python/deploy", controller.PythonDeploy)
+		group.POST("/python/invoke", controller.PythonInvoke)
+		group.GET("/python/health/check", controller.PythonHealthCheck)
 	}
+	//engine.POST("/command/exec", controller.ExecCommand)
+	// TODO：接口切面打印日志
 	err := engine.Run(global.Enver.SchedulerUrl)
 	if err != nil {
 		log.Fatal(err.Error())

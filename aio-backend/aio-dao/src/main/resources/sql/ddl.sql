@@ -77,8 +77,8 @@ CREATE TABLE IF NOT EXISTS `aio_operator` (
 `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', -- ON UPDATE CURRENT_TIMESTAMP
 `is_deleted` int(11) NOT NULL DEFAULT 0 COMMENT '删除标记',
-`op_code` varchar(20) NOT NULL COMMENT '标识',
-`op_name` varchar(20) NOT NULL COMMENT '名称',
+`op_code` varchar(20) NOT NULL COMMENT '算子标识',
+`op_name` varchar(20) NOT NULL COMMENT '算子名称',
 `algo_language` varchar(20) NOT NULL COMMENT '编程语言',
 `algo_code` varchar(20000) NOT NULL COMMENT '算子代码',
 `algo_path` varchar(1000) NOT NULL COMMENT '算子地址',
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `aio_api` (
 `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', -- ON UPDATE CURRENT_TIMESTAMP
 `is_deleted` int(11) NOT NULL DEFAULT 0 COMMENT '删除标记',
-`api_code` varchar(50) NOT NULL COMMENT 'api标识',
+`api_uuid` varchar(50) NOT NULL COMMENT 'api通用唯一标识',
 `api_name` varchar(20) NOT NULL COMMENT 'api名称',
 `api_type` varchar(20) NOT NULL COMMENT 'api类型',
 `type_id` int(11) NOT NULL COMMENT '类型id',
@@ -106,5 +106,5 @@ CREATE TABLE IF NOT EXISTS `aio_api` (
 `callback_url` varchar(1000) NOT NULL DEFAULT 0 COMMENT '回调地址',
 `status` varchar(20) NOT NULL DEFAULT 0 COMMENT '状态',
 PRIMARY KEY (`id`),
-UNIQUE KEY `uk_api` (`api_code`, `is_deleted`)
+UNIQUE KEY `uk_api` (`api_uuid`, `is_deleted`)
 ); -- ENGINE=InnoDB DEFAULT CHARSET=utf8

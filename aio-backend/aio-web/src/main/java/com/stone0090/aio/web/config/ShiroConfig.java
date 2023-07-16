@@ -38,7 +38,7 @@ public class ShiroConfig {
         // 所以上面的url要苛刻，宽松的url要放在下面，尤其是"/**"要放到最下面，如果放前面的话其后的验证规则就没作用了
         // anon:所有url都都可以匿名访问；authc:需要认证才能进行访问；user:配置记住我或认证通过可以访问
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/aio/heartbeat/status", "anon");
+        filterChainDefinitionMap.put("/health/check", "anon");
         filterChainDefinitionMap.put("/aio/shiro/login", "anon");
         filterChainDefinitionMap.put("/aio/shiro/logout", "logout");
         filterChainDefinitionMap.put("/aio/shiro/current", "authc");
@@ -71,7 +71,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public ShiroRealm shiroRealm(){
+    public ShiroRealm shiroRealm() {
         return new ShiroRealm();
     }
 

@@ -345,73 +345,73 @@ public class ApiDOExample {
             return (Criteria) this;
         }
 
-        public Criteria andApiCodeIsNull() {
-            addCriterion("API_CODE is null");
+        public Criteria andApiUuidIsNull() {
+            addCriterion("API_UUID is null");
             return (Criteria) this;
         }
 
-        public Criteria andApiCodeIsNotNull() {
-            addCriterion("API_CODE is not null");
+        public Criteria andApiUuidIsNotNull() {
+            addCriterion("API_UUID is not null");
             return (Criteria) this;
         }
 
-        public Criteria andApiCodeEqualTo(String value) {
-            addCriterion("API_CODE =", value, "apiCode");
+        public Criteria andApiUuidEqualTo(String value) {
+            addCriterion("API_UUID =", value, "apiUuid");
             return (Criteria) this;
         }
 
-        public Criteria andApiCodeNotEqualTo(String value) {
-            addCriterion("API_CODE <>", value, "apiCode");
+        public Criteria andApiUuidNotEqualTo(String value) {
+            addCriterion("API_UUID <>", value, "apiUuid");
             return (Criteria) this;
         }
 
-        public Criteria andApiCodeGreaterThan(String value) {
-            addCriterion("API_CODE >", value, "apiCode");
+        public Criteria andApiUuidGreaterThan(String value) {
+            addCriterion("API_UUID >", value, "apiUuid");
             return (Criteria) this;
         }
 
-        public Criteria andApiCodeGreaterThanOrEqualTo(String value) {
-            addCriterion("API_CODE >=", value, "apiCode");
+        public Criteria andApiUuidGreaterThanOrEqualTo(String value) {
+            addCriterion("API_UUID >=", value, "apiUuid");
             return (Criteria) this;
         }
 
-        public Criteria andApiCodeLessThan(String value) {
-            addCriterion("API_CODE <", value, "apiCode");
+        public Criteria andApiUuidLessThan(String value) {
+            addCriterion("API_UUID <", value, "apiUuid");
             return (Criteria) this;
         }
 
-        public Criteria andApiCodeLessThanOrEqualTo(String value) {
-            addCriterion("API_CODE <=", value, "apiCode");
+        public Criteria andApiUuidLessThanOrEqualTo(String value) {
+            addCriterion("API_UUID <=", value, "apiUuid");
             return (Criteria) this;
         }
 
-        public Criteria andApiCodeLike(String value) {
-            addCriterion("API_CODE like", value, "apiCode");
+        public Criteria andApiUuidLike(String value) {
+            addCriterion("API_UUID like", value, "apiUuid");
             return (Criteria) this;
         }
 
-        public Criteria andApiCodeNotLike(String value) {
-            addCriterion("API_CODE not like", value, "apiCode");
+        public Criteria andApiUuidNotLike(String value) {
+            addCriterion("API_UUID not like", value, "apiUuid");
             return (Criteria) this;
         }
 
-        public Criteria andApiCodeIn(List<String> values) {
-            addCriterion("API_CODE in", values, "apiCode");
+        public Criteria andApiUuidIn(List<String> values) {
+            addCriterion("API_UUID in", values, "apiUuid");
             return (Criteria) this;
         }
 
-        public Criteria andApiCodeNotIn(List<String> values) {
-            addCriterion("API_CODE not in", values, "apiCode");
+        public Criteria andApiUuidNotIn(List<String> values) {
+            addCriterion("API_UUID not in", values, "apiUuid");
             return (Criteria) this;
         }
 
-        public Criteria andApiCodeBetween(String value1, String value2) {
-            addCriterion("API_CODE between", value1, value2, "apiCode");
+        public Criteria andApiUuidBetween(String value1, String value2) {
+            addCriterion("API_UUID between", value1, value2, "apiUuid");
             return (Criteria) this;
         }
 
-        public Criteria andApiCodeNotBetween(String value1, String value2) {
-            addCriterion("API_CODE not between", value1, value2, "apiCode");
+        public Criteria andApiUuidNotBetween(String value1, String value2) {
+            addCriterion("API_UUID not between", value1, value2, "apiUuid");
             return (Criteria) this;
         }
 

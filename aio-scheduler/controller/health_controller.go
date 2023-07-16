@@ -5,6 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Status(context *gin.Context) {
+func Check(context *gin.Context) {
 	context.String(200, constants.Success)
 }

@@ -14,10 +14,13 @@ def invoke():
     response = ''
     try:
         logger.info('before invoke...')
+        input_data = request.json
+        logger.info('input_data: ' + json.dumps(input_data))
         # dynamic inject code start #
-        result = main(request.json)
+        result = main(input_data)
         # dynamic inject code end #
         response = {'success': True, 'data': result}
+        logger.info('output_data: ' + json.dumps(response))
         logger.info('after invoke...')
     except Exception as e:
         msg = traceback.format_exc()

@@ -1,13 +1,13 @@
 package com.stone0090.aio.web.controller;
 
-import com.stone0090.aio.api.protocal.PageRequest;
-import com.stone0090.aio.api.protocal.PageResult;
-import com.stone0090.aio.api.protocal.RestResult;
-import com.stone0090.aio.api.request.IdRequest;
-import com.stone0090.aio.api.request.PermissionQueryRequest;
-import com.stone0090.aio.api.request.PermissionSaveRequest;
-import com.stone0090.aio.api.response.PermissionVO;
-import com.stone0090.aio.service.user.PermissionService;
+import com.stone0090.aio.service.model.web.protocal.PageRequest;
+import com.stone0090.aio.service.model.web.protocal.PageResult;
+import com.stone0090.aio.service.model.web.protocal.RestResult;
+import com.stone0090.aio.service.model.web.request.IdRequest;
+import com.stone0090.aio.service.model.web.request.PermissionQueryRequest;
+import com.stone0090.aio.service.model.web.request.PermissionSaveRequest;
+import com.stone0090.aio.service.model.web.response.PermissionVO;
+import com.stone0090.aio.service.core.system.PermissionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

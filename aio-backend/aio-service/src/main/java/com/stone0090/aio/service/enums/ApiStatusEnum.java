@@ -1,9 +1,8 @@
 package com.stone0090.aio.service.enums;
 
 public enum ApiStatusEnum {
-    UNPUBLISH("未发布"),
-    PUBLISHING("发布中"),
-    PUBLISHED("已发布"),
+    OFFLINE("离线"),
+    ONLINE("在线"),
     ;
 
     private String desc;

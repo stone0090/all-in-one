@@ -20,11 +20,11 @@ MERGE INTO `aio_role_permission_relation`(id, role_code, permission_code) VALUES
 MERGE INTO `aio_system_config`(id, config_key, config_value) VALUES ('1', 'operator_algo_code_template', '# import start
 
 # customer code start
-def main(input_data, context):
+def main(input_data):
     a = input_data["a"]
     b = input_data["b"]
     return {
-        "sum": a + b
+        "product": a * b
     }
 # customer code end
 '); -- REPLACE INTO
@@ -41,8 +41,8 @@ MERGE INTO `aio_system_config`(id, config_key, config_value) VALUES ('2', 'opera
     },
 }'); -- REPLACE INTO
 MERGE INTO `aio_system_config`(id, config_key, config_value) VALUES ('3', 'operator_output_param_template', '{
-    "sum": {
-        "name": "两数之和",
+    "product": {
+        "name": "两数之积",
         "type": "int/double/string/boolean"
     }
 }'); -- REPLACE INTO

@@ -1,13 +1,13 @@
 package com.stone0090.aio.web.controller;
 
-import com.stone0090.aio.api.protocal.PageRequest;
-import com.stone0090.aio.api.protocal.PageResult;
-import com.stone0090.aio.api.protocal.RestResult;
-import com.stone0090.aio.api.request.IdRequest;
-import com.stone0090.aio.api.request.UserQueryRequest;
-import com.stone0090.aio.api.request.UserSaveRequest;
-import com.stone0090.aio.api.response.UserBriefVO;
-import com.stone0090.aio.service.user.UserService;
+import com.stone0090.aio.service.model.web.protocal.PageRequest;
+import com.stone0090.aio.service.model.web.protocal.PageResult;
+import com.stone0090.aio.service.model.web.protocal.RestResult;
+import com.stone0090.aio.service.model.web.request.IdRequest;
+import com.stone0090.aio.service.model.web.request.UserQueryRequest;
+import com.stone0090.aio.service.model.web.request.UserSaveRequest;
+import com.stone0090.aio.service.model.web.response.UserBriefVO;
+import com.stone0090.aio.service.core.system.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

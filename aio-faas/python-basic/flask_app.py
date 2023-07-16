@@ -6,19 +6,18 @@ from aio_sdk import env_util, logger_util
 
 logger = logger_util.get_logger("platform")
 
-workspace = env_util.get_wd()
-sys.path.insert(0, workspace + "/aio_sdk")
-sys.path.insert(0, workspace + "/aio_core")
-sys.path.insert(0, workspace)
+workdir = env_util.get_wd()
+sys.path.insert(0, workdir + "/aio_sdk")
+sys.path.insert(0, workdir)
 
 logger.info('flask app start...')
-logger.info('workspace: %s' % workspace)
+logger.info('workdir: %s' % workdir)
 
 app = Flask(__name__)
 app.register_blueprint(api_blueprint)
 
 
-@app.route('/health/status')
+@app.route('/aio/faas/health/check')
 def status():
     return 'success'
 

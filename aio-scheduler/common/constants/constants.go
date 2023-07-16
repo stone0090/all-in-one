@@ -5,3 +5,4 @@ const Dev = "dev"
 const Prod = "prod"
 
 const Success = "success"
+const Failure = "failure"

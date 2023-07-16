@@ -1,9 +1,11 @@
 package com.stone0090.aio.service.common;
 
-import com.stone0090.aio.api.request.*;
-import com.stone0090.aio.api.response.*;
 import com.stone0090.aio.dao.mybatis.entity.*;
+import com.stone0090.aio.service.model.web.request.*;
+import com.stone0090.aio.service.model.web.response.*;
 import org.springframework.beans.BeanUtils;
+
+import java.util.Map;
 
 public class Converter {
 
@@ -48,6 +50,7 @@ public class Converter {
         BeanUtils.copyProperties(param, result);
         return result;
     }
+
     public static ConfigVO toSystemConfigVO(SystemConfigDO param) {
         ConfigVO result = new ConfigVO();
         BeanUtils.copyProperties(param, result);
@@ -60,10 +63,16 @@ public class Converter {
         return result;
     }
 
-
     public static OperatorVO toOperatorVO(OperatorDO param) {
         OperatorVO result = new OperatorVO();
         BeanUtils.copyProperties(param, result);
+        return result;
+    }
+
+    public static OperatorVO toOperatorVO(OperatorDO param, Map<Integer, String> apiStatusMap) {
+        OperatorVO result = new OperatorVO();
+        BeanUtils.copyProperties(param, result);
+        result.setApiStatus(apiStatusMap.get(param.getId()));
         return result;
     }
 
@@ -73,15 +82,4 @@ public class Converter {
         return result;
     }
 
-    public static ApiDO toApiDO(ApiSaveRequest param) {
-        ApiDO result = new ApiDO();
-        BeanUtils.copyProperties(param, result);
-        return result;
-    }
-
-    public static ApiVO toApiVO(ApiDO param) {
-        ApiVO result = new ApiVO();
-        BeanUtils.copyProperties(param, result);
-        return result;
-    }
 }

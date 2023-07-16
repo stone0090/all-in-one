@@ -1,5 +1,6 @@
 package model
 
 type DeployInfo struct {
-	AlgoCode string `json:"algoCode"`
+	ResourceId string `json:"resourceId"`
+	AlgoCode   string `json:"algoCode"`
 }

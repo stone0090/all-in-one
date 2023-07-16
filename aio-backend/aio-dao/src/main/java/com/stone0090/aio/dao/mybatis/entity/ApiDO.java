@@ -11,7 +11,7 @@ public class ApiDO {
 
     private Integer isDeleted;
 
-    private String apiCode;
+    private String apiUuid;
 
     private String apiName;
 
@@ -63,12 +63,12 @@ public class ApiDO {
         this.isDeleted = isDeleted;
     }
 
-    public String getApiCode() {
-        return apiCode;
+    public String getApiUuid() {
+        return apiUuid;
     }
 
-    public void setApiCode(String apiCode) {
-        this.apiCode = apiCode == null ? null : apiCode.trim();
+    public void setApiUuid(String apiUuid) {
+        this.apiUuid = apiUuid == null ? null : apiUuid.trim();
     }
 
     public String getApiName() {

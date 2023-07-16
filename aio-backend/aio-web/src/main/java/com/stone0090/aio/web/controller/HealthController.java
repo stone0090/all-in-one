@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class HealthController {
 
     @ApiOperation("健康检查")
-    @GetMapping("/status")
-    public String status() {
+    @GetMapping("/check")
+    public String check() {
         return "success";
     }
 

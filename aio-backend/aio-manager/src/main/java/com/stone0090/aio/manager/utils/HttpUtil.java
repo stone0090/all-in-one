@@ -20,7 +20,7 @@ public class HttpUtil {
         MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
         headers.setContentType(type);
         HttpEntity<String> entity = new HttpEntity<>(headers);
-        return restTemplate.getForObject(buildHttpPrefix(url), String.class, entity);
+        return restTemplate.getForObject(addHttpPrefix(url), String.class, entity);
     }
 
     public String post(String url, String body) {
@@ -28,10 +28,10 @@ public class HttpUtil {
         MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
         headers.setContentType(type);
         HttpEntity<String> entity = new HttpEntity<>(body, headers);
-        return restTemplate.postForObject(buildHttpPrefix(url), entity, String.class);
+        return restTemplate.postForObject(addHttpPrefix(url), entity, String.class);
     }
 
-    private String buildHttpPrefix(String url) {
+    private String addHttpPrefix(String url) {
         if (url.startsWith("http://") || url.startsWith("https://")) {
             return url;
         }

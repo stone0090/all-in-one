@@ -31,17 +31,17 @@
       {
         path: '/system/user',
         name: '用户管理',
-        component: './user/User',
+        component: './system/User',
       },
       {
         path: '/system/role',
         name: '角色管理',
-        component: './user/Role',
+        component: './system/Role',
       },
       {
         path: '/system/permission',
         name: '权限管理',
-        component: './user/Permission',
+        component: './system/Permission',
       },
       {
         path: '/system/config',
