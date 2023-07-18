@@ -180,6 +180,17 @@ public class ApiServiceImpl implements ApiService {
         }
     }
 
+    public int removeApiByTypeId(String type, Integer typeId) {
+        ApiDO apiDO = getApiByTypeId(type, typeId);
+        apiDO.setIsDeleted((int) System.currentTimeMillis());
+        ApiDOExample example = new ApiDOExample();
+        ApiDOExample.Criteria criteria = example.createCriteria();
+        criteria.andIsDeletedEqualTo(0);
+        criteria.andApiTypeEqualTo(type);
+        criteria.andTypeIdEqualTo(typeId);
+        return apiDOMapper.updateByExample(apiDO, example);
+    }
+
     public ApiDO getApiByTypeId(String type, Integer typeId) {
         List<ApiDO> result = listApiByTypeIds(type, Lists.newArrayList(typeId));
         return result.size() > 0 ? result.get(0) : null;

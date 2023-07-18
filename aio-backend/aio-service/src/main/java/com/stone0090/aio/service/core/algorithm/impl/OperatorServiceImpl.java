@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.stone0090.aio.dao.mybatis.entity.ApiDO;
 import com.stone0090.aio.service.core.algorithm.OperatorService;
 import com.stone0090.aio.service.enums.AlgoTypeEnum;
+import com.stone0090.aio.service.enums.ApiStatusEnum;
 import com.stone0090.aio.service.model.web.protocal.PageRequest;
 import com.stone0090.aio.service.model.web.protocal.PageResult;
 import com.stone0090.aio.service.model.web.request.IdRequest;
@@ -20,6 +21,7 @@ import com.stone0090.aio.service.common.Converter;
 import com.stone0090.aio.service.core.system.impl.ConfigServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -87,7 +89,15 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int remove(IdRequest request) {
+        ApiDO apiDO = apiServiceImpl.getApiByTypeId(AlgoTypeEnum.OPERATOR.name(), request.getId());
+        if (apiDO != null) {
+            if (ApiStatusEnum.ONLINE.name().equals(apiDO.getStatus())) {
+                throw new RuntimeException("算子删除失败，API状态为在线的算子不可删除！");
+            }
+            apiServiceImpl.removeApiByTypeId(AlgoTypeEnum.OPERATOR.name(), request.getId());
+        }
         OperatorDO data = new OperatorDO();
         data.setId(request.getId());
         data.setIsDeleted((int) System.currentTimeMillis());

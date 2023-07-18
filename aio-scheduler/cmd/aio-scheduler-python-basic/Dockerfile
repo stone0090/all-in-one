@@ -23,13 +23,6 @@ COPY --from=builder /home/admin/aio-scheduler /home/admin/aio-scheduler/
 COPY /conf /home/admin/aio-scheduler/conf/
 COPY /cmd/aio-scheduler-python-basic/start.sh /home/admin/aio-scheduler/
 
-#RUN chmod +x /home/admin/aio-scheduler/start.sh \
-#    && useradd -ms /bin/bash admin \
-#    && chown -R admin:admin /home/admin/ \
-#    && chmod -R 755 /home/admin/
-#
-#USER admin
-
 ENV AIO_SCHEDULER_WD /home/admin/aio-scheduler
 
 EXPOSE 6000

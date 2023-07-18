@@ -1,5 +1,5 @@
-import {PlusOutlined} from '@ant-design/icons';
-import {Drawer, Form, Button, Col, Row, Input, message, Spin} from 'antd';
+import {ExclamationCircleOutlined, PlusOutlined} from '@ant-design/icons';
+import {Drawer, Form, Button, Col, Row, Input, message, Spin, Modal} from 'antd';
 import React, {useState, useRef} from 'react';
 import {PageContainer} from '@ant-design/pro-layout';
 import type {ProColumns, ActionType} from '@ant-design/pro-table';
@@ -21,6 +21,7 @@ const Config: React.FC = () => {
   const [detailVisible, setDetailVisible] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   type handleGetCallback = (record: any) => void;
+  const {confirm} = Modal;
 
   const handleQuery = async (params: any) => {
     const result: Protocol.RestResult = await requestGet<Protocol.RestResult>('/aio/config/list', params);
@@ -53,14 +54,23 @@ const Config: React.FC = () => {
   };
 
   const handleRemove = async (record: any) => {
-    const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/config/remove', {"id": record.id});
-    if (result?.success) {
-      setFormVisible(false);
-      message.success('删除成功！');
-      if (actionRef.current) {
-        actionRef.current.reload();
-      }
-    }
+    confirm({
+      title: '确认删除',
+      icon: <ExclamationCircleOutlined/>,
+      content: '您确定要删除此配置项吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: async () => {
+        const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/config/remove', {id: record.id});
+        if (result?.success) {
+          setFormVisible(false);
+          message.success('删除成功！');
+          if (actionRef.current) {
+            actionRef.current.reload();
+          }
+        }
+      },
+    });
   };
 
   const columns: ProColumns[] = [

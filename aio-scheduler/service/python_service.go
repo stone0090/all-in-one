@@ -9,7 +9,6 @@ import (
 )
 
 func DeployPython(deployInfo model.DeployInfo) {
-	log.Info("service.DeployPython Start")
 	file, err := os.OpenFile(global.Enver.FaasPath+"/inject_code.py", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Error("创建inject_code.py失败！" + err.Error())
@@ -41,5 +40,4 @@ func DeployPython(deployInfo model.DeployInfo) {
 		}
 		log.Info("执行start.sh成功！" + string(output))
 	}()
-	log.Info("service.DeployPython End")
 }

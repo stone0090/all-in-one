@@ -1,5 +1,5 @@
-import {PlusOutlined} from '@ant-design/icons';
-import {Drawer, Form, Button, Col, Row, Input, message, Spin, Select, Radio} from 'antd';
+import {ExclamationCircleOutlined, PlusOutlined} from '@ant-design/icons';
+import {Drawer, Form, Button, Col, Row, Input, message, Spin, Select, Radio, Modal} from 'antd';
 import React, {useState, useRef} from 'react';
 import {PageContainer} from '@ant-design/pro-layout';
 import type {ProColumns, ActionType} from '@ant-design/pro-table';
@@ -22,6 +22,7 @@ const Operator: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [apiLoading, setApiLoading] = useState<boolean>(false);
   type handleGetCallback = (record: any) => void;
+  const {confirm} = Modal;
 
   const handleQuery = async (params: any) => {
     const result: Protocol.RestResult = await requestGet<Protocol.RestResult>('/aio/operator/list', params);
@@ -61,14 +62,23 @@ const Operator: React.FC = () => {
   };
 
   const handleRemove = async (record: any) => {
-    const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/operator/remove', {"id": record.id});
-    if (result?.success) {
-      setFormVisible(false);
-      message.success('删除成功！');
-      if (actionRef.current) {
-        actionRef.current.reload();
-      }
-    }
+    confirm({
+      title: '确认删除',
+      icon: <ExclamationCircleOutlined/>,
+      content: '您确定要删除此算子吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: async () => {
+        const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/operator/remove', {id: record.id});
+        if (result?.success) {
+          setFormVisible(false);
+          message.success('删除成功！');
+          if (actionRef.current) {
+            actionRef.current.reload();
+          }
+        }
+      },
+    });
   };
 
   const handleApiOnline = async (record: any) => {
@@ -149,26 +159,13 @@ const Operator: React.FC = () => {
       },
     },
     {
-      title: 'API状态',
-      dataIndex: 'apiStatus',
-      valueType: 'textarea',
-      search: false,
-      render: (dom) => {
-        return (
-          <div>
-            {dom == 'ONLINE' ? '在线' : dom == 'OFFLINE' ? '离线' : '-'}
-          </div>
-        );
-      },
-    },
-    {
       title: '更新时间',
       dataIndex: 'gmtModified',
       valueType: 'dateTime',
       search: false,
     },
     {
-      title: '操作',
+      title: '算子操作',
       dataIndex: 'option',
       valueType: 'option',
       render: (dom, record) => [
@@ -192,6 +189,26 @@ const Operator: React.FC = () => {
         >
           删除
         </a>,
+      ],
+    },
+    {
+      title: 'API状态',
+      dataIndex: 'apiStatus',
+      valueType: 'textarea',
+      search: false,
+      render: (dom) => {
+        return (
+          <div>
+            {dom == 'ONLINE' ? '在线' : dom == 'OFFLINE' ? '离线' : '-'}
+          </div>
+        );
+      },
+    },
+    {
+      title: 'API操作',
+      dataIndex: 'option',
+      valueType: 'option',
+      render: (dom, record) => [
         <a
           key="online"
           onClick={() => {
