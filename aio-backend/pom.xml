@@ -27,7 +27,6 @@
     </properties>
 
     <modules>
-        <module>aio-api</module>
         <module>aio-dao</module>
         <module>aio-manager</module>
         <module>aio-service</module>
@@ -41,11 +40,6 @@
     <dependencyManagement>
         <dependencies>
             <!-- 二方包 -->
-            <dependency>
-                <groupId>com.stone0090</groupId>
-                <artifactId>aio-api</artifactId>
-                <version>${aio.version}</version>
-            </dependency>
             <dependency>
                 <groupId>com.stone0090</groupId>
                 <artifactId>aio-dao</artifactId>

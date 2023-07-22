@@ -11,9 +11,9 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public interface ApiService {
 
-    int online(ApiRequest request);
+    int onlineApi(ApiRequest request);
 
-    int offline(ApiRequest request);
+    int offlineApi(ApiRequest request);
 
     String invokeApi(ApiInvokeRequest request);
 

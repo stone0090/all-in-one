@@ -15,16 +15,6 @@
     <property name="DAO_LOG_FILE" value="${LOG_PATH}/dao.log"/>
     <property name="DAO_DIGEST_LOG_FILE" value="${LOG_PATH}/dao-digest.log"/>
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>${LOG_PATTERN}</pattern>
-        </encoder>
-    </appender>
-    <root>
-        <level>${LOG_LEVEL}</level>
-        <appender-ref ref="STDOUT"/>
-    </root>
-
     <!-- WEB_LOG -->
     <property name="WEB_LOG_FILE" value="${LOG_PATH}/web.log"/>
     <appender name="WEB_LOG_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -112,5 +102,15 @@
         <level>${LOG_LEVEL}</level>
         <appender-ref ref="DAO_DIGEST_LOG_APPENDER"/>
     </logger>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    <root>
+        <level>${LOG_LEVEL}</level>
+        <appender-ref ref="STDOUT"/>
+    </root>
 
 </configuration>

@@ -1,16 +1,16 @@
 package com.stone0090.aio.web.controller;
 
+import com.stone0090.aio.service.core.algorithm.ApiService;
 import com.stone0090.aio.service.model.web.protocal.PageRequest;
 import com.stone0090.aio.service.model.web.protocal.PageResult;
 import com.stone0090.aio.service.model.web.protocal.RestResult;
-import com.stone0090.aio.service.model.web.request.IdRequest;
-import com.stone0090.aio.service.model.web.request.OperatorQueryRequest;
-import com.stone0090.aio.service.model.web.request.OperatorSaveRequest;
+import com.stone0090.aio.service.model.web.request.*;
 import com.stone0090.aio.service.model.web.response.OperatorVO;
 import com.stone0090.aio.service.core.algorithm.OperatorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -24,6 +24,10 @@ public class OperatorController {
 
     @Autowired
     private OperatorService service;
+
+    @Autowired
+    @Qualifier("operatorService")
+    private ApiService apiService;
 
     @ApiOperation("获取算子列表")
     @GetMapping("/list")
@@ -61,9 +65,30 @@ public class OperatorController {
     }
 
     @ApiOperation("获取默认配置")
-    @GetMapping("/config/default")
+    @GetMapping("/getDefaultConfig")
     public RestResult getDefaultConfig() {
         OperatorVO result = service.getDefaultConfig();
+        return RestResult.success(result);
+    }
+
+    @ApiOperation("上线算子API")
+    @PostMapping("/onlineApi")
+    public RestResult online(@RequestBody ApiRequest request) {
+        int count = apiService.onlineApi(request);
+        return RestResult.success(count);
+    }
+
+    @ApiOperation("下线算子API")
+    @PostMapping("/offlineApi")
+    public RestResult offline(@RequestBody ApiRequest request) {
+        int count = apiService.offlineApi(request);
+        return RestResult.success(count);
+    }
+
+    @ApiOperation("调用算子API")
+    @PostMapping("/invokeApi")
+    public RestResult invokeApi(@RequestBody ApiInvokeRequest request) {
+        String result = apiService.invokeApi(request);
         return RestResult.success(result);
     }
 

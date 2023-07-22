@@ -9,17 +9,16 @@ public class RestResult implements Serializable {
 
     private Boolean success;
     private Object data;
-    private String errorMessage;
-    private String errorCode;
+    private String message;
+    //    private String errorCode;
     //    private Integer showType;
     //    private String traceId;
     //    private String host;
 
-    public RestResult(Boolean success, Object data, String errorCode, String errorMessage) {
+    public RestResult(Boolean success, Object data, String message) {
         this.success = success;
         this.data = data;
-        this.errorCode = errorCode;
-        this.errorMessage = errorMessage;
+        this.message = message;
     }
 
     public static RestResult success() {
@@ -27,19 +26,11 @@ public class RestResult implements Serializable {
     }
 
     public static RestResult success(Object data) {
-        return new RestResult(true, data, ResultCodeEnum.SUCCESS.getCode(), null);
+        return new RestResult(true, data, null);
     }
 
-    public static RestResult failure(String errorCode, String errorMessage) {
-        return new RestResult(false, null, errorCode, errorMessage);
-    }
-
-    public static RestResult failure(String errorCode, String errorMessage, String data) {
-        return new RestResult(false, data, errorCode, errorMessage);
-    }
-
-    public static RestResult failure(String errorMessage) {
-        return RestResult.failure(ResultCodeEnum.CUSTOM_ERROR.getCode(), errorMessage);
+    public static RestResult failure(String message) {
+        return new RestResult(false, null, message);
     }
 
 }

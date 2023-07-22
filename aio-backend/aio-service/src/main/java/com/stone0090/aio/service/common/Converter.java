@@ -69,10 +69,11 @@ public class Converter {
         return result;
     }
 
-    public static OperatorVO toOperatorVO(OperatorDO param, Map<Integer, String> apiStatusMap) {
+    public static OperatorVO toOperatorVO(OperatorDO param, Map<Integer, ApiDO> apiMap) {
         OperatorVO result = new OperatorVO();
         BeanUtils.copyProperties(param, result);
-        result.setApiStatus(apiStatusMap.get(param.getId()));
+        result.setApiStatus(apiMap.get(param.getId()).getStatus());
+        result.setApiUrl("/aio/api/invoke?serviceId=" + apiMap.get(param.getId()).getApiUuid());
         return result;
     }
 

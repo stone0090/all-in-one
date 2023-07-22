@@ -24,7 +24,7 @@ public class GlobalExceptionAop {
     RestResult handleConstraintViolationException(ConstraintViolationException e) {
         StringBuilder message = new StringBuilder();
         e.getConstraintViolations().forEach(x -> message.append(x.getMessage()).append("\n"));
-        return RestResult.failure(ResultCodeEnum.ARGUMENT_ERROR.getCode(), message.toString());
+        return RestResult.failure(message.toString());
     }
 
     /**
@@ -37,20 +37,20 @@ public class GlobalExceptionAop {
         for (ObjectError error : e.getBindingResult().getAllErrors()) {
             message.append(error.getDefaultMessage()).append("\n");
         }
-        return RestResult.failure(ResultCodeEnum.ARGUMENT_ERROR.getCode(), message.toString());
+        return RestResult.failure(message.toString());
     }
 
     @ExceptionHandler(RuntimeException.class)
     public @ResponseBody
     RestResult handleRuntimeException(RuntimeException e) {
-        return RestResult.failure(ResultCodeEnum.CUSTOM_ERROR.getCode(), e.getMessage());
-        //return RestResult.failure("系统繁忙，请稍后再试！");
+        return RestResult.failure(e.getLocalizedMessage().replace("java.lang.RuntimeException: ", ""));
+        // return RestResult.failure("系统繁忙，请稍后再试！");
     }
 
     @ExceptionHandler(Exception.class)
     public @ResponseBody
     RestResult handleCustomException(Exception e) {
-        //return RestResult.failure(ResultCodeEnum.SERVER_ERROR.getCode(), e.getMessage());
+        // return RestResult.failure(e.getLocalizedMessage());
         return RestResult.failure("系统繁忙，请稍后再试！");
     }
 

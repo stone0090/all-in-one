@@ -14,6 +14,7 @@ const Operator: React.FC = () => {
 
   const actionRef = useRef<ActionType>();
   const [form] = Form.useForm();
+  const [apiForm] = Form.useForm();
   const [currentRow, setCurrentRow] = useState<any>();
   const [addStatus, setAddStatus] = useState<boolean>(true);
   const [formVisible, setFormVisible] = useState<boolean>(false);
@@ -35,7 +36,7 @@ const Operator: React.FC = () => {
 
   const handleAdd = async () => {
     form.resetFields();
-    const result: Protocol.RestResult = await requestGet<Protocol.RestResult>('/aio/operator/config/default');
+    const result: Protocol.RestResult = await requestGet<Protocol.RestResult>('/aio/operator/getDefaultConfig');
     form.setFieldsValue(result?.data);
     setFormVisible(true);
     setAddStatus(true);
@@ -81,9 +82,9 @@ const Operator: React.FC = () => {
     });
   };
 
-  const handleApiOnline = async (record: any) => {
+  const handleOnlineApi = async (record: any) => {
     setApiLoading(true);
-    const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/api/online', {
+    const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/operator/onlineApi', {
       "id": record.id,
       "apiType": 'OPERATOR',
     });
@@ -96,8 +97,8 @@ const Operator: React.FC = () => {
     }
   };
 
-  const handleApiOffline = async (record: any) => {
-    const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/api/offline', {
+  const handleOfflineApi = async (record: any) => {
+    const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/operator/offlineApi', {
       "id": record.id,
       "apiType": 'OPERATOR',
     });
@@ -109,15 +110,15 @@ const Operator: React.FC = () => {
     }
   };
 
-  const handleApiInvoke = async (record: any) => {
-    const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/api/invoke', {
+  const handleInvokeApi = async (record: any) => {
+    const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/operator/invokeApi', {
       "id": record.id,
       "apiType": 'OPERATOR',
       "inputParam": record.inputParam
     });
     if (result?.success) {
       message.success('调用成功！');
-      form.setFieldsValue({outputParam: result.data})
+      apiForm.setFieldsValue({outputParam: result.data})
     }
   };
 
@@ -212,7 +213,7 @@ const Operator: React.FC = () => {
         <a
           key="online"
           onClick={() => {
-            handleApiOnline(record);
+            handleOnlineApi(record);
           }}
         >
           API上线
@@ -220,7 +221,7 @@ const Operator: React.FC = () => {
         <a
           key="offline"
           onClick={() => {
-            handleApiOffline(record);
+            handleOfflineApi(record);
           }}
         >
           API下线
@@ -228,13 +229,14 @@ const Operator: React.FC = () => {
         <a
           key="invoke"
           onClick={() => {
-            form.resetFields();
-            form.setFieldsValue({id: record.id})
-            form.setFieldsValue({inputParam: record.inputParam})
+            apiForm.resetFields();
+            apiForm.setFieldsValue({id: record.id})
+            apiForm.setFieldsValue({apiUrl: record.apiUrl})
+            apiForm.setFieldsValue({inputParam: record.inputParam})
             setInvokeVisible(true);
           }}
         >
-          API调试
+          API调用
         </a>,
       ],
     },
@@ -365,7 +367,7 @@ const Operator: React.FC = () => {
                     rules={[{required: true}]}
                   >
                     <CodeEditor
-                      height={200}
+                      height={300}
                       language={form.getFieldValue('algoLanguage') || 'python'}
                       value={form.getFieldValue('algoCode') || ''}
                       onChange={(value) => {
@@ -383,15 +385,7 @@ const Operator: React.FC = () => {
                     label="算子入参"
                     rules={[{required: true}]}
                   >
-                    <CodeEditor
-                      height={100}
-                      language={'json'}
-                      value={form.getFieldValue('inputParam') || '{}'}
-                      onChange={(value) => {
-                        form.setFieldsValue({inputParam: value})
-                      }}
-                      formVisible={formVisible}
-                    ></CodeEditor>
+                    <TextArea showCount maxLength={1000} autoSize={true}/>
                   </Form.Item>
                 </Col>
               </Row>
@@ -402,15 +396,7 @@ const Operator: React.FC = () => {
                     label="算子出参"
                     rules={[{required: true}]}
                   >
-                    <CodeEditor
-                      height={100}
-                      language={'json'}
-                      value={form.getFieldValue('outputParam') || '{}'}
-                      onChange={(value) => {
-                        form.setFieldsValue({outputParam: value})
-                      }}
-                      formVisible={formVisible}
-                    ></CodeEditor>
+                    <TextArea showCount maxLength={1000} autoSize={true}/>
                   </Form.Item>
                 </Col>
               </Row>
@@ -440,7 +426,7 @@ const Operator: React.FC = () => {
           />
         </Drawer>
         <Drawer
-          title={'API调试'}
+          title={'API调用'}
           width={720}
           onClose={() => {
             setInvokeVisible(false);
@@ -464,7 +450,7 @@ const Operator: React.FC = () => {
               <Button
                 type="primary"
                 onClick={() => {
-                  form.submit()
+                  apiForm.submit()
                 }}
               >
                 提交
@@ -475,9 +461,19 @@ const Operator: React.FC = () => {
           <Spin spinning={loading}>
             <Form
               layout="vertical"
-              form={form}
-              onFinish={handleApiInvoke}
+              form={apiForm}
+              onFinish={handleInvokeApi}
             >
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.Item
+                    name="apiUrl"
+                    label="API地址"
+                  >
+                    <TextArea showCount maxLength={1000} autoSize={true}/>
+                  </Form.Item>
+                </Col>
+              </Row>
               <Row gutter={16}>
                 <Col span={24}>
                   <Form.Item

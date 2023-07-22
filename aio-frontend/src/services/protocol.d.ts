@@ -6,19 +6,18 @@ declare namespace Protocol {
     type RestResult = {
         success?: boolean;
         data?: any;
-        errorCode?: string;
-        errorMessage?: string;
+        message?: string;
     };
 
-    type PageResult = {
-        success?: boolean;
-        data?: {
-            list?: any;
-            current?: number;
-            pageSize?: number;
-            total?: number;
-        };
-        errorMessage?: string;
-    };
+    // type PageResult = {
+    //     success?: boolean;
+    //     data?: {
+    //         list?: any;
+    //         current?: number;
+    //         pageSize?: number;
+    //         total?: number;
+    //     };
+    //     message?: string;
+    // };
 
 }

@@ -23,4 +23,5 @@ public class OperatorVO implements Serializable {
     private String outputParam;
     private Integer isDisabled;
     private String apiStatus;
+    private String apiUrl;
 }

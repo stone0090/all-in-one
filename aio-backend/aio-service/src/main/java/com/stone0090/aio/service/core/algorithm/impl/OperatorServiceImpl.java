@@ -3,23 +3,29 @@ package com.stone0090.aio.service.core.algorithm.impl;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.stone0090.aio.dao.mybatis.entity.ApiDO;
-import com.stone0090.aio.service.core.algorithm.OperatorService;
-import com.stone0090.aio.service.enums.AlgoTypeEnum;
-import com.stone0090.aio.service.enums.ApiStatusEnum;
-import com.stone0090.aio.service.model.web.protocal.PageRequest;
-import com.stone0090.aio.service.model.web.protocal.PageResult;
-import com.stone0090.aio.service.model.web.request.IdRequest;
-import com.stone0090.aio.service.model.web.request.OperatorQueryRequest;
-import com.stone0090.aio.service.model.web.request.OperatorSaveRequest;
-import com.stone0090.aio.service.model.web.response.OperatorVO;
 import com.stone0090.aio.dao.mybatis.entity.OperatorDO;
 import com.stone0090.aio.dao.mybatis.entity.OperatorDOExample;
 import com.stone0090.aio.dao.mybatis.entity.SystemConfigDO;
 import com.stone0090.aio.dao.mybatis.mapper.OperatorDOMapper;
+import com.stone0090.aio.manager.utils.HttpUtil;
+import com.stone0090.aio.manager.utils.UuidUtil;
 import com.stone0090.aio.service.common.ConfigConstants;
 import com.stone0090.aio.service.common.Converter;
+import com.stone0090.aio.service.core.algorithm.ApiService;
+import com.stone0090.aio.service.core.algorithm.OperatorService;
 import com.stone0090.aio.service.core.system.impl.ConfigServiceImpl;
+import com.stone0090.aio.service.enums.AlgoTypeEnum;
+import com.stone0090.aio.service.enums.ApiStatusEnum;
+import com.stone0090.aio.service.enums.DataTypeEnum;
+import com.stone0090.aio.service.enums.InvokeTypeEnum;
+import com.stone0090.aio.service.model.web.protocal.PageRequest;
+import com.stone0090.aio.service.model.web.protocal.PageResult;
+import com.stone0090.aio.service.model.web.request.*;
+import com.stone0090.aio.service.model.web.response.OperatorVO;
+import org.jose4j.json.JsonUtil;
+import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -34,8 +40,8 @@ import java.util.stream.Collectors;
  * @author stone
  * @date 2023/06/22
  */
-@Service
-public class OperatorServiceImpl implements OperatorService {
+@Service("operatorService")
+public class OperatorServiceImpl implements OperatorService, ApiService {
 
     @Autowired
     private OperatorDOMapper operatorDOMapper;
@@ -43,6 +49,11 @@ public class OperatorServiceImpl implements OperatorService {
     private ConfigServiceImpl configServiceImpl;
     @Autowired
     private ApiServiceImpl apiServiceImpl;
+    @Autowired
+    private HttpUtil httpUtil;
+
+    @Value("${spring.profiles.active}")
+    private String env;
 
     @Override
     public PageResult<OperatorVO> list(OperatorQueryRequest queryRequest, PageRequest pageRequest) {
@@ -59,25 +70,24 @@ public class OperatorServiceImpl implements OperatorService {
         List<OperatorDO> result = operatorDOMapper.selectByExample(example);
         List<ApiDO> apiDOList = apiServiceImpl.listApiByTypeIds(AlgoTypeEnum.OPERATOR.name(),
                 result.stream().map(OperatorDO::getId).collect(Collectors.toList()));
-        Map<Integer, String> apiStatusMap = apiDOList.stream()
-                .collect(Collectors.toMap(ApiDO::getTypeId, ApiDO::getStatus));
+        Map<Integer, ApiDO> apiMap = apiDOList.stream()
+                .collect(Collectors.toMap(ApiDO::getTypeId, apiDO -> apiDO));
         PageResult<OperatorVO> pageResult = PageResult.buildPageResult(result);
-        pageResult.setList(result.stream().map(operatorDO -> Converter.toOperatorVO(operatorDO, apiStatusMap))
+        pageResult.setList(result.stream().map(operatorDO -> Converter.toOperatorVO(operatorDO, apiMap))
                 .collect(Collectors.toList()));
         return pageResult;
     }
 
     @Override
     public OperatorVO get(IdRequest request) {
-        OperatorDOExample example = new OperatorDOExample();
-        example.createCriteria().andIsDeletedEqualTo(0).andIdEqualTo(request.getId());
-        List<OperatorDO> result = operatorDOMapper.selectByExample(example);
-        return CollectionUtils.isEmpty(result) ? null : Converter.toOperatorVO(result.get(0));
+        OperatorDO result = getOperatorDO(request.getId());
+        return result != null ? Converter.toOperatorVO(result) : null;
     }
 
     @Override
     public int save(OperatorSaveRequest request) {
-        // TODO：输入参数格式校验
+        checkSaveParam(request.getInputParam(), true);
+        checkSaveParam(request.getOutputParam(), false);
         OperatorDO data = Converter.toOperatorDO(request);
         if (data.getId() == null) {
             data.setAlgoPath("");
@@ -125,6 +135,99 @@ public class OperatorServiceImpl implements OperatorService {
             }
         });
         return operatorVO;
+    }
+
+    @Override
+    public int onlineApi(ApiRequest request) {
+        if (!AlgoTypeEnum.OPERATOR.name().equals(request.getApiType())) {
+            throw new RuntimeException("API上线失败，类型不正确！");
+        }
+        OperatorDO operatorDO = getOperatorDO(request.getId());
+        if (operatorDO == null) {
+            throw new RuntimeException("API上线失败，算子不存在！");
+        }
+        ApiDO apiDO = buildOperatorApiDO(operatorDO);
+        return apiServiceImpl.online(apiDO, (deployInfo) -> {
+            deployInfo.put("algoCode", operatorDO.getAlgoCode());
+        });
+    }
+
+    @Override
+    public int offlineApi(ApiRequest request) {
+        if (!AlgoTypeEnum.OPERATOR.name().equals(request.getApiType())) {
+            throw new RuntimeException("API下线失败，类型不正确！");
+        }
+        return apiServiceImpl.offline(AlgoTypeEnum.OPERATOR.name(), request.getId());
+    }
+
+    @Override
+    public String invokeApi(ApiInvokeRequest request) {
+        if (!AlgoTypeEnum.OPERATOR.name().equals(request.getApiType())) {
+            throw new RuntimeException("API调用失败，类型不正确！");
+        }
+        OperatorDO operatorDO = getOperatorDO(request.getId());
+        if (operatorDO == null) {
+            throw new RuntimeException("API调用失败，算子不存在！");
+        }
+        return apiServiceImpl.invoke(AlgoTypeEnum.OPERATOR.name(), request.getId(), request.getInputParam());
+    }
+
+    public OperatorDO getOperatorDO(Integer id) {
+        OperatorDOExample example = new OperatorDOExample();
+        example.createCriteria().andIsDeletedEqualTo(0).andIdEqualTo(id);
+        List<OperatorDO> result = operatorDOMapper.selectByExample(example);
+        return result.size() > 0 ? result.get(0) : null;
+    }
+
+    private void checkSaveParam(String param, boolean isInput) {
+        String paramType = isInput ? "入参" : "出参";
+        try {
+            Map<String, Object> inputParamMap = JsonUtil.parseJson(param);
+            inputParamMap.forEach((k, v) -> {
+                Map<String, Object> inputParamDetailMap = (Map<String, Object>) v;
+                if (inputParamDetailMap.get("name") == null) {
+                    throw new RuntimeException("算子保存失败，算子" + paramType + "[" + k + "]的格式有误，属性[name]不能为空！");
+                } else {
+                    if (!(inputParamDetailMap.get("name") instanceof String)) {
+                        throw new RuntimeException("算子保存失败，算子" + paramType + "[" + k + "]的格式有误，属性[name]必须为字符串！");
+                    }
+                }
+                if (inputParamDetailMap.get("type") == null) {
+                    throw new RuntimeException("算子保存失败，算子" + paramType + "[" + k + "]的格式有误，属性[type]不能为空！");
+                } else {
+                    String type = inputParamDetailMap.get("type").toString();
+                    if (DataTypeEnum.getByCode(type) == null) {
+                        throw new RuntimeException("算子保存失败，算子" + paramType + "[" + k + "]的格式有误，属性[type]只能是\"int/double/string/boolean\"其中一个！");
+                    }
+                }
+                if (isInput) {
+                    if (inputParamDetailMap.get("required") == null) {
+                        throw new RuntimeException("算子保存失败，算子" + paramType + "[" + k + "]的格式有误，属性[required]不能为空！");
+                    } else {
+                        if (!(inputParamDetailMap.get("required") instanceof Boolean)) {
+                            throw new RuntimeException("算子保存失败，算子" + paramType + "[" + k + "]的格式有误，属性[required]只能是true/false！");
+                        }
+                    }
+                }
+            });
+        } catch (JoseException e) {
+            throw new RuntimeException("算子保存失败，算子" + paramType + "格式有误！");
+        }
+    }
+
+    public ApiDO buildOperatorApiDO(OperatorDO operatorDO) {
+        ApiDO apiDO = new ApiDO();
+        apiDO.setApiUuid(UuidUtil.getUuid());
+        apiDO.setApiName(operatorDO.getOpName());
+        apiDO.setApiType(AlgoTypeEnum.OPERATOR.name());
+        apiDO.setTypeId(operatorDO.getId());
+        apiDO.setInputParam(operatorDO.getInputParam());
+        apiDO.setOutputParam(operatorDO.getOutputParam());
+        apiDO.setInvokeType(InvokeTypeEnum.SYNC.name());
+        apiDO.setApiUrl("");
+        apiDO.setCallbackUrl("");
+        apiDO.setStatus(ApiStatusEnum.OFFLINE.name());
+        return apiDO;
     }
 
 }
