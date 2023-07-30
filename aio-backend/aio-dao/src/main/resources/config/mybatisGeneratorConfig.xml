@@ -39,6 +39,8 @@
         <table tableName="aio_role_permission_relation" domainObjectName="RolePermissionRelationDO"/>
         <table tableName="aio_system_config" domainObjectName="SystemConfigDO"/>
         <table tableName="aio_operator" domainObjectName="OperatorDO"/>
+        <table tableName="aio_experiment" domainObjectName="ExperimentDO"/>
+        <table tableName="aio_node_instance" domainObjectName="NodeInstanceDO"/>
         <table tableName="aio_api" domainObjectName="ApiDO"/>
 
     </context>

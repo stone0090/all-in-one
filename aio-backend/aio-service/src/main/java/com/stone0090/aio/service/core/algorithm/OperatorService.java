@@ -25,8 +25,13 @@ public interface OperatorService {
 
     int save(@NotNull(message = "入参不能为空") @Valid OperatorSaveRequest request);
 
+    int publish(@NotNull(message = "入参不能为空") @Valid IdRequest request);
+
+    int deprecate(@NotNull(message = "入参不能为空") @Valid IdRequest request);
+
     int remove(@NotNull(message = "入参不能为空") @Valid IdRequest request);
 
     OperatorVO getDefaultConfig();
+
 
 }

@@ -8,12 +8,12 @@
     <result column="IS_DELETED" property="isDeleted" jdbcType="INTEGER" />
     <result column="OP_CODE" property="opCode" jdbcType="VARCHAR" />
     <result column="OP_NAME" property="opName" jdbcType="VARCHAR" />
+    <result column="OP_STATUS" property="opStatus" jdbcType="VARCHAR" />
     <result column="ALGO_LANGUAGE" property="algoLanguage" jdbcType="VARCHAR" />
     <result column="ALGO_CODE" property="algoCode" jdbcType="VARCHAR" />
     <result column="ALGO_PATH" property="algoPath" jdbcType="VARCHAR" />
     <result column="INPUT_PARAM" property="inputParam" jdbcType="VARCHAR" />
     <result column="OUTPUT_PARAM" property="outputParam" jdbcType="VARCHAR" />
-    <result column="IS_DISABLED" property="isDisabled" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    ID, GMT_CREATE, GMT_MODIFIED, IS_DELETED, OP_CODE, OP_NAME, ALGO_LANGUAGE, ALGO_CODE, 
-    ALGO_PATH, INPUT_PARAM, OUTPUT_PARAM, IS_DISABLED
+    ID, GMT_CREATE, GMT_MODIFIED, IS_DELETED, OP_CODE, OP_NAME, OP_STATUS, ALGO_LANGUAGE, 
+    ALGO_CODE, ALGO_PATH, INPUT_PARAM, OUTPUT_PARAM
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.stone0090.aio.dao.mybatis.entity.OperatorDOExample" >
     select
@@ -110,13 +110,13 @@
   <insert id="insert" parameterType="com.stone0090.aio.dao.mybatis.entity.OperatorDO" >
     insert into AIO_OPERATOR (ID, GMT_CREATE, GMT_MODIFIED, 
       IS_DELETED, OP_CODE, OP_NAME, 
-      ALGO_LANGUAGE, ALGO_CODE, ALGO_PATH, 
-      INPUT_PARAM, OUTPUT_PARAM, IS_DISABLED
+      OP_STATUS, ALGO_LANGUAGE, ALGO_CODE, 
+      ALGO_PATH, INPUT_PARAM, OUTPUT_PARAM
       )
     values (#{id,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{isDeleted,jdbcType=INTEGER}, #{opCode,jdbcType=VARCHAR}, #{opName,jdbcType=VARCHAR}, 
-      #{algoLanguage,jdbcType=VARCHAR}, #{algoCode,jdbcType=VARCHAR}, #{algoPath,jdbcType=VARCHAR}, 
-      #{inputParam,jdbcType=VARCHAR}, #{outputParam,jdbcType=VARCHAR}, #{isDisabled,jdbcType=INTEGER}
+      #{opStatus,jdbcType=VARCHAR}, #{algoLanguage,jdbcType=VARCHAR}, #{algoCode,jdbcType=VARCHAR}, 
+      #{algoPath,jdbcType=VARCHAR}, #{inputParam,jdbcType=VARCHAR}, #{outputParam,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.stone0090.aio.dao.mybatis.entity.OperatorDO" >
@@ -140,6 +140,9 @@
       <if test="opName != null" >
         OP_NAME,
       </if>
+      <if test="opStatus != null" >
+        OP_STATUS,
+      </if>
       <if test="algoLanguage != null" >
         ALGO_LANGUAGE,
       </if>
@@ -154,9 +157,6 @@
       </if>
       <if test="outputParam != null" >
         OUTPUT_PARAM,
-      </if>
-      <if test="isDisabled != null" >
-        IS_DISABLED,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -178,6 +178,9 @@
       <if test="opName != null" >
         #{opName,jdbcType=VARCHAR},
       </if>
+      <if test="opStatus != null" >
+        #{opStatus,jdbcType=VARCHAR},
+      </if>
       <if test="algoLanguage != null" >
         #{algoLanguage,jdbcType=VARCHAR},
       </if>
@@ -192,9 +195,6 @@
       </if>
       <if test="outputParam != null" >
         #{outputParam,jdbcType=VARCHAR},
-      </if>
-      <if test="isDisabled != null" >
-        #{isDisabled,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -225,6 +225,9 @@
       <if test="record.opName != null" >
         OP_NAME = #{record.opName,jdbcType=VARCHAR},
       </if>
+      <if test="record.opStatus != null" >
+        OP_STATUS = #{record.opStatus,jdbcType=VARCHAR},
+      </if>
       <if test="record.algoLanguage != null" >
         ALGO_LANGUAGE = #{record.algoLanguage,jdbcType=VARCHAR},
       </if>
@@ -240,9 +243,6 @@
       <if test="record.outputParam != null" >
         OUTPUT_PARAM = #{record.outputParam,jdbcType=VARCHAR},
       </if>
-      <if test="record.isDisabled != null" >
-        IS_DISABLED = #{record.isDisabled,jdbcType=INTEGER},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -256,12 +256,12 @@
       IS_DELETED = #{record.isDeleted,jdbcType=INTEGER},
       OP_CODE = #{record.opCode,jdbcType=VARCHAR},
       OP_NAME = #{record.opName,jdbcType=VARCHAR},
+      OP_STATUS = #{record.opStatus,jdbcType=VARCHAR},
       ALGO_LANGUAGE = #{record.algoLanguage,jdbcType=VARCHAR},
       ALGO_CODE = #{record.algoCode,jdbcType=VARCHAR},
       ALGO_PATH = #{record.algoPath,jdbcType=VARCHAR},
       INPUT_PARAM = #{record.inputParam,jdbcType=VARCHAR},
-      OUTPUT_PARAM = #{record.outputParam,jdbcType=VARCHAR},
-      IS_DISABLED = #{record.isDisabled,jdbcType=INTEGER}
+      OUTPUT_PARAM = #{record.outputParam,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -284,6 +284,9 @@
       <if test="opName != null" >
         OP_NAME = #{opName,jdbcType=VARCHAR},
       </if>
+      <if test="opStatus != null" >
+        OP_STATUS = #{opStatus,jdbcType=VARCHAR},
+      </if>
       <if test="algoLanguage != null" >
         ALGO_LANGUAGE = #{algoLanguage,jdbcType=VARCHAR},
       </if>
@@ -299,9 +302,6 @@
       <if test="outputParam != null" >
         OUTPUT_PARAM = #{outputParam,jdbcType=VARCHAR},
       </if>
-      <if test="isDisabled != null" >
-        IS_DISABLED = #{isDisabled,jdbcType=INTEGER},
-      </if>
     </set>
     where ID = #{id,jdbcType=INTEGER}
   </update>
@@ -312,12 +312,12 @@
       IS_DELETED = #{isDeleted,jdbcType=INTEGER},
       OP_CODE = #{opCode,jdbcType=VARCHAR},
       OP_NAME = #{opName,jdbcType=VARCHAR},
+      OP_STATUS = #{opStatus,jdbcType=VARCHAR},
       ALGO_LANGUAGE = #{algoLanguage,jdbcType=VARCHAR},
       ALGO_CODE = #{algoCode,jdbcType=VARCHAR},
       ALGO_PATH = #{algoPath,jdbcType=VARCHAR},
       INPUT_PARAM = #{inputParam,jdbcType=VARCHAR},
-      OUTPUT_PARAM = #{outputParam,jdbcType=VARCHAR},
-      IS_DISABLED = #{isDisabled,jdbcType=INTEGER}
+      OUTPUT_PARAM = #{outputParam,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -173,7 +173,7 @@ const Permission: React.FC = () => {
         footer={
           <div
             style={{
-              textAlign: 'right',
+              textAlign: 'left',
             }}
           >
             <Button

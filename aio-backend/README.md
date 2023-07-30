@@ -8,6 +8,7 @@
 - 连接池：[Druid](https://github.com/alibaba/druid)
 - 安全框架：[Apache Shiro](http://shiro.apache.org/)
 - 前端框架：[Ant Design Pro](https://pro.ant.design)
+- Dag编排：[AntV XFlow](https://xflow.antv.vision/)
 - 接口文档：[Swagger](https://swagger.io/)
 - 诊断工具：[Arthas](https://arthas.aliyun.com/doc/)
 
@@ -16,7 +17,7 @@
   - 访问入口：http://localhost:9090
   - 账号密码：stone / 123456
 - h2数据库：
-  - 访问入口：http://127.0.0.1:9090/h2-console
+  - 访问入口：http://localhost:9090/h2-console
   - 账号密码：san /（没有密码）
   - jdbcurl：jdbc:h2:file:./aio
 - druid监控：

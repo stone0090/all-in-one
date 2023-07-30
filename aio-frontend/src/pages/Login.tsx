@@ -78,7 +78,7 @@ const Login: React.FC = () => {
         <div className={styles.top}>
           <div className={styles.header}>
             <img alt="logo" className={styles.logo} src="/github.svg"/>
-            <span className={styles.title}>All In One</span>
+            <span className={styles.title}>all-in-one</span>
           </div>
           <div className={styles.desc}>
             https://github.com/stone0090/all-in-one

@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.stone0090.aio.dao.mybatis.mapper.ExperimentDOMapper" >
+  <resultMap id="BaseResultMap" type="com.stone0090.aio.dao.mybatis.entity.ExperimentDO" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="GMT_CREATE" property="gmtCreate" jdbcType="TIMESTAMP" />
+    <result column="GMT_MODIFIED" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="IS_DELETED" property="isDeleted" jdbcType="INTEGER" />
+    <result column="EX_NAME" property="exName" jdbcType="VARCHAR" />
+    <result column="EX_DESC" property="exDesc" jdbcType="VARCHAR" />
+    <result column="EX_STATUS" property="exStatus" jdbcType="VARCHAR" />
+    <result column="NODE_DAG" property="nodeDag" jdbcType="VARCHAR" />
+    <result column="PUBLISH_TYPE" property="publishType" jdbcType="VARCHAR" />
+    <result column="PUBLISH_CONFIG" property="publishConfig" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, GMT_CREATE, GMT_MODIFIED, IS_DELETED, EX_NAME, EX_DESC, EX_STATUS, NODE_DAG, 
+    PUBLISH_TYPE, PUBLISH_CONFIG
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.stone0090.aio.dao.mybatis.entity.ExperimentDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from AIO_EXPERIMENT
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from AIO_EXPERIMENT
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from AIO_EXPERIMENT
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.stone0090.aio.dao.mybatis.entity.ExperimentDOExample" >
+    delete from AIO_EXPERIMENT
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.stone0090.aio.dao.mybatis.entity.ExperimentDO" >
+    insert into AIO_EXPERIMENT (ID, GMT_CREATE, GMT_MODIFIED, 
+      IS_DELETED, EX_NAME, EX_DESC, 
+      EX_STATUS, NODE_DAG, PUBLISH_TYPE, 
+      PUBLISH_CONFIG)
+    values (#{id,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=INTEGER}, #{exName,jdbcType=VARCHAR}, #{exDesc,jdbcType=VARCHAR}, 
+      #{exStatus,jdbcType=VARCHAR}, #{nodeDag,jdbcType=VARCHAR}, #{publishType,jdbcType=VARCHAR}, 
+      #{publishConfig,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.stone0090.aio.dao.mybatis.entity.ExperimentDO" >
+    insert into AIO_EXPERIMENT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="gmtCreate != null" >
+        GMT_CREATE,
+      </if>
+      <if test="gmtModified != null" >
+        GMT_MODIFIED,
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED,
+      </if>
+      <if test="exName != null" >
+        EX_NAME,
+      </if>
+      <if test="exDesc != null" >
+        EX_DESC,
+      </if>
+      <if test="exStatus != null" >
+        EX_STATUS,
+      </if>
+      <if test="nodeDag != null" >
+        NODE_DAG,
+      </if>
+      <if test="publishType != null" >
+        PUBLISH_TYPE,
+      </if>
+      <if test="publishConfig != null" >
+        PUBLISH_CONFIG,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null" >
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="exName != null" >
+        #{exName,jdbcType=VARCHAR},
+      </if>
+      <if test="exDesc != null" >
+        #{exDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="exStatus != null" >
+        #{exStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeDag != null" >
+        #{nodeDag,jdbcType=VARCHAR},
+      </if>
+      <if test="publishType != null" >
+        #{publishType,jdbcType=VARCHAR},
+      </if>
+      <if test="publishConfig != null" >
+        #{publishConfig,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.stone0090.aio.dao.mybatis.entity.ExperimentDOExample" resultType="java.lang.Integer" >
+    select count(*) from AIO_EXPERIMENT
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update AIO_EXPERIMENT
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.gmtCreate != null" >
+        GMT_CREATE = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        GMT_MODIFIED = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDeleted != null" >
+        IS_DELETED = #{record.isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="record.exName != null" >
+        EX_NAME = #{record.exName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.exDesc != null" >
+        EX_DESC = #{record.exDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.exStatus != null" >
+        EX_STATUS = #{record.exStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nodeDag != null" >
+        NODE_DAG = #{record.nodeDag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publishType != null" >
+        PUBLISH_TYPE = #{record.publishType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publishConfig != null" >
+        PUBLISH_CONFIG = #{record.publishConfig,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update AIO_EXPERIMENT
+    set ID = #{record.id,jdbcType=INTEGER},
+      GMT_CREATE = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      GMT_MODIFIED = #{record.gmtModified,jdbcType=TIMESTAMP},
+      IS_DELETED = #{record.isDeleted,jdbcType=INTEGER},
+      EX_NAME = #{record.exName,jdbcType=VARCHAR},
+      EX_DESC = #{record.exDesc,jdbcType=VARCHAR},
+      EX_STATUS = #{record.exStatus,jdbcType=VARCHAR},
+      NODE_DAG = #{record.nodeDag,jdbcType=VARCHAR},
+      PUBLISH_TYPE = #{record.publishType,jdbcType=VARCHAR},
+      PUBLISH_CONFIG = #{record.publishConfig,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.stone0090.aio.dao.mybatis.entity.ExperimentDO" >
+    update AIO_EXPERIMENT
+    <set >
+      <if test="gmtCreate != null" >
+        GMT_CREATE = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        GMT_MODIFIED = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED = #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="exName != null" >
+        EX_NAME = #{exName,jdbcType=VARCHAR},
+      </if>
+      <if test="exDesc != null" >
+        EX_DESC = #{exDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="exStatus != null" >
+        EX_STATUS = #{exStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeDag != null" >
+        NODE_DAG = #{nodeDag,jdbcType=VARCHAR},
+      </if>
+      <if test="publishType != null" >
+        PUBLISH_TYPE = #{publishType,jdbcType=VARCHAR},
+      </if>
+      <if test="publishConfig != null" >
+        PUBLISH_CONFIG = #{publishConfig,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.stone0090.aio.dao.mybatis.entity.ExperimentDO" >
+    update AIO_EXPERIMENT
+    set GMT_CREATE = #{gmtCreate,jdbcType=TIMESTAMP},
+      GMT_MODIFIED = #{gmtModified,jdbcType=TIMESTAMP},
+      IS_DELETED = #{isDeleted,jdbcType=INTEGER},
+      EX_NAME = #{exName,jdbcType=VARCHAR},
+      EX_DESC = #{exDesc,jdbcType=VARCHAR},
+      EX_STATUS = #{exStatus,jdbcType=VARCHAR},
+      NODE_DAG = #{nodeDag,jdbcType=VARCHAR},
+      PUBLISH_TYPE = #{publishType,jdbcType=VARCHAR},
+      PUBLISH_CONFIG = #{publishConfig,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

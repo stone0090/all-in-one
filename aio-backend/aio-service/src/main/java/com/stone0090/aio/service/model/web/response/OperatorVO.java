@@ -16,12 +16,14 @@ public class OperatorVO implements Serializable {
     private Date gmtModified;
     private String opCode;
     private String opName;
+    private String opStatus;
+    private String opStatusName;
     private String algoLanguage;
     private String algoCode;
     private String algoPath;
     private String inputParam;
     private String outputParam;
-    private Integer isDisabled;
     private String apiStatus;
+    private String apiStatusName;
     private String apiUrl;
 }

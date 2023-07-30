@@ -115,7 +115,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     waterMarkProps: {
       content: initialState?.currentUser?.name,
     },
-    footerRender: () => <Footer />,
+    // footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
@@ -125,10 +125,10 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     },
     links: isDev
       ? [
-        <Link to="/umi/plugin/openapi" target="_blank">
-          <LinkOutlined />
-          <span>openAPI 文档</span>
-        </Link>,
+        // <Link to="/umi/plugin/openapi" target="_blank">
+        //   <LinkOutlined />
+        //   <span>openAPI 文档</span>
+        // </Link>,
         <Link to="/~docs">
           <BookOutlined />
           <span>业务组件文档</span>

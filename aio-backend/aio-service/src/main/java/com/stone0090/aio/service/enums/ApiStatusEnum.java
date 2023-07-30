@@ -15,4 +15,13 @@ public enum ApiStatusEnum {
         return desc;
     }
 
+    public static String getDescByCode(String code) {
+        for (ApiStatusEnum apiStatusEnum : ApiStatusEnum.values()) {
+            if (apiStatusEnum.name().equals(code)) {
+                return apiStatusEnum.getDesc();
+            }
+        }
+        return null;
+    }
+
 }

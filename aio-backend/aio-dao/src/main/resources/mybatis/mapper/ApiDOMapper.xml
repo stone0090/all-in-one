@@ -9,13 +9,13 @@
     <result column="API_UUID" property="apiUuid" jdbcType="VARCHAR" />
     <result column="API_NAME" property="apiName" jdbcType="VARCHAR" />
     <result column="API_TYPE" property="apiType" jdbcType="VARCHAR" />
+    <result column="API_STATUS" property="apiStatus" jdbcType="VARCHAR" />
     <result column="TYPE_ID" property="typeId" jdbcType="INTEGER" />
     <result column="API_URL" property="apiUrl" jdbcType="VARCHAR" />
     <result column="INPUT_PARAM" property="inputParam" jdbcType="VARCHAR" />
     <result column="OUTPUT_PARAM" property="outputParam" jdbcType="VARCHAR" />
     <result column="INVOKE_TYPE" property="invokeType" jdbcType="VARCHAR" />
     <result column="CALLBACK_URL" property="callbackUrl" jdbcType="VARCHAR" />
-    <result column="STATUS" property="status" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -76,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    ID, GMT_CREATE, GMT_MODIFIED, IS_DELETED, API_UUID, API_NAME, API_TYPE, TYPE_ID, 
-    API_URL, INPUT_PARAM, OUTPUT_PARAM, INVOKE_TYPE, CALLBACK_URL, STATUS
+    ID, GMT_CREATE, GMT_MODIFIED, IS_DELETED, API_UUID, API_NAME, API_TYPE, API_STATUS, 
+    TYPE_ID, API_URL, INPUT_PARAM, OUTPUT_PARAM, INVOKE_TYPE, CALLBACK_URL
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.stone0090.aio.dao.mybatis.entity.ApiDOExample" >
     select
@@ -112,14 +112,14 @@
   <insert id="insert" parameterType="com.stone0090.aio.dao.mybatis.entity.ApiDO" >
     insert into AIO_API (ID, GMT_CREATE, GMT_MODIFIED, 
       IS_DELETED, API_UUID, API_NAME, 
-      API_TYPE, TYPE_ID, API_URL, 
-      INPUT_PARAM, OUTPUT_PARAM, INVOKE_TYPE, 
-      CALLBACK_URL, STATUS)
+      API_TYPE, API_STATUS, TYPE_ID, 
+      API_URL, INPUT_PARAM, OUTPUT_PARAM, 
+      INVOKE_TYPE, CALLBACK_URL)
     values (#{id,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
       #{isDeleted,jdbcType=INTEGER}, #{apiUuid,jdbcType=VARCHAR}, #{apiName,jdbcType=VARCHAR}, 
-      #{apiType,jdbcType=VARCHAR}, #{typeId,jdbcType=INTEGER}, #{apiUrl,jdbcType=VARCHAR}, 
-      #{inputParam,jdbcType=VARCHAR}, #{outputParam,jdbcType=VARCHAR}, #{invokeType,jdbcType=VARCHAR}, 
-      #{callbackUrl,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+      #{apiType,jdbcType=VARCHAR}, #{apiStatus,jdbcType=VARCHAR}, #{typeId,jdbcType=INTEGER}, 
+      #{apiUrl,jdbcType=VARCHAR}, #{inputParam,jdbcType=VARCHAR}, #{outputParam,jdbcType=VARCHAR}, 
+      #{invokeType,jdbcType=VARCHAR}, #{callbackUrl,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.stone0090.aio.dao.mybatis.entity.ApiDO" >
     insert into AIO_API
@@ -145,6 +145,9 @@
       <if test="apiType != null" >
         API_TYPE,
       </if>
+      <if test="apiStatus != null" >
+        API_STATUS,
+      </if>
       <if test="typeId != null" >
         TYPE_ID,
       </if>
@@ -162,9 +165,6 @@
       </if>
       <if test="callbackUrl != null" >
         CALLBACK_URL,
-      </if>
-      <if test="status != null" >
-        STATUS,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -189,6 +189,9 @@
       <if test="apiType != null" >
         #{apiType,jdbcType=VARCHAR},
       </if>
+      <if test="apiStatus != null" >
+        #{apiStatus,jdbcType=VARCHAR},
+      </if>
       <if test="typeId != null" >
         #{typeId,jdbcType=INTEGER},
       </if>
@@ -206,9 +209,6 @@
       </if>
       <if test="callbackUrl != null" >
         #{callbackUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -242,6 +242,9 @@
       <if test="record.apiType != null" >
         API_TYPE = #{record.apiType,jdbcType=VARCHAR},
       </if>
+      <if test="record.apiStatus != null" >
+        API_STATUS = #{record.apiStatus,jdbcType=VARCHAR},
+      </if>
       <if test="record.typeId != null" >
         TYPE_ID = #{record.typeId,jdbcType=INTEGER},
       </if>
@@ -260,9 +263,6 @@
       <if test="record.callbackUrl != null" >
         CALLBACK_URL = #{record.callbackUrl,jdbcType=VARCHAR},
       </if>
-      <if test="record.status != null" >
-        STATUS = #{record.status,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -277,13 +277,13 @@
       API_UUID = #{record.apiUuid,jdbcType=VARCHAR},
       API_NAME = #{record.apiName,jdbcType=VARCHAR},
       API_TYPE = #{record.apiType,jdbcType=VARCHAR},
+      API_STATUS = #{record.apiStatus,jdbcType=VARCHAR},
       TYPE_ID = #{record.typeId,jdbcType=INTEGER},
       API_URL = #{record.apiUrl,jdbcType=VARCHAR},
       INPUT_PARAM = #{record.inputParam,jdbcType=VARCHAR},
       OUTPUT_PARAM = #{record.outputParam,jdbcType=VARCHAR},
       INVOKE_TYPE = #{record.invokeType,jdbcType=VARCHAR},
-      CALLBACK_URL = #{record.callbackUrl,jdbcType=VARCHAR},
-      STATUS = #{record.status,jdbcType=VARCHAR}
+      CALLBACK_URL = #{record.callbackUrl,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -309,6 +309,9 @@
       <if test="apiType != null" >
         API_TYPE = #{apiType,jdbcType=VARCHAR},
       </if>
+      <if test="apiStatus != null" >
+        API_STATUS = #{apiStatus,jdbcType=VARCHAR},
+      </if>
       <if test="typeId != null" >
         TYPE_ID = #{typeId,jdbcType=INTEGER},
       </if>
@@ -327,9 +330,6 @@
       <if test="callbackUrl != null" >
         CALLBACK_URL = #{callbackUrl,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
-        STATUS = #{status,jdbcType=VARCHAR},
-      </if>
     </set>
     where ID = #{id,jdbcType=INTEGER}
   </update>
@@ -341,13 +341,13 @@
       API_UUID = #{apiUuid,jdbcType=VARCHAR},
       API_NAME = #{apiName,jdbcType=VARCHAR},
       API_TYPE = #{apiType,jdbcType=VARCHAR},
+      API_STATUS = #{apiStatus,jdbcType=VARCHAR},
       TYPE_ID = #{typeId,jdbcType=INTEGER},
       API_URL = #{apiUrl,jdbcType=VARCHAR},
       INPUT_PARAM = #{inputParam,jdbcType=VARCHAR},
       OUTPUT_PARAM = #{outputParam,jdbcType=VARCHAR},
       INVOKE_TYPE = #{invokeType,jdbcType=VARCHAR},
-      CALLBACK_URL = #{callbackUrl,jdbcType=VARCHAR},
-      STATUS = #{status,jdbcType=VARCHAR}
+      CALLBACK_URL = #{callbackUrl,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -485,6 +485,76 @@ public class OperatorDOExample {
             return (Criteria) this;
         }
 
+        public Criteria andOpStatusIsNull() {
+            addCriterion("OP_STATUS is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpStatusIsNotNull() {
+            addCriterion("OP_STATUS is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpStatusEqualTo(String value) {
+            addCriterion("OP_STATUS =", value, "opStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpStatusNotEqualTo(String value) {
+            addCriterion("OP_STATUS <>", value, "opStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpStatusGreaterThan(String value) {
+            addCriterion("OP_STATUS >", value, "opStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpStatusGreaterThanOrEqualTo(String value) {
+            addCriterion("OP_STATUS >=", value, "opStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpStatusLessThan(String value) {
+            addCriterion("OP_STATUS <", value, "opStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpStatusLessThanOrEqualTo(String value) {
+            addCriterion("OP_STATUS <=", value, "opStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpStatusLike(String value) {
+            addCriterion("OP_STATUS like", value, "opStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpStatusNotLike(String value) {
+            addCriterion("OP_STATUS not like", value, "opStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpStatusIn(List<String> values) {
+            addCriterion("OP_STATUS in", values, "opStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpStatusNotIn(List<String> values) {
+            addCriterion("OP_STATUS not in", values, "opStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpStatusBetween(String value1, String value2) {
+            addCriterion("OP_STATUS between", value1, value2, "opStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpStatusNotBetween(String value1, String value2) {
+            addCriterion("OP_STATUS not between", value1, value2, "opStatus");
+            return (Criteria) this;
+        }
+
         public Criteria andAlgoLanguageIsNull() {
             addCriterion("ALGO_LANGUAGE is null");
             return (Criteria) this;
@@ -832,66 +902,6 @@ public class OperatorDOExample {
 
         public Criteria andOutputParamNotBetween(String value1, String value2) {
             addCriterion("OUTPUT_PARAM not between", value1, value2, "outputParam");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDisabledIsNull() {
-            addCriterion("IS_DISABLED is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDisabledIsNotNull() {
-            addCriterion("IS_DISABLED is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDisabledEqualTo(Integer value) {
-            addCriterion("IS_DISABLED =", value, "isDisabled");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDisabledNotEqualTo(Integer value) {
-            addCriterion("IS_DISABLED <>", value, "isDisabled");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDisabledGreaterThan(Integer value) {
-            addCriterion("IS_DISABLED >", value, "isDisabled");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDisabledGreaterThanOrEqualTo(Integer value) {
-            addCriterion("IS_DISABLED >=", value, "isDisabled");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDisabledLessThan(Integer value) {
-            addCriterion("IS_DISABLED <", value, "isDisabled");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDisabledLessThanOrEqualTo(Integer value) {
-            addCriterion("IS_DISABLED <=", value, "isDisabled");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDisabledIn(List<Integer> values) {
-            addCriterion("IS_DISABLED in", values, "isDisabled");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDisabledNotIn(List<Integer> values) {
-            addCriterion("IS_DISABLED not in", values, "isDisabled");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDisabledBetween(Integer value1, Integer value2) {
-            addCriterion("IS_DISABLED between", value1, value2, "isDisabled");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDisabledNotBetween(Integer value1, Integer value2) {
-            addCriterion("IS_DISABLED not between", value1, value2, "isDisabled");
             return (Criteria) this;
         }
     }

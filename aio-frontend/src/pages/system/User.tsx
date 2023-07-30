@@ -259,7 +259,7 @@ const User: React.FC = () => {
         footer={
           <div
             style={{
-              textAlign: 'right',
+              textAlign: 'left',
             }}
           >
             <Button

@@ -38,12 +38,12 @@ public class ShiroUrlFilter extends AccessControlFilter {
             Subject subject = SecurityUtils.getSubject();
             UserDetailVO userDetailVO = (UserDetailVO)subject.getPrincipal();
             if (userDetailVO == null) {
-                throw new RuntimeException("您的登陆状态已失效，请重新登陆");
+                throw new RuntimeException("您的登陆状态已失效，请重新登陆！");
             }
 
             List<RoleVO> roleVOList = userDetailVO.getRoles();
             if (CollectionUtils.isEmpty(roleVOList)) {
-                throw new RuntimeException("您的账号暂未绑定任何角色");
+                throw new RuntimeException("您的账号暂未绑定任何角色！");
             }
 
             List<String> permissionUrlList = new ArrayList<>();
@@ -56,7 +56,7 @@ public class ShiroUrlFilter extends AccessControlFilter {
                 }
             });
             if (CollectionUtils.isEmpty(permissionUrlList)) {
-                throw new RuntimeException("您的角色尚未绑定任何权限");
+                throw new RuntimeException("您的角色尚未绑定任何权限！");
             }
 
             String requestURI = getPathWithinApplication(request);

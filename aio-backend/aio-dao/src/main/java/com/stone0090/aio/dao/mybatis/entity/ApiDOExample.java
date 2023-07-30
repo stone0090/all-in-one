@@ -555,6 +555,76 @@ public class ApiDOExample {
             return (Criteria) this;
         }
 
+        public Criteria andApiStatusIsNull() {
+            addCriterion("API_STATUS is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApiStatusIsNotNull() {
+            addCriterion("API_STATUS is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApiStatusEqualTo(String value) {
+            addCriterion("API_STATUS =", value, "apiStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andApiStatusNotEqualTo(String value) {
+            addCriterion("API_STATUS <>", value, "apiStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andApiStatusGreaterThan(String value) {
+            addCriterion("API_STATUS >", value, "apiStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andApiStatusGreaterThanOrEqualTo(String value) {
+            addCriterion("API_STATUS >=", value, "apiStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andApiStatusLessThan(String value) {
+            addCriterion("API_STATUS <", value, "apiStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andApiStatusLessThanOrEqualTo(String value) {
+            addCriterion("API_STATUS <=", value, "apiStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andApiStatusLike(String value) {
+            addCriterion("API_STATUS like", value, "apiStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andApiStatusNotLike(String value) {
+            addCriterion("API_STATUS not like", value, "apiStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andApiStatusIn(List<String> values) {
+            addCriterion("API_STATUS in", values, "apiStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andApiStatusNotIn(List<String> values) {
+            addCriterion("API_STATUS not in", values, "apiStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andApiStatusBetween(String value1, String value2) {
+            addCriterion("API_STATUS between", value1, value2, "apiStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andApiStatusNotBetween(String value1, String value2) {
+            addCriterion("API_STATUS not between", value1, value2, "apiStatus");
+            return (Criteria) this;
+        }
+
         public Criteria andTypeIdIsNull() {
             addCriterion("TYPE_ID is null");
             return (Criteria) this;
@@ -962,76 +1032,6 @@ public class ApiDOExample {
 
         public Criteria andCallbackUrlNotBetween(String value1, String value2) {
             addCriterion("CALLBACK_URL not between", value1, value2, "callbackUrl");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIsNull() {
-            addCriterion("STATUS is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIsNotNull() {
-            addCriterion("STATUS is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusEqualTo(String value) {
-            addCriterion("STATUS =", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotEqualTo(String value) {
-            addCriterion("STATUS <>", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusGreaterThan(String value) {
-            addCriterion("STATUS >", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusGreaterThanOrEqualTo(String value) {
-            addCriterion("STATUS >=", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusLessThan(String value) {
-            addCriterion("STATUS <", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusLessThanOrEqualTo(String value) {
-            addCriterion("STATUS <=", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusLike(String value) {
-            addCriterion("STATUS like", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotLike(String value) {
-            addCriterion("STATUS not like", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIn(List<String> values) {
-            addCriterion("STATUS in", values, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotIn(List<String> values) {
-            addCriterion("STATUS not in", values, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusBetween(String value1, String value2) {
-            addCriterion("STATUS between", value1, value2, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotBetween(String value1, String value2) {
-            addCriterion("STATUS not between", value1, value2, "status");
             return (Criteria) this;
         }
     }

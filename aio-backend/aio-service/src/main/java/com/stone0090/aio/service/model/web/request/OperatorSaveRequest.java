@@ -17,16 +17,16 @@ public class OperatorSaveRequest {
     private Integer id;
 
     @NotNull(message = "算子标识不能为空")
-    @Size(min = 3, max = 20, message = "算子标识必须介于3到20位字符之间")
+    @Size(min = 3, max = 50, message = "算子标识必须介于3到50位字符之间")
     @Pattern(regexp = "^\\w+$", message = "算子标识只能包含英文字母、数字、下划线")
     private String opCode;
 
     @NotNull(message = "算子名称不能为空")
-    @Size(min = 1, max = 20, message = "算子名称必须介于1到20位字符之间")
+    @Size(min = 1, max = 50, message = "算子名称必须介于1到50位字符之间")
     private String opName;
 
     @NotNull(message = "编程语言不能为空")
-    @Size(max = 20, message = "编程语言必须小于20位字符")
+    @Size(max = 50, message = "编程语言必须小于50位字符")
     private String algoLanguage;
 
     @NotNull(message = "算子代码不能为空")
@@ -40,7 +40,5 @@ public class OperatorSaveRequest {
     @NotNull(message = "算子出参不能为空")
     @Size(max = 4000, message = "算子出参必须小于4000位字符")
     private String outputParam;
-
-    private Integer isDisabled;
 
 }

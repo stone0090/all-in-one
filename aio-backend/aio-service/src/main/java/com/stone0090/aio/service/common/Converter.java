@@ -1,8 +1,12 @@
 package com.stone0090.aio.service.common;
 
 import com.stone0090.aio.dao.mybatis.entity.*;
+import com.stone0090.aio.service.enums.ApiStatusEnum;
+import com.stone0090.aio.service.enums.ExStatusEnum;
+import com.stone0090.aio.service.enums.OpStatusEnum;
 import com.stone0090.aio.service.model.web.request.*;
 import com.stone0090.aio.service.model.web.response.*;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.BeanUtils;
 
 import java.util.Map;
@@ -63,22 +67,43 @@ public class Converter {
         return result;
     }
 
-    public static OperatorVO toOperatorVO(OperatorDO param) {
-        OperatorVO result = new OperatorVO();
-        BeanUtils.copyProperties(param, result);
-        return result;
-    }
-
     public static OperatorVO toOperatorVO(OperatorDO param, Map<Integer, ApiDO> apiMap) {
         OperatorVO result = new OperatorVO();
         BeanUtils.copyProperties(param, result);
-        result.setApiStatus(apiMap.get(param.getId()).getStatus());
-        result.setApiUrl("/aio/api/invoke?serviceId=" + apiMap.get(param.getId()).getApiUuid());
+        result.setOpStatusName(OpStatusEnum.getDescByCode(param.getOpStatus()));
+        if (MapUtils.isNotEmpty(apiMap) && apiMap.containsKey(param.getId())) {
+            result.setApiStatus(apiMap.get(param.getId()).getApiStatus());
+            result.setApiStatusName(ApiStatusEnum.getDescByCode(apiMap.get(param.getId()).getApiStatus()));
+            result.setApiUrl("/aio/api/invoke?serviceId=" + apiMap.get(param.getId()).getApiUuid());
+        } else {
+            result.setApiUrl("/aio/api/invoke?serviceId=");
+        }
         return result;
     }
 
     public static OperatorDO toOperatorDO(OperatorSaveRequest param) {
         OperatorDO result = new OperatorDO();
+        BeanUtils.copyProperties(param, result);
+        return result;
+    }
+
+    public static ExperimentBriefVO toExperimentBriefVO(ExperimentDO param) {
+        ExperimentBriefVO result = new ExperimentBriefVO();
+        BeanUtils.copyProperties(param, result);
+        result.setExStatusName(ExStatusEnum.getDescByCode(param.getExStatus()));
+        return result;
+    }
+
+    public static ExperimentDetailVO toExperimentDetailVO(ExperimentDO param) {
+        ExperimentDetailVO result = new ExperimentDetailVO();
+        BeanUtils.copyProperties(param, result);
+        result.setExStatusName(ExStatusEnum.getDescByCode(param.getExStatus()));
+        return result;
+    }
+
+
+    public static ExperimentDO toExperimentDO(ExperimentSaveBriefRequest param) {
+        ExperimentDO result = new ExperimentDO();
         BeanUtils.copyProperties(param, result);
         return result;
     }

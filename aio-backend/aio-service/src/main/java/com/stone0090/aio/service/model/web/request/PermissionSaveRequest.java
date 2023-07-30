@@ -18,8 +18,8 @@ public class PermissionSaveRequest implements Serializable {
     private Integer id;
 
     @NotNull(message = "权限编码不能为空")
-    @Size(min = 3, max = 20, message = "权限编码必须介于3到10位字符之间")
-    @Pattern(regexp = "^\\w+$", message = "权限code只能包含英文字母、数字、下划线")
+    @Size(min = 3, max = 20, message = "权限编码必须介于3到20位字符之间")
+    @Pattern(regexp = "^\\w+$", message = "权限编码只能包含英文字母、数字、下划线")
     private String permissionCode;
 
     @NotNull(message = "权限名称不能为空")

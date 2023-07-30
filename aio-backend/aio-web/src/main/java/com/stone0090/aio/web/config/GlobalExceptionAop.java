@@ -4,6 +4,7 @@ import javax.validation.ConstraintViolationException;
 
 import com.stone0090.aio.service.model.web.protocal.RestResult;
 import com.stone0090.aio.service.model.web.protocal.ResultCodeEnum;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 /**
  * @author stone
  */
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionAop {
 
@@ -43,6 +45,7 @@ public class GlobalExceptionAop {
     @ExceptionHandler(RuntimeException.class)
     public @ResponseBody
     RestResult handleRuntimeException(RuntimeException e) {
+        log.error("RuntimeException", e);
         return RestResult.failure(e.getLocalizedMessage().replace("java.lang.RuntimeException: ", ""));
         // return RestResult.failure("系统繁忙，请稍后再试！");
     }
@@ -50,6 +53,7 @@ public class GlobalExceptionAop {
     @ExceptionHandler(Exception.class)
     public @ResponseBody
     RestResult handleCustomException(Exception e) {
+        log.error("Exception", e);
         // return RestResult.failure(e.getLocalizedMessage());
         return RestResult.failure("系统繁忙，请稍后再试！");
     }

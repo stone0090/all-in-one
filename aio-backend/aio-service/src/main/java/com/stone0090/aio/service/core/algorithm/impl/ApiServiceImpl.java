@@ -8,7 +8,6 @@ import com.stone0090.aio.manager.utils.HttpUtil;
 import com.stone0090.aio.service.clients.K8sClient;
 import com.stone0090.aio.service.common.Constants;
 import com.stone0090.aio.service.core.algorithm.ApiStartupCallback;
-import com.stone0090.aio.service.enums.AlgoTypeEnum;
 import com.stone0090.aio.service.enums.ApiStatusEnum;
 import com.stone0090.aio.service.enums.DataTypeEnum;
 import io.kubernetes.client.openapi.models.V1Deployment;
@@ -41,7 +40,7 @@ public class ApiServiceImpl {
 
     public int online(ApiDO apiDO, ApiStartupCallback callback) {
         ApiDO oldApiDO = getApiByTypeId(apiDO.getApiType(), apiDO.getTypeId());
-        if (oldApiDO != null && ApiStatusEnum.ONLINE.name().equals(oldApiDO.getStatus())) {
+        if (oldApiDO != null && ApiStatusEnum.ONLINE.name().equals(oldApiDO.getApiStatus())) {
             throw new RuntimeException("API上线失败，不能重复上线！");
         }
         if (oldApiDO != null) {
@@ -57,13 +56,13 @@ public class ApiServiceImpl {
         apiDO.setApiUrl(apiUrl);
         // 注入算法代码，轮询检查服务状态，30秒超时
         injectAndHealthCheck(apiDO, resourceId, callback);
-        apiDO.setStatus(ApiStatusEnum.ONLINE.name());
+        apiDO.setApiStatus(ApiStatusEnum.ONLINE.name());
         return save(apiDO);
     }
 
     public int offline(String type, Integer typeId) {
         ApiDO apiDO = getApiByTypeId(type, typeId);
-        if (apiDO == null || !ApiStatusEnum.ONLINE.name().equals(apiDO.getStatus())) {
+        if (apiDO == null || !ApiStatusEnum.ONLINE.name().equals(apiDO.getApiStatus())) {
             throw new RuntimeException("API下线失败，API不存在或未上线！");
         }
         String resourceId = buildResourceId(apiDO.getApiType(), apiDO.getTypeId());
@@ -73,13 +72,13 @@ public class ApiServiceImpl {
         } catch (Exception e) {
             log.warn("k8s资源删除失败，忽略", e);
         }
-        apiDO.setStatus(ApiStatusEnum.OFFLINE.name());
+        apiDO.setApiStatus(ApiStatusEnum.OFFLINE.name());
         return save(apiDO);
     }
 
     public String invoke(String type, Integer typeId, String inputParam) {
         ApiDO apiDO = getApiByTypeId(type, typeId);
-        if (apiDO == null || !ApiStatusEnum.ONLINE.name().equals(apiDO.getStatus())) {
+        if (apiDO == null || !ApiStatusEnum.ONLINE.name().equals(apiDO.getApiStatus())) {
             throw new RuntimeException("API调用失败，API不存在或未上线！");
         }
         try {

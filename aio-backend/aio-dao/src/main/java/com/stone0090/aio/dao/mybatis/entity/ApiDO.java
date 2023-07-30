@@ -17,6 +17,8 @@ public class ApiDO {
 
     private String apiType;
 
+    private String apiStatus;
+
     private Integer typeId;
 
     private String apiUrl;
@@ -28,8 +30,6 @@ public class ApiDO {
     private String invokeType;
 
     private String callbackUrl;
-
-    private String status;
 
     public Integer getId() {
         return id;
@@ -87,6 +87,14 @@ public class ApiDO {
         this.apiType = apiType == null ? null : apiType.trim();
     }
 
+    public String getApiStatus() {
+        return apiStatus;
+    }
+
+    public void setApiStatus(String apiStatus) {
+        this.apiStatus = apiStatus == null ? null : apiStatus.trim();
+    }
+
     public Integer getTypeId() {
         return typeId;
     }
@@ -133,13 +141,5 @@ public class ApiDO {
 
     public void setCallbackUrl(String callbackUrl) {
         this.callbackUrl = callbackUrl == null ? null : callbackUrl.trim();
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
     }
 }

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * @date 2021/08/02
  */
 @RestController
-@Api(value = "ConfigController", tags = "算子管理")
+@Api(value = "OperatorController", tags = "算子管理")
 @RequestMapping("/aio/operator")
 public class OperatorController {
 
@@ -54,6 +54,20 @@ public class OperatorController {
     @PostMapping("/edit")
     public RestResult edit(@RequestBody OperatorSaveRequest request) {
         int count = service.save(request);
+        return RestResult.success(count);
+    }
+
+    @ApiOperation("上架算子")
+    @PostMapping("/publish")
+    public RestResult publish(@RequestBody IdRequest request) {
+        int count = service.publish(request);
+        return RestResult.success(count);
+    }
+
+    @ApiOperation("废弃算子")
+    @PostMapping("/deprecate")
+    public RestResult deprecate(@RequestBody IdRequest request) {
+        int count = service.deprecate(request);
         return RestResult.success(count);
     }
 

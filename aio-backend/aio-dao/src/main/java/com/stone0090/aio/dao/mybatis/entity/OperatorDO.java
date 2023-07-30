@@ -15,6 +15,8 @@ public class OperatorDO {
 
     private String opName;
 
+    private String opStatus;
+
     private String algoLanguage;
 
     private String algoCode;
@@ -24,8 +26,6 @@ public class OperatorDO {
     private String inputParam;
 
     private String outputParam;
-
-    private Integer isDisabled;
 
     public Integer getId() {
         return id;
@@ -75,6 +75,14 @@ public class OperatorDO {
         this.opName = opName == null ? null : opName.trim();
     }
 
+    public String getOpStatus() {
+        return opStatus;
+    }
+
+    public void setOpStatus(String opStatus) {
+        this.opStatus = opStatus == null ? null : opStatus.trim();
+    }
+
     public String getAlgoLanguage() {
         return algoLanguage;
     }
@@ -113,13 +121,5 @@ public class OperatorDO {
 
     public void setOutputParam(String outputParam) {
         this.outputParam = outputParam == null ? null : outputParam.trim();
-    }
-
-    public Integer getIsDisabled() {
-        return isDisabled;
-    }
-
-    public void setIsDisabled(Integer isDisabled) {
-        this.isDisabled = isDisabled;
     }
 }

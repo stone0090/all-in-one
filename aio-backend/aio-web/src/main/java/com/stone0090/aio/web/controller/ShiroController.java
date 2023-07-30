@@ -8,6 +8,7 @@ import com.stone0090.aio.service.model.web.response.UserDetailVO;
 import com.stone0090.aio.service.model.web.response.UserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author stone
  * @date 2021/08/02
  */
+@Slf4j
 @Validated
 @RestController
 @Api(value = "ShiroController", tags = "登陆管理")
@@ -36,7 +38,14 @@ public class ShiroController {
             Subject subject = SecurityUtils.getSubject();
             subject.login(new UsernamePasswordToken(request.getUsername(), request.getPassword()));
         } catch (AuthenticationException e) {
-            return RestResult.failure(e.getMessage());
+            log.error("AuthenticationException", e);
+            if(e.getMessage().contains("unable to find account")) {
+                return RestResult.failure("登录失败，用户不存在！");
+            }
+            if (e.getMessage().contains("did not match")) {
+                return RestResult.failure("登录失败，密码不正确！");
+            }
+            return RestResult.failure("登录失败，后台繁忙！");
         }
         return RestResult.success();
     }
@@ -51,7 +60,7 @@ public class ShiroController {
     @GetMapping("/current")
     public RestResult current() {
         Subject subject = SecurityUtils.getSubject();
-        UserDetailVO userDetailVO = (UserDetailVO)subject.getPrincipal();
+        UserDetailVO userDetailVO = (UserDetailVO) subject.getPrincipal();
         UserVO userVO = new UserVO();
         userVO.setName(userDetailVO.getUsername());
         userVO.setAvatar("https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png");

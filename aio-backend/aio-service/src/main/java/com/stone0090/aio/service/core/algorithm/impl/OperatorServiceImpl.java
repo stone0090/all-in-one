@@ -7,17 +7,13 @@ import com.stone0090.aio.dao.mybatis.entity.OperatorDO;
 import com.stone0090.aio.dao.mybatis.entity.OperatorDOExample;
 import com.stone0090.aio.dao.mybatis.entity.SystemConfigDO;
 import com.stone0090.aio.dao.mybatis.mapper.OperatorDOMapper;
-import com.stone0090.aio.manager.utils.HttpUtil;
 import com.stone0090.aio.manager.utils.UuidUtil;
 import com.stone0090.aio.service.common.ConfigConstants;
 import com.stone0090.aio.service.common.Converter;
 import com.stone0090.aio.service.core.algorithm.ApiService;
 import com.stone0090.aio.service.core.algorithm.OperatorService;
 import com.stone0090.aio.service.core.system.impl.ConfigServiceImpl;
-import com.stone0090.aio.service.enums.AlgoTypeEnum;
-import com.stone0090.aio.service.enums.ApiStatusEnum;
-import com.stone0090.aio.service.enums.DataTypeEnum;
-import com.stone0090.aio.service.enums.InvokeTypeEnum;
+import com.stone0090.aio.service.enums.*;
 import com.stone0090.aio.service.model.web.protocal.PageRequest;
 import com.stone0090.aio.service.model.web.protocal.PageResult;
 import com.stone0090.aio.service.model.web.request.*;
@@ -49,8 +45,6 @@ public class OperatorServiceImpl implements OperatorService, ApiService {
     private ConfigServiceImpl configServiceImpl;
     @Autowired
     private ApiServiceImpl apiServiceImpl;
-    @Autowired
-    private HttpUtil httpUtil;
 
     @Value("${spring.profiles.active}")
     private String env;
@@ -70,8 +64,7 @@ public class OperatorServiceImpl implements OperatorService, ApiService {
         List<OperatorDO> result = operatorDOMapper.selectByExample(example);
         List<ApiDO> apiDOList = apiServiceImpl.listApiByTypeIds(AlgoTypeEnum.OPERATOR.name(),
                 result.stream().map(OperatorDO::getId).collect(Collectors.toList()));
-        Map<Integer, ApiDO> apiMap = apiDOList.stream()
-                .collect(Collectors.toMap(ApiDO::getTypeId, apiDO -> apiDO));
+        Map<Integer, ApiDO> apiMap = apiDOList.stream().collect(Collectors.toMap(ApiDO::getTypeId, apiDO -> apiDO));
         PageResult<OperatorVO> pageResult = PageResult.buildPageResult(result);
         pageResult.setList(result.stream().map(operatorDO -> Converter.toOperatorVO(operatorDO, apiMap))
                 .collect(Collectors.toList()));
@@ -81,7 +74,7 @@ public class OperatorServiceImpl implements OperatorService, ApiService {
     @Override
     public OperatorVO get(IdRequest request) {
         OperatorDO result = getOperatorDO(request.getId());
-        return result != null ? Converter.toOperatorVO(result) : null;
+        return result != null ? Converter.toOperatorVO(result, null) : null;
     }
 
     @Override
@@ -91,11 +84,51 @@ public class OperatorServiceImpl implements OperatorService, ApiService {
         OperatorDO data = Converter.toOperatorDO(request);
         if (data.getId() == null) {
             data.setAlgoPath("");
+            data.setOpStatus(OpStatusEnum.INIT.name());
             return operatorDOMapper.insertSelective(data);
         } else {
+            OperatorDO operatorDO = getOperatorDO(request.getId());
+            if (operatorDO == null) {
+                throw new RuntimeException("修改失败，算子不存在！");
+            }
+            if (!operatorDO.getOpStatus().equals(OpStatusEnum.INIT.name())) {
+                throw new RuntimeException("修改失败，" + OpStatusEnum.getDescByCode(operatorDO.getOpStatus()) + "的算子不允许修改！");
+            }
             data.setGmtModified(new Date());
             return operatorDOMapper.updateByPrimaryKeySelective(data);
         }
+    }
+
+    @Override
+    public int publish(IdRequest request) {
+        OperatorDO operatorDO = getOperatorDO(request.getId());
+        if (operatorDO == null) {
+            throw new RuntimeException("上架失败，算子不存在！");
+        }
+        if (!operatorDO.getOpStatus().equals(OpStatusEnum.INIT.name())) {
+            throw new RuntimeException("上架失败，" + OpStatusEnum.getDescByCode(operatorDO.getOpStatus()) + "的算子不允许上架！");
+        }
+        OperatorDO data = new OperatorDO();
+        data.setId(request.getId());
+        data.setOpStatus(OpStatusEnum.PUBLISHED.name());
+        data.setGmtModified(new Date());
+        return operatorDOMapper.updateByPrimaryKeySelective(data);
+    }
+
+    @Override
+    public int deprecate(IdRequest request) {
+        OperatorDO operatorDO = getOperatorDO(request.getId());
+        if (operatorDO == null) {
+            throw new RuntimeException("废弃失败，算子不存在！");
+        }
+        if (!operatorDO.getOpStatus().equals(OpStatusEnum.PUBLISHED.name())) {
+            throw new RuntimeException("废弃失败，" + OpStatusEnum.getDescByCode(operatorDO.getOpStatus()) + "的算子不允许废弃！");
+        }
+        OperatorDO data = new OperatorDO();
+        data.setId(request.getId());
+        data.setOpStatus(OpStatusEnum.DEPRECATED.name());
+        data.setGmtModified(new Date());
+        return operatorDOMapper.updateByPrimaryKeySelective(data);
     }
 
     @Override
@@ -103,7 +136,7 @@ public class OperatorServiceImpl implements OperatorService, ApiService {
     public int remove(IdRequest request) {
         ApiDO apiDO = apiServiceImpl.getApiByTypeId(AlgoTypeEnum.OPERATOR.name(), request.getId());
         if (apiDO != null) {
-            if (ApiStatusEnum.ONLINE.name().equals(apiDO.getStatus())) {
+            if (ApiStatusEnum.ONLINE.name().equals(apiDO.getApiStatus())) {
                 throw new RuntimeException("算子删除失败，API状态为在线的算子不可删除！");
             }
             apiServiceImpl.removeApiByTypeId(AlgoTypeEnum.OPERATOR.name(), request.getId());
@@ -226,7 +259,7 @@ public class OperatorServiceImpl implements OperatorService, ApiService {
         apiDO.setInvokeType(InvokeTypeEnum.SYNC.name());
         apiDO.setApiUrl("");
         apiDO.setCallbackUrl("");
-        apiDO.setStatus(ApiStatusEnum.OFFLINE.name());
+        apiDO.setApiStatus(ApiStatusEnum.OFFLINE.name());
         return apiDO;
     }
 

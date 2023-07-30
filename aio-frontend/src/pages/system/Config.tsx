@@ -4,21 +4,16 @@ import React, {useState, useRef} from 'react';
 import {PageContainer} from '@ant-design/pro-layout';
 import type {ProColumns, ActionType} from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import type {ProDescriptionsItemProps} from '@ant-design/pro-descriptions';
-import ProDescriptions from '@ant-design/pro-descriptions';
 import {requestGet, requestPost} from '@/services/api';
 import TextArea from "antd/es/input/TextArea";
 
-import styles from './Config.less';
 
 const Config: React.FC = () => {
 
   const actionRef = useRef<ActionType>();
   const [form] = Form.useForm();
-  const [currentRow, setCurrentRow] = useState<any>();
   const [addStatus, setAddStatus] = useState<boolean>(true);
   const [formVisible, setFormVisible] = useState<boolean>(false);
-  const [detailVisible, setDetailVisible] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   type handleGetCallback = (record: any) => void;
   const {confirm} = Modal;
@@ -78,43 +73,32 @@ const Config: React.FC = () => {
       title: '配置项',
       dataIndex: 'configKey',
       valueType: 'textarea',
-      render: (dom, record) => {
-        return (
-          <a
-            onClick={() => {
-              setCurrentRow(undefined);
-              handleGet(record, setCurrentRow);
-              setDetailVisible(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
-      },
+      width: 300,
     },
     {
       title: '配置值',
       dataIndex: 'configValue',
       valueType: 'textarea',
-      ellipsis: true
+      ellipsis: true,
     },
     {
       title: '更新时间',
       dataIndex: 'gmtModified',
       valueType: 'dateTime',
       search: false,
+      width: 200,
     },
     {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
+      width: 200,
       render: (dom, record) => [
         <a
           key="edit"
           onClick={() => {
             form.resetFields();
             setAddStatus(false);
-            setDetailVisible(false);
             handleGet(record, form.setFieldsValue);
             setFormVisible(true);
           }}
@@ -173,7 +157,7 @@ const Config: React.FC = () => {
         footer={
           <div
             style={{
-              textAlign: 'right',
+              textAlign: 'left',
             }}
           >
             <Button
@@ -226,28 +210,6 @@ const Config: React.FC = () => {
             <Form.Item name="id"></Form.Item>
           </Form>
         </Spin>
-      </Drawer>
-      <Drawer
-        width={720}
-        visible={detailVisible}
-        onClose={() => {
-          setCurrentRow(undefined);
-          setDetailVisible(false);
-        }}
-        closable={false}
-      >
-        <ProDescriptions<any>
-          column={1}
-          title="配置详情"
-          request={async () => ({
-            data: currentRow || {},
-          })}
-          params={{
-            id: currentRow?.id,
-          }}
-          columns={columns as ProDescriptionsItemProps<any>[]}
-          className={styles.customProDescriptions}
-        />
       </Drawer>
     </PageContainer>
   );
