@@ -15,4 +15,4 @@ ENV AIO_FAAS_PYTHON_WD /home/admin/aio-faas/python-basic
 
 EXPOSE 6000 6001
 
-CMD ["/bin/bash", "-c", "/home/admin/aio-scheduler/start.sh"]
+CMD ["/bin/bash", "-c", "/home/admin/aio-scheduler/startsh"]

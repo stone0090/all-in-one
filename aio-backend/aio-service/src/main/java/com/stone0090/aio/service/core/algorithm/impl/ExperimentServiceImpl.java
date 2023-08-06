@@ -61,7 +61,7 @@ public class ExperimentServiceImpl implements ExperimentService {
         if (data.getId() == null) {
             data.setExStatus(ExStatusEnum.INIT.name());
             data.setNodeDag("");
-            data.setPublishType(ExPublishTypeEnum.SECOND_SCHEDULING.name());
+            data.setPublishType(ExPublishTypeEnum.API_SERVICE.name());
             data.setPublishConfig("");
             return experimentDOMapper.insertSelective(data);
         } else {
@@ -79,7 +79,16 @@ public class ExperimentServiceImpl implements ExperimentService {
 
     @Override
     public int saveDetail(ExperimentSaveDetailRequest request) {
-        return 0;
+        ExperimentDO data = Converter.toExperimentDO(request);
+        ExperimentDO experimentDO = getExperimentDO(request.getId());
+        if (experimentDO == null) {
+            throw new RuntimeException("修改失败，画布不存在！");
+        }
+        if (!experimentDO.getExStatus().equals(ExStatusEnum.INIT.name())) {
+            throw new RuntimeException("修改失败，" + ExStatusEnum.getDescByCode(experimentDO.getExStatus()) + "的画布不允许修改！");
+        }
+        data.setGmtModified(new Date());
+        return experimentDOMapper.updateByPrimaryKeySelective(data);
     }
 
     @Override

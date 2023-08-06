@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * @date 2021/08/02
  */
 @RestController
-@Api(value = "ExperimentController", tags = "算子编排")
+@Api(value = "ExperimentController", tags = "画布管理")
 @RequestMapping("/aio/experiment")
 public class ExperimentController {
 

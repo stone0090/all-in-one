@@ -21,12 +21,8 @@ public class ExperimentSaveDetailRequest implements Serializable {
     @Size(max = 20000, message = "画布节点必须小于20000位字符")
     private String nodeDag;
 
-    @NotNull(message = "部署类型不能为空")
-    @Size(max = 50, message = "部署类型必须小于50位字符")
-    private String publishType;
-
-    @NotNull(message = "部署类型不能为空")
-    @Size(max = 1000, message = "部署类型必须小于1000位字符")
-    private String publishConfig;
+//    @NotNull(message = "部署类型不能为空")
+//    @Size(max = 50, message = "部署类型必须小于50位字符")
+//    private String publishType;
 
 }

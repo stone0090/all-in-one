@@ -67,6 +67,13 @@ public class Converter {
         return result;
     }
 
+    public static OperatorVO toOperatorVO(OperatorDO param) {
+        OperatorVO result = new OperatorVO();
+        BeanUtils.copyProperties(param, result);
+        result.setOpStatusName(OpStatusEnum.getDescByCode(param.getOpStatus()));
+        return result;
+    }
+
     public static OperatorVO toOperatorVO(OperatorDO param, Map<Integer, ApiDO> apiMap) {
         OperatorVO result = new OperatorVO();
         BeanUtils.copyProperties(param, result);
@@ -107,5 +114,12 @@ public class Converter {
         BeanUtils.copyProperties(param, result);
         return result;
     }
+
+    public static ExperimentDO toExperimentDO(ExperimentSaveDetailRequest param) {
+        ExperimentDO result = new ExperimentDO();
+        BeanUtils.copyProperties(param, result);
+        return result;
+    }
+
 
 }

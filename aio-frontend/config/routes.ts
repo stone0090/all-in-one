@@ -28,7 +28,11 @@
         component: './algorithm/Experiment',
       },
       {
-        path: '/algorithm/op_group',
+        path: '/algorithm/dag',
+        component: './algorithm/Dag',
+      },
+      {
+        path: '/algorithm/group',
         name: '算子分组（待规划）',
         component: './404',
       },
@@ -70,9 +74,14 @@
     name: '功能示例',
     routes: [
       {
-        path: '/demo/xflow',
+        path: '/demo/xflow-basic',
+        name: '树形组件',
+        component: './demo/xflow-basic',
+      },
+      {
+        path: '/demo/xflow-dag',
         name: '流程编排',
-        component: './demo/XFlow',
+        component: './demo/xflow-dag',
       },
     ],
   },

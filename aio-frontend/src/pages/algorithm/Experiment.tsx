@@ -122,7 +122,7 @@ const Experiment: React.FC = () => {
         >
           修改
         </a>,
-        <Link to="/demo/xflow" target="_blank">
+        <Link to={"/algorithm/dag?id=" + record.id}>
           <span>算子编排</span>
         </Link>,
         <a
