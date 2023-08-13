@@ -23,13 +23,13 @@
         component: './algorithm/Operator',
       },
       {
-        path: '/algorithm/experiment',
+        path: '/algorithm/dag',
         name: '算子编排',
-        component: './algorithm/Experiment',
+        component: './algorithm/Dag',
       },
       {
-        path: '/algorithm/dag',
-        component: './algorithm/Dag',
+        path: '/algorithm/xflow-dag',
+        component: './algorithm/xflow-dag',
       },
       {
         path: '/algorithm/group',

@@ -7,17 +7,16 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.stone0090.aio.dao.mybatis.entity.PermissionDO;
+import com.stone0090.aio.dao.mybatis.entity.PermissionDOExample;
+import com.stone0090.aio.dao.mybatis.entity.RolePermissionRelationDO;
+import com.stone0090.aio.dao.mybatis.entity.RolePermissionRelationDOExample;
 import com.stone0090.aio.service.model.web.protocal.PageRequest;
 import com.stone0090.aio.service.model.web.protocal.PageResult;
 import com.stone0090.aio.service.model.web.request.IdRequest;
 import com.stone0090.aio.service.model.web.request.PermissionQueryRequest;
-import com.stone0090.aio.service.model.web.request.PermissionSaveRequest;
+import com.stone0090.aio.service.model.web.request.save.PermissionSaveRequest;
 import com.stone0090.aio.service.model.web.response.PermissionVO;
-import com.stone0090.aio.dao.mybatis.entity.PermissionDO;
-import com.stone0090.aio.dao.mybatis.entity.PermissionDOExample;
-import com.stone0090.aio.dao.mybatis.entity.PermissionDOExample.Criteria;
-import com.stone0090.aio.dao.mybatis.entity.RolePermissionRelationDO;
-import com.stone0090.aio.dao.mybatis.entity.RolePermissionRelationDOExample;
 import com.stone0090.aio.dao.mybatis.mapper.PermissionDOMapper;
 import com.stone0090.aio.dao.mybatis.mapper.RolePermissionRelationDOMapper;
 import com.stone0090.aio.service.common.Converter;
@@ -43,7 +42,7 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public PageResult<PermissionVO> list(PermissionQueryRequest queryRequest, PageRequest pageRequest) {
         PermissionDOExample example = new PermissionDOExample();
-        Criteria criteria = example.createCriteria();
+        PermissionDOExample.Criteria criteria = example.createCriteria();
         criteria.andIsDeletedEqualTo(0);
         if (!StringUtils.isEmpty(queryRequest.getPermissionCode())) {
             criteria.andPermissionCodeLike("%" + queryRequest.getPermissionCode() + "%");

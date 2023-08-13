@@ -5,6 +5,6 @@ def file_to_escaped_string(file_path):
     return escaped_string
 
 
-file_path = '../inject_code2.py'
+file_path = '../inject_code.py'
 file_content = file_to_escaped_string(file_path)
 print(file_content)

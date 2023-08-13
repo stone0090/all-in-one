@@ -5,7 +5,7 @@ import com.stone0090.aio.service.model.web.protocal.PageResult;
 import com.stone0090.aio.service.model.web.protocal.RestResult;
 import com.stone0090.aio.service.model.web.request.IdRequest;
 import com.stone0090.aio.service.model.web.request.PermissionQueryRequest;
-import com.stone0090.aio.service.model.web.request.PermissionSaveRequest;
+import com.stone0090.aio.service.model.web.request.save.PermissionSaveRequest;
 import com.stone0090.aio.service.model.web.response.PermissionVO;
 import com.stone0090.aio.service.core.system.PermissionService;
 import io.swagger.annotations.Api;

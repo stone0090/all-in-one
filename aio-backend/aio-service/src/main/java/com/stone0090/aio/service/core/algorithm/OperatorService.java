@@ -4,12 +4,14 @@ import com.stone0090.aio.service.model.web.protocal.PageRequest;
 import com.stone0090.aio.service.model.web.protocal.PageResult;
 import com.stone0090.aio.service.model.web.request.IdRequest;
 import com.stone0090.aio.service.model.web.request.OperatorQueryRequest;
-import com.stone0090.aio.service.model.web.request.OperatorSaveRequest;
+import com.stone0090.aio.service.model.web.request.save.OperatorSaveRequest;
+import com.stone0090.aio.service.model.web.response.OperatorAndGroupVO;
 import com.stone0090.aio.service.model.web.response.OperatorVO;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author stone
@@ -31,7 +33,6 @@ public interface OperatorService {
 
     int remove(@NotNull(message = "入参不能为空") @Valid IdRequest request);
 
-    OperatorVO getDefaultConfig();
-
+    List<OperatorAndGroupVO> listDagOpGroups();
 
 }

@@ -18,12 +18,12 @@ public class OperatorVO implements Serializable {
     private String opName;
     private String opStatus;
     private String opStatusName;
-    private String algoLanguage;
-    private String algoCode;
-    private String algoPath;
+    private String programmingLanguage;
+    private String algorithmCode;
+    private String algorithmPath;
     private String inputParam;
     private String outputParam;
-    private String apiStatus;
-    private String apiStatusName;
-    private String apiUrl;
+    private String svcStatus;
+    private String svcStatusName;
+    private String svcUrl;
 }

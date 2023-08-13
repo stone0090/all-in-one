@@ -1,10 +1,16 @@
 package com.stone0090.aio.web.controller;
 
-import com.stone0090.aio.service.core.algorithm.ApiService;
+import com.stone0090.aio.service.core.algorithm.SvcService;
+import com.stone0090.aio.service.core.system.ConfigService;
 import com.stone0090.aio.service.model.web.protocal.PageRequest;
 import com.stone0090.aio.service.model.web.protocal.PageResult;
 import com.stone0090.aio.service.model.web.protocal.RestResult;
-import com.stone0090.aio.service.model.web.request.*;
+import com.stone0090.aio.service.model.web.request.IdRequest;
+import com.stone0090.aio.service.model.web.request.OperatorQueryRequest;
+import com.stone0090.aio.service.model.web.request.SvcInvokeRequest;
+import com.stone0090.aio.service.model.web.request.SvcRequest;
+import com.stone0090.aio.service.model.web.request.save.OperatorSaveRequest;
+import com.stone0090.aio.service.model.web.response.OperatorAndGroupVO;
 import com.stone0090.aio.service.model.web.response.OperatorVO;
 import com.stone0090.aio.service.core.algorithm.OperatorService;
 import io.swagger.annotations.Api;
@@ -12,6 +18,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author stone
@@ -27,7 +35,10 @@ public class OperatorController {
 
     @Autowired
     @Qualifier("operatorService")
-    private ApiService apiService;
+    private SvcService svcService;
+
+    @Autowired
+    private ConfigService configService;
 
     @ApiOperation("获取算子列表")
     @GetMapping("/list")
@@ -57,7 +68,7 @@ public class OperatorController {
         return RestResult.success(count);
     }
 
-    @ApiOperation("上架算子")
+    @ApiOperation("发布算子")
     @PostMapping("/publish")
     public RestResult publish(@RequestBody IdRequest request) {
         int count = service.publish(request);
@@ -78,31 +89,38 @@ public class OperatorController {
         return RestResult.success(count);
     }
 
-    @ApiOperation("获取默认配置")
-    @GetMapping("/getDefaultConfig")
-    public RestResult getDefaultConfig() {
-        OperatorVO result = service.getDefaultConfig();
+    @ApiOperation("获取Dag左侧的算子列表")
+    @GetMapping("/listDagOpGroups")
+    public RestResult listDagOpGroups() {
+        List<OperatorAndGroupVO> result = service.listDagOpGroups();
         return RestResult.success(result);
     }
 
-    @ApiOperation("上线算子API")
-    @PostMapping("/onlineApi")
-    public RestResult online(@RequestBody ApiRequest request) {
-        int count = apiService.onlineApi(request);
+    @ApiOperation("获取默认配置")
+    @GetMapping("/getDefaultConfig")
+    public RestResult getDefaultConfig() {
+        OperatorVO result = configService.getOperatorDefaultConfig();
+        return RestResult.success(result);
+    }
+
+    @ApiOperation("上线算子服务")
+    @PostMapping("/onlineSvc")
+    public RestResult online(@RequestBody SvcRequest request) {
+        int count = svcService.onlineSvc(request);
         return RestResult.success(count);
     }
 
-    @ApiOperation("下线算子API")
-    @PostMapping("/offlineApi")
-    public RestResult offline(@RequestBody ApiRequest request) {
-        int count = apiService.offlineApi(request);
+    @ApiOperation("下线算子服务")
+    @PostMapping("/offlineSvc")
+    public RestResult offline(@RequestBody SvcRequest request) {
+        int count = svcService.offlineSvc(request);
         return RestResult.success(count);
     }
 
-    @ApiOperation("调用算子API")
-    @PostMapping("/invokeApi")
-    public RestResult invokeApi(@RequestBody ApiInvokeRequest request) {
-        String result = apiService.invokeApi(request);
+    @ApiOperation("调用算子服务")
+    @PostMapping("/invokeSvc")
+    public RestResult invokeApi(@RequestBody SvcInvokeRequest request) {
+        String result = svcService.invokeSvc(request);
         return RestResult.success(result);
     }
 

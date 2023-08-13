@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.stone0090.aio.dao.mybatis.mapper.ServiceDOMapper" >
+  <resultMap id="BaseResultMap" type="com.stone0090.aio.dao.mybatis.entity.ServiceDO" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="GMT_CREATE" property="gmtCreate" jdbcType="TIMESTAMP" />
+    <result column="GMT_MODIFIED" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="IS_DELETED" property="isDeleted" jdbcType="INTEGER" />
+    <result column="SVC_UUID" property="svcUuid" jdbcType="VARCHAR" />
+    <result column="SVC_NAME" property="svcName" jdbcType="VARCHAR" />
+    <result column="SVC_STATUS" property="svcStatus" jdbcType="VARCHAR" />
+    <result column="SVC_TYPE" property="svcType" jdbcType="VARCHAR" />
+    <result column="SVC_BIZ_ID" property="svcBizId" jdbcType="INTEGER" />
+    <result column="SVC_URL" property="svcUrl" jdbcType="VARCHAR" />
+    <result column="INPUT_PARAM" property="inputParam" jdbcType="VARCHAR" />
+    <result column="OUTPUT_PARAM" property="outputParam" jdbcType="VARCHAR" />
+    <result column="INVOKE_TYPE" property="invokeType" jdbcType="VARCHAR" />
+    <result column="CALLBACK_URL" property="callbackUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, GMT_CREATE, GMT_MODIFIED, IS_DELETED, SVC_UUID, SVC_NAME, SVC_STATUS, SVC_TYPE, 
+    SVC_BIZ_ID, SVC_URL, INPUT_PARAM, OUTPUT_PARAM, INVOKE_TYPE, CALLBACK_URL
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.stone0090.aio.dao.mybatis.entity.ServiceDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from AIO_SERVICE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from AIO_SERVICE
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from AIO_SERVICE
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.stone0090.aio.dao.mybatis.entity.ServiceDOExample" >
+    delete from AIO_SERVICE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.stone0090.aio.dao.mybatis.entity.ServiceDO" >
+    insert into AIO_SERVICE (ID, GMT_CREATE, GMT_MODIFIED, 
+      IS_DELETED, SVC_UUID, SVC_NAME, 
+      SVC_STATUS, SVC_TYPE, SVC_BIZ_ID, 
+      SVC_URL, INPUT_PARAM, OUTPUT_PARAM, 
+      INVOKE_TYPE, CALLBACK_URL)
+    values (#{id,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=INTEGER}, #{svcUuid,jdbcType=VARCHAR}, #{svcName,jdbcType=VARCHAR}, 
+      #{svcStatus,jdbcType=VARCHAR}, #{svcType,jdbcType=VARCHAR}, #{svcBizId,jdbcType=INTEGER}, 
+      #{svcUrl,jdbcType=VARCHAR}, #{inputParam,jdbcType=VARCHAR}, #{outputParam,jdbcType=VARCHAR}, 
+      #{invokeType,jdbcType=VARCHAR}, #{callbackUrl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.stone0090.aio.dao.mybatis.entity.ServiceDO" >
+    insert into AIO_SERVICE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="gmtCreate != null" >
+        GMT_CREATE,
+      </if>
+      <if test="gmtModified != null" >
+        GMT_MODIFIED,
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED,
+      </if>
+      <if test="svcUuid != null" >
+        SVC_UUID,
+      </if>
+      <if test="svcName != null" >
+        SVC_NAME,
+      </if>
+      <if test="svcStatus != null" >
+        SVC_STATUS,
+      </if>
+      <if test="svcType != null" >
+        SVC_TYPE,
+      </if>
+      <if test="svcBizId != null" >
+        SVC_BIZ_ID,
+      </if>
+      <if test="svcUrl != null" >
+        SVC_URL,
+      </if>
+      <if test="inputParam != null" >
+        INPUT_PARAM,
+      </if>
+      <if test="outputParam != null" >
+        OUTPUT_PARAM,
+      </if>
+      <if test="invokeType != null" >
+        INVOKE_TYPE,
+      </if>
+      <if test="callbackUrl != null" >
+        CALLBACK_URL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null" >
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="svcUuid != null" >
+        #{svcUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="svcName != null" >
+        #{svcName,jdbcType=VARCHAR},
+      </if>
+      <if test="svcStatus != null" >
+        #{svcStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="svcType != null" >
+        #{svcType,jdbcType=VARCHAR},
+      </if>
+      <if test="svcBizId != null" >
+        #{svcBizId,jdbcType=INTEGER},
+      </if>
+      <if test="svcUrl != null" >
+        #{svcUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="inputParam != null" >
+        #{inputParam,jdbcType=VARCHAR},
+      </if>
+      <if test="outputParam != null" >
+        #{outputParam,jdbcType=VARCHAR},
+      </if>
+      <if test="invokeType != null" >
+        #{invokeType,jdbcType=VARCHAR},
+      </if>
+      <if test="callbackUrl != null" >
+        #{callbackUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.stone0090.aio.dao.mybatis.entity.ServiceDOExample" resultType="java.lang.Integer" >
+    select count(*) from AIO_SERVICE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update AIO_SERVICE
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.gmtCreate != null" >
+        GMT_CREATE = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        GMT_MODIFIED = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDeleted != null" >
+        IS_DELETED = #{record.isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="record.svcUuid != null" >
+        SVC_UUID = #{record.svcUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.svcName != null" >
+        SVC_NAME = #{record.svcName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.svcStatus != null" >
+        SVC_STATUS = #{record.svcStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.svcType != null" >
+        SVC_TYPE = #{record.svcType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.svcBizId != null" >
+        SVC_BIZ_ID = #{record.svcBizId,jdbcType=INTEGER},
+      </if>
+      <if test="record.svcUrl != null" >
+        SVC_URL = #{record.svcUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inputParam != null" >
+        INPUT_PARAM = #{record.inputParam,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outputParam != null" >
+        OUTPUT_PARAM = #{record.outputParam,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invokeType != null" >
+        INVOKE_TYPE = #{record.invokeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.callbackUrl != null" >
+        CALLBACK_URL = #{record.callbackUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update AIO_SERVICE
+    set ID = #{record.id,jdbcType=INTEGER},
+      GMT_CREATE = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      GMT_MODIFIED = #{record.gmtModified,jdbcType=TIMESTAMP},
+      IS_DELETED = #{record.isDeleted,jdbcType=INTEGER},
+      SVC_UUID = #{record.svcUuid,jdbcType=VARCHAR},
+      SVC_NAME = #{record.svcName,jdbcType=VARCHAR},
+      SVC_STATUS = #{record.svcStatus,jdbcType=VARCHAR},
+      SVC_TYPE = #{record.svcType,jdbcType=VARCHAR},
+      SVC_BIZ_ID = #{record.svcBizId,jdbcType=INTEGER},
+      SVC_URL = #{record.svcUrl,jdbcType=VARCHAR},
+      INPUT_PARAM = #{record.inputParam,jdbcType=VARCHAR},
+      OUTPUT_PARAM = #{record.outputParam,jdbcType=VARCHAR},
+      INVOKE_TYPE = #{record.invokeType,jdbcType=VARCHAR},
+      CALLBACK_URL = #{record.callbackUrl,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.stone0090.aio.dao.mybatis.entity.ServiceDO" >
+    update AIO_SERVICE
+    <set >
+      <if test="gmtCreate != null" >
+        GMT_CREATE = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        GMT_MODIFIED = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED = #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="svcUuid != null" >
+        SVC_UUID = #{svcUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="svcName != null" >
+        SVC_NAME = #{svcName,jdbcType=VARCHAR},
+      </if>
+      <if test="svcStatus != null" >
+        SVC_STATUS = #{svcStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="svcType != null" >
+        SVC_TYPE = #{svcType,jdbcType=VARCHAR},
+      </if>
+      <if test="svcBizId != null" >
+        SVC_BIZ_ID = #{svcBizId,jdbcType=INTEGER},
+      </if>
+      <if test="svcUrl != null" >
+        SVC_URL = #{svcUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="inputParam != null" >
+        INPUT_PARAM = #{inputParam,jdbcType=VARCHAR},
+      </if>
+      <if test="outputParam != null" >
+        OUTPUT_PARAM = #{outputParam,jdbcType=VARCHAR},
+      </if>
+      <if test="invokeType != null" >
+        INVOKE_TYPE = #{invokeType,jdbcType=VARCHAR},
+      </if>
+      <if test="callbackUrl != null" >
+        CALLBACK_URL = #{callbackUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.stone0090.aio.dao.mybatis.entity.ServiceDO" >
+    update AIO_SERVICE
+    set GMT_CREATE = #{gmtCreate,jdbcType=TIMESTAMP},
+      GMT_MODIFIED = #{gmtModified,jdbcType=TIMESTAMP},
+      IS_DELETED = #{isDeleted,jdbcType=INTEGER},
+      SVC_UUID = #{svcUuid,jdbcType=VARCHAR},
+      SVC_NAME = #{svcName,jdbcType=VARCHAR},
+      SVC_STATUS = #{svcStatus,jdbcType=VARCHAR},
+      SVC_TYPE = #{svcType,jdbcType=VARCHAR},
+      SVC_BIZ_ID = #{svcBizId,jdbcType=INTEGER},
+      SVC_URL = #{svcUrl,jdbcType=VARCHAR},
+      INPUT_PARAM = #{inputParam,jdbcType=VARCHAR},
+      OUTPUT_PARAM = #{outputParam,jdbcType=VARCHAR},
+      INVOKE_TYPE = #{invokeType,jdbcType=VARCHAR},
+      CALLBACK_URL = #{callbackUrl,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

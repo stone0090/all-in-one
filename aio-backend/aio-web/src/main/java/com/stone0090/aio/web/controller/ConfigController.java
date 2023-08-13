@@ -4,7 +4,7 @@ import com.stone0090.aio.service.model.web.protocal.PageRequest;
 import com.stone0090.aio.service.model.web.protocal.PageResult;
 import com.stone0090.aio.service.model.web.protocal.RestResult;
 import com.stone0090.aio.service.model.web.request.ConfigQueryRequest;
-import com.stone0090.aio.service.model.web.request.ConfigSaveRequest;
+import com.stone0090.aio.service.model.web.request.save.ConfigSaveRequest;
 import com.stone0090.aio.service.model.web.request.IdRequest;
 import com.stone0090.aio.service.model.web.response.ConfigVO;
 import com.stone0090.aio.service.core.system.ConfigService;
@@ -55,7 +55,7 @@ public class ConfigController {
 
     @ApiOperation("移除配置")
     @PostMapping("/remove")
-    public RestResult removeConfig(@RequestBody IdRequest request) {
+    public RestResult remove(@RequestBody IdRequest request) {
         int count = service.remove(request);
         return RestResult.success(count);
     }

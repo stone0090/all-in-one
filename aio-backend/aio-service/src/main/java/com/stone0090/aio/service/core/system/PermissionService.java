@@ -10,7 +10,7 @@ import com.stone0090.aio.service.model.web.protocal.PageRequest;
 import com.stone0090.aio.service.model.web.protocal.PageResult;
 import com.stone0090.aio.service.model.web.request.IdRequest;
 import com.stone0090.aio.service.model.web.request.PermissionQueryRequest;
-import com.stone0090.aio.service.model.web.request.PermissionSaveRequest;
+import com.stone0090.aio.service.model.web.request.save.PermissionSaveRequest;
 import com.stone0090.aio.service.model.web.response.PermissionVO;
 import org.springframework.validation.annotation.Validated;
 

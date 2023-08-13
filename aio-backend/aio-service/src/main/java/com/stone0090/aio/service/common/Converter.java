@@ -1,10 +1,10 @@
 package com.stone0090.aio.service.common;
 
 import com.stone0090.aio.dao.mybatis.entity.*;
-import com.stone0090.aio.service.enums.ApiStatusEnum;
-import com.stone0090.aio.service.enums.ExStatusEnum;
+import com.stone0090.aio.service.enums.SvcStatusEnum;
+import com.stone0090.aio.service.enums.DagStatusEnum;
 import com.stone0090.aio.service.enums.OpStatusEnum;
-import com.stone0090.aio.service.model.web.request.*;
+import com.stone0090.aio.service.model.web.request.save.*;
 import com.stone0090.aio.service.model.web.response.*;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.BeanUtils;
@@ -55,14 +55,14 @@ public class Converter {
         return result;
     }
 
-    public static ConfigVO toSystemConfigVO(SystemConfigDO param) {
+    public static ConfigVO toConfigVO(ConfigDO param) {
         ConfigVO result = new ConfigVO();
         BeanUtils.copyProperties(param, result);
         return result;
     }
 
-    public static SystemConfigDO toSystemConfigDO(ConfigSaveRequest param) {
-        SystemConfigDO result = new SystemConfigDO();
+    public static ConfigDO toConfigDO(ConfigSaveRequest param) {
+        ConfigDO result = new ConfigDO();
         BeanUtils.copyProperties(param, result);
         return result;
     }
@@ -74,16 +74,16 @@ public class Converter {
         return result;
     }
 
-    public static OperatorVO toOperatorVO(OperatorDO param, Map<Integer, ApiDO> apiMap) {
+    public static OperatorVO toOperatorVO(OperatorDO param, Map<Integer, ServiceDO> serviceMap) {
         OperatorVO result = new OperatorVO();
         BeanUtils.copyProperties(param, result);
         result.setOpStatusName(OpStatusEnum.getDescByCode(param.getOpStatus()));
-        if (MapUtils.isNotEmpty(apiMap) && apiMap.containsKey(param.getId())) {
-            result.setApiStatus(apiMap.get(param.getId()).getApiStatus());
-            result.setApiStatusName(ApiStatusEnum.getDescByCode(apiMap.get(param.getId()).getApiStatus()));
-            result.setApiUrl("/aio/api/invoke?serviceId=" + apiMap.get(param.getId()).getApiUuid());
+        if (MapUtils.isNotEmpty(serviceMap) && serviceMap.containsKey(param.getId())) {
+            result.setSvcStatus(serviceMap.get(param.getId()).getSvcStatus());
+            result.setSvcStatusName(SvcStatusEnum.getDescByCode(serviceMap.get(param.getId()).getSvcStatus()));
+            result.setSvcUrl("/aio/svc/invoke?serviceId=" + serviceMap.get(param.getId()).getSvcUuid());
         } else {
-            result.setApiUrl("/aio/api/invoke?serviceId=");
+            result.setSvcUrl("/aio/svc/invoke?serviceId=");
         }
         return result;
     }
@@ -94,29 +94,28 @@ public class Converter {
         return result;
     }
 
-    public static ExperimentBriefVO toExperimentBriefVO(ExperimentDO param) {
-        ExperimentBriefVO result = new ExperimentBriefVO();
+    public static DagBriefVO toDagBriefVO(OperatorDagDO param) {
+        DagBriefVO result = new DagBriefVO();
         BeanUtils.copyProperties(param, result);
-        result.setExStatusName(ExStatusEnum.getDescByCode(param.getExStatus()));
+        result.setDagStatusName(DagStatusEnum.getDescByCode(param.getDagStatus()));
         return result;
     }
 
-    public static ExperimentDetailVO toExperimentDetailVO(ExperimentDO param) {
-        ExperimentDetailVO result = new ExperimentDetailVO();
+    public static DagDetailVO toDagDetailVO(OperatorDagDO param) {
+        DagDetailVO result = new DagDetailVO();
         BeanUtils.copyProperties(param, result);
-        result.setExStatusName(ExStatusEnum.getDescByCode(param.getExStatus()));
+        result.setDagStatusName(DagStatusEnum.getDescByCode(param.getDagStatus()));
         return result;
     }
 
-
-    public static ExperimentDO toExperimentDO(ExperimentSaveBriefRequest param) {
-        ExperimentDO result = new ExperimentDO();
+    public static OperatorDagDO toOperatorDagDO(DagSaveBriefRequest param) {
+        OperatorDagDO result = new OperatorDagDO();
         BeanUtils.copyProperties(param, result);
         return result;
     }
 
-    public static ExperimentDO toExperimentDO(ExperimentSaveDetailRequest param) {
-        ExperimentDO result = new ExperimentDO();
+    public static OperatorDagDO toOperatorDagDO(DagSaveDetailRequest param) {
+        OperatorDagDO result = new OperatorDagDO();
         BeanUtils.copyProperties(param, result);
         return result;
     }

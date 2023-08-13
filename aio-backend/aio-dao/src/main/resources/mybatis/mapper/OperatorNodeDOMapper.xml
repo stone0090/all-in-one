@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.stone0090.aio.dao.mybatis.mapper.OperatorNodeDOMapper" >
+  <resultMap id="BaseResultMap" type="com.stone0090.aio.dao.mybatis.entity.OperatorNodeDO" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="GMT_CREATE" property="gmtCreate" jdbcType="TIMESTAMP" />
+    <result column="GMT_MODIFIED" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="IS_DELETED" property="isDeleted" jdbcType="INTEGER" />
+    <result column="NODE_NAME" property="nodeName" jdbcType="VARCHAR" />
+    <result column="NODE_CONFIG" property="nodeConfig" jdbcType="VARCHAR" />
+    <result column="DAG_ID" property="dagId" jdbcType="INTEGER" />
+    <result column="OP_ID" property="opId" jdbcType="INTEGER" />
+    <result column="OP_CODE" property="opCode" jdbcType="VARCHAR" />
+    <result column="INPUT_MAPPING" property="inputMapping" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, GMT_CREATE, GMT_MODIFIED, IS_DELETED, NODE_NAME, NODE_CONFIG, DAG_ID, OP_ID, 
+    OP_CODE, INPUT_MAPPING
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.stone0090.aio.dao.mybatis.entity.OperatorNodeDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from AIO_OPERATOR_NODE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from AIO_OPERATOR_NODE
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from AIO_OPERATOR_NODE
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.stone0090.aio.dao.mybatis.entity.OperatorNodeDOExample" >
+    delete from AIO_OPERATOR_NODE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.stone0090.aio.dao.mybatis.entity.OperatorNodeDO" >
+    insert into AIO_OPERATOR_NODE (ID, GMT_CREATE, GMT_MODIFIED, 
+      IS_DELETED, NODE_NAME, NODE_CONFIG, 
+      DAG_ID, OP_ID, OP_CODE, 
+      INPUT_MAPPING)
+    values (#{id,jdbcType=INTEGER}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{isDeleted,jdbcType=INTEGER}, #{nodeName,jdbcType=VARCHAR}, #{nodeConfig,jdbcType=VARCHAR}, 
+      #{dagId,jdbcType=INTEGER}, #{opId,jdbcType=INTEGER}, #{opCode,jdbcType=VARCHAR}, 
+      #{inputMapping,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.stone0090.aio.dao.mybatis.entity.OperatorNodeDO" >
+    insert into AIO_OPERATOR_NODE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="gmtCreate != null" >
+        GMT_CREATE,
+      </if>
+      <if test="gmtModified != null" >
+        GMT_MODIFIED,
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED,
+      </if>
+      <if test="nodeName != null" >
+        NODE_NAME,
+      </if>
+      <if test="nodeConfig != null" >
+        NODE_CONFIG,
+      </if>
+      <if test="dagId != null" >
+        DAG_ID,
+      </if>
+      <if test="opId != null" >
+        OP_ID,
+      </if>
+      <if test="opCode != null" >
+        OP_CODE,
+      </if>
+      <if test="inputMapping != null" >
+        INPUT_MAPPING,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gmtCreate != null" >
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="nodeName != null" >
+        #{nodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeConfig != null" >
+        #{nodeConfig,jdbcType=VARCHAR},
+      </if>
+      <if test="dagId != null" >
+        #{dagId,jdbcType=INTEGER},
+      </if>
+      <if test="opId != null" >
+        #{opId,jdbcType=INTEGER},
+      </if>
+      <if test="opCode != null" >
+        #{opCode,jdbcType=VARCHAR},
+      </if>
+      <if test="inputMapping != null" >
+        #{inputMapping,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.stone0090.aio.dao.mybatis.entity.OperatorNodeDOExample" resultType="java.lang.Integer" >
+    select count(*) from AIO_OPERATOR_NODE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update AIO_OPERATOR_NODE
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.gmtCreate != null" >
+        GMT_CREATE = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null" >
+        GMT_MODIFIED = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDeleted != null" >
+        IS_DELETED = #{record.isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="record.nodeName != null" >
+        NODE_NAME = #{record.nodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nodeConfig != null" >
+        NODE_CONFIG = #{record.nodeConfig,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dagId != null" >
+        DAG_ID = #{record.dagId,jdbcType=INTEGER},
+      </if>
+      <if test="record.opId != null" >
+        OP_ID = #{record.opId,jdbcType=INTEGER},
+      </if>
+      <if test="record.opCode != null" >
+        OP_CODE = #{record.opCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inputMapping != null" >
+        INPUT_MAPPING = #{record.inputMapping,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update AIO_OPERATOR_NODE
+    set ID = #{record.id,jdbcType=INTEGER},
+      GMT_CREATE = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      GMT_MODIFIED = #{record.gmtModified,jdbcType=TIMESTAMP},
+      IS_DELETED = #{record.isDeleted,jdbcType=INTEGER},
+      NODE_NAME = #{record.nodeName,jdbcType=VARCHAR},
+      NODE_CONFIG = #{record.nodeConfig,jdbcType=VARCHAR},
+      DAG_ID = #{record.dagId,jdbcType=INTEGER},
+      OP_ID = #{record.opId,jdbcType=INTEGER},
+      OP_CODE = #{record.opCode,jdbcType=VARCHAR},
+      INPUT_MAPPING = #{record.inputMapping,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.stone0090.aio.dao.mybatis.entity.OperatorNodeDO" >
+    update AIO_OPERATOR_NODE
+    <set >
+      <if test="gmtCreate != null" >
+        GMT_CREATE = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        GMT_MODIFIED = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED = #{isDeleted,jdbcType=INTEGER},
+      </if>
+      <if test="nodeName != null" >
+        NODE_NAME = #{nodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeConfig != null" >
+        NODE_CONFIG = #{nodeConfig,jdbcType=VARCHAR},
+      </if>
+      <if test="dagId != null" >
+        DAG_ID = #{dagId,jdbcType=INTEGER},
+      </if>
+      <if test="opId != null" >
+        OP_ID = #{opId,jdbcType=INTEGER},
+      </if>
+      <if test="opCode != null" >
+        OP_CODE = #{opCode,jdbcType=VARCHAR},
+      </if>
+      <if test="inputMapping != null" >
+        INPUT_MAPPING = #{inputMapping,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.stone0090.aio.dao.mybatis.entity.OperatorNodeDO" >
+    update AIO_OPERATOR_NODE
+    set GMT_CREATE = #{gmtCreate,jdbcType=TIMESTAMP},
+      GMT_MODIFIED = #{gmtModified,jdbcType=TIMESTAMP},
+      IS_DELETED = #{isDeleted,jdbcType=INTEGER},
+      NODE_NAME = #{nodeName,jdbcType=VARCHAR},
+      NODE_CONFIG = #{nodeConfig,jdbcType=VARCHAR},
+      DAG_ID = #{dagId,jdbcType=INTEGER},
+      OP_ID = #{opId,jdbcType=INTEGER},
+      OP_CODE = #{opCode,jdbcType=VARCHAR},
+      INPUT_MAPPING = #{inputMapping,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

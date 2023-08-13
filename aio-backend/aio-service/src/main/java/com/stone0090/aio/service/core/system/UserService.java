@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import com.stone0090.aio.service.model.web.protocal.PageRequest;
 import com.stone0090.aio.service.model.web.request.IdRequest;
 import com.stone0090.aio.service.model.web.request.UserQueryRequest;
-import com.stone0090.aio.service.model.web.request.UserSaveRequest;
+import com.stone0090.aio.service.model.web.request.save.UserSaveRequest;
 import com.stone0090.aio.service.model.web.response.UserBriefVO;
 import com.stone0090.aio.service.model.web.protocal.PageResult;
 import com.stone0090.aio.service.model.web.response.UserDetailVO;

@@ -6,18 +6,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.stone0090.aio.dao.mybatis.entity.RoleDO;
+import com.stone0090.aio.dao.mybatis.entity.RoleDOExample;
+import com.stone0090.aio.dao.mybatis.entity.UserRoleRelationDO;
+import com.stone0090.aio.dao.mybatis.entity.UserRoleRelationDOExample;
 import com.stone0090.aio.service.model.web.protocal.PageRequest;
 import com.stone0090.aio.service.model.web.protocal.PageResult;
 import com.stone0090.aio.service.model.web.request.IdRequest;
 import com.stone0090.aio.service.model.web.request.RoleQueryRequest;
-import com.stone0090.aio.service.model.web.request.RoleSaveRequest;
+import com.stone0090.aio.service.model.web.request.save.RoleSaveRequest;
 import com.stone0090.aio.service.model.web.response.PermissionVO;
 import com.stone0090.aio.service.model.web.response.RoleVO;
-import com.stone0090.aio.dao.mybatis.entity.RoleDO;
-import com.stone0090.aio.dao.mybatis.entity.RoleDOExample;
-import com.stone0090.aio.dao.mybatis.entity.RoleDOExample.Criteria;
-import com.stone0090.aio.dao.mybatis.entity.UserRoleRelationDO;
-import com.stone0090.aio.dao.mybatis.entity.UserRoleRelationDOExample;
 import com.stone0090.aio.dao.mybatis.mapper.RoleDOMapper;
 import com.stone0090.aio.dao.mybatis.mapper.UserRoleRelationDOMapper;
 import com.stone0090.aio.service.common.Converter;
@@ -46,7 +45,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public PageResult<RoleVO> list(RoleQueryRequest queryRequest, PageRequest pageRequest) {
         RoleDOExample example = new RoleDOExample();
-        Criteria criteria = example.createCriteria();
+        RoleDOExample.Criteria criteria = example.createCriteria();
         criteria.andIsDeletedEqualTo(0);
         if (!StringUtils.isEmpty(queryRequest.getRoleCode())) {
             criteria.andRoleCodeLike("%" + queryRequest.getRoleCode() + "%");

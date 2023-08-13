@@ -9,7 +9,7 @@ import com.stone0090.aio.service.model.web.protocal.PageRequest;
 import com.stone0090.aio.service.model.web.protocal.PageResult;
 import com.stone0090.aio.service.model.web.request.IdRequest;
 import com.stone0090.aio.service.model.web.request.RoleQueryRequest;
-import com.stone0090.aio.service.model.web.request.RoleSaveRequest;
+import com.stone0090.aio.service.model.web.request.save.RoleSaveRequest;
 import com.stone0090.aio.service.model.web.response.RoleVO;
 import org.springframework.validation.annotation.Validated;
 

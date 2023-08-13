@@ -555,213 +555,213 @@ public class OperatorDOExample {
             return (Criteria) this;
         }
 
-        public Criteria andAlgoLanguageIsNull() {
-            addCriterion("ALGO_LANGUAGE is null");
+        public Criteria andProgrammingLanguageIsNull() {
+            addCriterion("PROGRAMMING_LANGUAGE is null");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoLanguageIsNotNull() {
-            addCriterion("ALGO_LANGUAGE is not null");
+        public Criteria andProgrammingLanguageIsNotNull() {
+            addCriterion("PROGRAMMING_LANGUAGE is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoLanguageEqualTo(String value) {
-            addCriterion("ALGO_LANGUAGE =", value, "algoLanguage");
+        public Criteria andProgrammingLanguageEqualTo(String value) {
+            addCriterion("PROGRAMMING_LANGUAGE =", value, "programmingLanguage");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoLanguageNotEqualTo(String value) {
-            addCriterion("ALGO_LANGUAGE <>", value, "algoLanguage");
+        public Criteria andProgrammingLanguageNotEqualTo(String value) {
+            addCriterion("PROGRAMMING_LANGUAGE <>", value, "programmingLanguage");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoLanguageGreaterThan(String value) {
-            addCriterion("ALGO_LANGUAGE >", value, "algoLanguage");
+        public Criteria andProgrammingLanguageGreaterThan(String value) {
+            addCriterion("PROGRAMMING_LANGUAGE >", value, "programmingLanguage");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoLanguageGreaterThanOrEqualTo(String value) {
-            addCriterion("ALGO_LANGUAGE >=", value, "algoLanguage");
+        public Criteria andProgrammingLanguageGreaterThanOrEqualTo(String value) {
+            addCriterion("PROGRAMMING_LANGUAGE >=", value, "programmingLanguage");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoLanguageLessThan(String value) {
-            addCriterion("ALGO_LANGUAGE <", value, "algoLanguage");
+        public Criteria andProgrammingLanguageLessThan(String value) {
+            addCriterion("PROGRAMMING_LANGUAGE <", value, "programmingLanguage");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoLanguageLessThanOrEqualTo(String value) {
-            addCriterion("ALGO_LANGUAGE <=", value, "algoLanguage");
+        public Criteria andProgrammingLanguageLessThanOrEqualTo(String value) {
+            addCriterion("PROGRAMMING_LANGUAGE <=", value, "programmingLanguage");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoLanguageLike(String value) {
-            addCriterion("ALGO_LANGUAGE like", value, "algoLanguage");
+        public Criteria andProgrammingLanguageLike(String value) {
+            addCriterion("PROGRAMMING_LANGUAGE like", value, "programmingLanguage");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoLanguageNotLike(String value) {
-            addCriterion("ALGO_LANGUAGE not like", value, "algoLanguage");
+        public Criteria andProgrammingLanguageNotLike(String value) {
+            addCriterion("PROGRAMMING_LANGUAGE not like", value, "programmingLanguage");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoLanguageIn(List<String> values) {
-            addCriterion("ALGO_LANGUAGE in", values, "algoLanguage");
+        public Criteria andProgrammingLanguageIn(List<String> values) {
+            addCriterion("PROGRAMMING_LANGUAGE in", values, "programmingLanguage");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoLanguageNotIn(List<String> values) {
-            addCriterion("ALGO_LANGUAGE not in", values, "algoLanguage");
+        public Criteria andProgrammingLanguageNotIn(List<String> values) {
+            addCriterion("PROGRAMMING_LANGUAGE not in", values, "programmingLanguage");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoLanguageBetween(String value1, String value2) {
-            addCriterion("ALGO_LANGUAGE between", value1, value2, "algoLanguage");
+        public Criteria andProgrammingLanguageBetween(String value1, String value2) {
+            addCriterion("PROGRAMMING_LANGUAGE between", value1, value2, "programmingLanguage");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoLanguageNotBetween(String value1, String value2) {
-            addCriterion("ALGO_LANGUAGE not between", value1, value2, "algoLanguage");
+        public Criteria andProgrammingLanguageNotBetween(String value1, String value2) {
+            addCriterion("PROGRAMMING_LANGUAGE not between", value1, value2, "programmingLanguage");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoCodeIsNull() {
-            addCriterion("ALGO_CODE is null");
+        public Criteria andAlgorithmCodeIsNull() {
+            addCriterion("ALGORITHM_CODE is null");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoCodeIsNotNull() {
-            addCriterion("ALGO_CODE is not null");
+        public Criteria andAlgorithmCodeIsNotNull() {
+            addCriterion("ALGORITHM_CODE is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoCodeEqualTo(String value) {
-            addCriterion("ALGO_CODE =", value, "algoCode");
+        public Criteria andAlgorithmCodeEqualTo(String value) {
+            addCriterion("ALGORITHM_CODE =", value, "algorithmCode");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoCodeNotEqualTo(String value) {
-            addCriterion("ALGO_CODE <>", value, "algoCode");
+        public Criteria andAlgorithmCodeNotEqualTo(String value) {
+            addCriterion("ALGORITHM_CODE <>", value, "algorithmCode");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoCodeGreaterThan(String value) {
-            addCriterion("ALGO_CODE >", value, "algoCode");
+        public Criteria andAlgorithmCodeGreaterThan(String value) {
+            addCriterion("ALGORITHM_CODE >", value, "algorithmCode");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoCodeGreaterThanOrEqualTo(String value) {
-            addCriterion("ALGO_CODE >=", value, "algoCode");
+        public Criteria andAlgorithmCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("ALGORITHM_CODE >=", value, "algorithmCode");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoCodeLessThan(String value) {
-            addCriterion("ALGO_CODE <", value, "algoCode");
+        public Criteria andAlgorithmCodeLessThan(String value) {
+            addCriterion("ALGORITHM_CODE <", value, "algorithmCode");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoCodeLessThanOrEqualTo(String value) {
-            addCriterion("ALGO_CODE <=", value, "algoCode");
+        public Criteria andAlgorithmCodeLessThanOrEqualTo(String value) {
+            addCriterion("ALGORITHM_CODE <=", value, "algorithmCode");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoCodeLike(String value) {
-            addCriterion("ALGO_CODE like", value, "algoCode");
+        public Criteria andAlgorithmCodeLike(String value) {
+            addCriterion("ALGORITHM_CODE like", value, "algorithmCode");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoCodeNotLike(String value) {
-            addCriterion("ALGO_CODE not like", value, "algoCode");
+        public Criteria andAlgorithmCodeNotLike(String value) {
+            addCriterion("ALGORITHM_CODE not like", value, "algorithmCode");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoCodeIn(List<String> values) {
-            addCriterion("ALGO_CODE in", values, "algoCode");
+        public Criteria andAlgorithmCodeIn(List<String> values) {
+            addCriterion("ALGORITHM_CODE in", values, "algorithmCode");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoCodeNotIn(List<String> values) {
-            addCriterion("ALGO_CODE not in", values, "algoCode");
+        public Criteria andAlgorithmCodeNotIn(List<String> values) {
+            addCriterion("ALGORITHM_CODE not in", values, "algorithmCode");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoCodeBetween(String value1, String value2) {
-            addCriterion("ALGO_CODE between", value1, value2, "algoCode");
+        public Criteria andAlgorithmCodeBetween(String value1, String value2) {
+            addCriterion("ALGORITHM_CODE between", value1, value2, "algorithmCode");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoCodeNotBetween(String value1, String value2) {
-            addCriterion("ALGO_CODE not between", value1, value2, "algoCode");
+        public Criteria andAlgorithmCodeNotBetween(String value1, String value2) {
+            addCriterion("ALGORITHM_CODE not between", value1, value2, "algorithmCode");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoPathIsNull() {
-            addCriterion("ALGO_PATH is null");
+        public Criteria andAlgorithmPathIsNull() {
+            addCriterion("ALGORITHM_PATH is null");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoPathIsNotNull() {
-            addCriterion("ALGO_PATH is not null");
+        public Criteria andAlgorithmPathIsNotNull() {
+            addCriterion("ALGORITHM_PATH is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoPathEqualTo(String value) {
-            addCriterion("ALGO_PATH =", value, "algoPath");
+        public Criteria andAlgorithmPathEqualTo(String value) {
+            addCriterion("ALGORITHM_PATH =", value, "algorithmPath");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoPathNotEqualTo(String value) {
-            addCriterion("ALGO_PATH <>", value, "algoPath");
+        public Criteria andAlgorithmPathNotEqualTo(String value) {
+            addCriterion("ALGORITHM_PATH <>", value, "algorithmPath");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoPathGreaterThan(String value) {
-            addCriterion("ALGO_PATH >", value, "algoPath");
+        public Criteria andAlgorithmPathGreaterThan(String value) {
+            addCriterion("ALGORITHM_PATH >", value, "algorithmPath");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoPathGreaterThanOrEqualTo(String value) {
-            addCriterion("ALGO_PATH >=", value, "algoPath");
+        public Criteria andAlgorithmPathGreaterThanOrEqualTo(String value) {
+            addCriterion("ALGORITHM_PATH >=", value, "algorithmPath");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoPathLessThan(String value) {
-            addCriterion("ALGO_PATH <", value, "algoPath");
+        public Criteria andAlgorithmPathLessThan(String value) {
+            addCriterion("ALGORITHM_PATH <", value, "algorithmPath");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoPathLessThanOrEqualTo(String value) {
-            addCriterion("ALGO_PATH <=", value, "algoPath");
+        public Criteria andAlgorithmPathLessThanOrEqualTo(String value) {
+            addCriterion("ALGORITHM_PATH <=", value, "algorithmPath");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoPathLike(String value) {
-            addCriterion("ALGO_PATH like", value, "algoPath");
+        public Criteria andAlgorithmPathLike(String value) {
+            addCriterion("ALGORITHM_PATH like", value, "algorithmPath");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoPathNotLike(String value) {
-            addCriterion("ALGO_PATH not like", value, "algoPath");
+        public Criteria andAlgorithmPathNotLike(String value) {
+            addCriterion("ALGORITHM_PATH not like", value, "algorithmPath");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoPathIn(List<String> values) {
-            addCriterion("ALGO_PATH in", values, "algoPath");
+        public Criteria andAlgorithmPathIn(List<String> values) {
+            addCriterion("ALGORITHM_PATH in", values, "algorithmPath");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoPathNotIn(List<String> values) {
-            addCriterion("ALGO_PATH not in", values, "algoPath");
+        public Criteria andAlgorithmPathNotIn(List<String> values) {
+            addCriterion("ALGORITHM_PATH not in", values, "algorithmPath");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoPathBetween(String value1, String value2) {
-            addCriterion("ALGO_PATH between", value1, value2, "algoPath");
+        public Criteria andAlgorithmPathBetween(String value1, String value2) {
+            addCriterion("ALGORITHM_PATH between", value1, value2, "algorithmPath");
             return (Criteria) this;
         }
 
-        public Criteria andAlgoPathNotBetween(String value1, String value2) {
-            addCriterion("ALGO_PATH not between", value1, value2, "algoPath");
+        public Criteria andAlgorithmPathNotBetween(String value1, String value2) {
+            addCriterion("ALGORITHM_PATH not between", value1, value2, "algorithmPath");
             return (Criteria) this;
         }
 

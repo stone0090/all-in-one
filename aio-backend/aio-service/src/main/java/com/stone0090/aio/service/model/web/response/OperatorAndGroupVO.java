@@ -11,11 +11,7 @@ import java.util.List;
  */
 @Data
 public class OperatorAndGroupVO implements Serializable {
-
     private Integer groupId;
-
     private String groupName;
-
     private List<OperatorVO> operatorList;
-
 }

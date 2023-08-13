@@ -14,12 +14,12 @@ const Operator: React.FC = () => {
 
   const actionRef = useRef<ActionType>();
   const [form] = Form.useForm();
-  const [apiForm] = Form.useForm();
+  const [svcForm] = Form.useForm();
   const [addStatus, setAddStatus] = useState<boolean>(true);
   const [formVisible, setFormVisible] = useState<boolean>(false);
   const [invokeVisible, setInvokeVisible] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [apiLoading, setApiLoading] = useState<boolean>(false);
+  const [svcLoading, setSvcLoading] = useState<boolean>(false);
   type handleGetCallback = (record: any) => void;
   const {confirm} = Modal;
 
@@ -64,7 +64,7 @@ const Operator: React.FC = () => {
     confirm({
       title: '确认上架',
       icon: <ExclamationCircleOutlined/>,
-      content: '算子上架后不能再修改，但可以在画布中引用，您确定要上架此算子吗？',
+      content: '算子上架后不能再修改，但可以在Dag中引用，您确定要上架此算子吗？',
       okText: '确认',
       cancelText: '取消',
       onOk: async () => {
@@ -84,7 +84,7 @@ const Operator: React.FC = () => {
     confirm({
       title: '确认废弃',
       icon: <ExclamationCircleOutlined/>,
-      content: '算子废弃后不能再重新上架，也不能在画布中引用，您确定要废弃此算子吗？',
+      content: '算子废弃后不能再重新上架，也不能在Dag中引用，您确定要废弃此算子吗？',
       okText: '确认',
       cancelText: '取消',
       onOk: async () => {
@@ -121,13 +121,13 @@ const Operator: React.FC = () => {
   };
 
 
-  const handleOnlineApi = async (record: any) => {
-    setApiLoading(true);
-    const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/operator/onlineApi', {
+  const handleOnlineSvc = async (record: any) => {
+    setSvcLoading(true);
+    const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/operator/onlineSvc', {
       "id": record.id,
-      "apiType": 'OPERATOR',
+      "svcType": 'OPERATOR',
     });
-    setApiLoading(false);
+    setSvcLoading(false);
     if (result?.success) {
       message.success('发布成功！');
       if (actionRef.current) {
@@ -136,10 +136,10 @@ const Operator: React.FC = () => {
     }
   };
 
-  const handleOfflineApi = async (record: any) => {
-    const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/operator/offlineApi', {
+  const handleOfflineSvc = async (record: any) => {
+    const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/operator/offlineSvc', {
       "id": record.id,
-      "apiType": 'OPERATOR',
+      "svcType": 'OPERATOR',
     });
     if (result?.success) {
       message.success('下线成功！');
@@ -149,15 +149,15 @@ const Operator: React.FC = () => {
     }
   };
 
-  const handleInvokeApi = async (record: any) => {
-    const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/operator/invokeApi', {
+  const handleInvokeSvc = async (record: any) => {
+    const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/operator/invokeSvc', {
       "id": record.id,
-      "apiType": 'OPERATOR',
+      "svcType": 'OPERATOR',
       "inputParam": record.inputParam
     });
     if (result?.success) {
       message.success('调用成功！');
-      apiForm.setFieldsValue({outputParam: result.data})
+      svcForm.setFieldsValue({outputParam: result.data})
     }
   };
 
@@ -233,8 +233,8 @@ const Operator: React.FC = () => {
       ],
     },
     {
-      title: 'API状态',
-      dataIndex: 'apiStatusName',
+      title: '服务状态',
+      dataIndex: 'svcStatusName',
       valueType: 'textarea',
       search: false,
       render: (dom) => {
@@ -246,44 +246,44 @@ const Operator: React.FC = () => {
       },
     },
     {
-      title: 'API操作',
+      title: '服务操作',
       dataIndex: 'option',
       valueType: 'option',
       render: (dom, record) => [
         <a
           key="online"
           onClick={() => {
-            handleOnlineApi(record);
+            handleOnlineSvc(record);
           }}
         >
-          API上线
+          服务上线
         </a>,
         <a
           key="offline"
           onClick={() => {
-            handleOfflineApi(record);
+            handleOfflineSvc(record);
           }}
         >
-          API下线
+          服务下线
         </a>,
         <a
           key="invoke"
           onClick={() => {
-            apiForm.resetFields();
-            apiForm.setFieldsValue({id: record.id})
-            apiForm.setFieldsValue({apiUrl: record.apiUrl})
-            apiForm.setFieldsValue({inputParam: record.inputParam})
+            svcForm.resetFields();
+            svcForm.setFieldsValue({id: record.id})
+            svcForm.setFieldsValue({svcUrl: record.svcUrl})
+            svcForm.setFieldsValue({inputParam: record.inputParam})
             setInvokeVisible(true);
           }}
         >
-          API调用
+          服务调用
         </a>,
       ],
     },
   ];
 
   return (
-    <Spin spinning={apiLoading}>
+    <Spin spinning={svcLoading}>
       <PageContainer>
         <ProTable
           headerTitle='算子列表'
@@ -377,7 +377,7 @@ const Operator: React.FC = () => {
               <Row gutter={16}>
                 <Col span={12}>
                   <Form.Item
-                    name="algoLanguage"
+                    name="programmingLanguage"
                     label="编程语言"
                     rules={[{required: true}]}
                   >
@@ -409,7 +409,7 @@ const Operator: React.FC = () => {
               <Row gutter={16}>
                 <Col span={24}>
                   <Form.Item
-                    name="algoCode"
+                    name="algorithmCode"
                     label="算子代码"
                     rules={[{required: true}]}
                   >
@@ -454,7 +454,7 @@ const Operator: React.FC = () => {
           </Spin>
         </Drawer>
         <Drawer
-          title={'API调用'}
+          title={'服务调用'}
           width={720}
           onClose={() => {
             setInvokeVisible(false);
@@ -478,7 +478,7 @@ const Operator: React.FC = () => {
               <Button
                 type="primary"
                 onClick={() => {
-                  apiForm.submit()
+                  svcForm.submit()
                 }}
               >
                 提交
@@ -489,14 +489,14 @@ const Operator: React.FC = () => {
           <Spin spinning={loading}>
             <Form
               layout="vertical"
-              form={apiForm}
-              onFinish={handleInvokeApi}
+              form={svcForm}
+              onFinish={handleInvokeSvc}
             >
               <Row gutter={16}>
                 <Col span={24}>
                   <Form.Item
-                    name="apiUrl"
-                    label="API地址"
+                    name="svcUrl"
+                    label="服务地址"
                   >
                     <TextArea showCount maxLength={1000} autoSize={true}/>
                   </Form.Item>

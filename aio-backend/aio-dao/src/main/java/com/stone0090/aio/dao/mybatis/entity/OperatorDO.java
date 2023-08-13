@@ -17,11 +17,11 @@ public class OperatorDO {
 
     private String opStatus;
 
-    private String algoLanguage;
+    private String programmingLanguage;
 
-    private String algoCode;
+    private String algorithmCode;
 
-    private String algoPath;
+    private String algorithmPath;
 
     private String inputParam;
 
@@ -83,28 +83,28 @@ public class OperatorDO {
         this.opStatus = opStatus == null ? null : opStatus.trim();
     }
 
-    public String getAlgoLanguage() {
-        return algoLanguage;
+    public String getProgrammingLanguage() {
+        return programmingLanguage;
     }
 
-    public void setAlgoLanguage(String algoLanguage) {
-        this.algoLanguage = algoLanguage == null ? null : algoLanguage.trim();
+    public void setProgrammingLanguage(String programmingLanguage) {
+        this.programmingLanguage = programmingLanguage == null ? null : programmingLanguage.trim();
     }
 
-    public String getAlgoCode() {
-        return algoCode;
+    public String getAlgorithmCode() {
+        return algorithmCode;
     }
 
-    public void setAlgoCode(String algoCode) {
-        this.algoCode = algoCode == null ? null : algoCode.trim();
+    public void setAlgorithmCode(String algorithmCode) {
+        this.algorithmCode = algorithmCode == null ? null : algorithmCode.trim();
     }
 
-    public String getAlgoPath() {
-        return algoPath;
+    public String getAlgorithmPath() {
+        return algorithmPath;
     }
 
-    public void setAlgoPath(String algoPath) {
-        this.algoPath = algoPath == null ? null : algoPath.trim();
+    public void setAlgorithmPath(String algorithmPath) {
+        this.algorithmPath = algorithmPath == null ? null : algorithmPath.trim();
     }
 
     public String getInputParam() {

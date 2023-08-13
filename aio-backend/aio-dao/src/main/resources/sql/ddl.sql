@@ -60,7 +60,7 @@ PRIMARY KEY (`id`),
 UNIQUE KEY `uk_role_permission` (`role_code`, `permission_code`, `is_deleted`)
 ); -- ENGINE=InnoDB DEFAULT CHARSET=utf8
 
-CREATE TABLE IF NOT EXISTS `aio_system_config` (
+CREATE TABLE IF NOT EXISTS `aio_config` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', -- ON UPDATE CURRENT_TIMESTAMP
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `aio_system_config` (
 `config_key` varchar(50) NOT NULL COMMENT '配置项',
 `config_value` varchar(20000) NOT NULL COMMENT '配置值',
 PRIMARY KEY (`id`),
-UNIQUE KEY `uk_system_config` (`config_key`, `is_deleted`)
+UNIQUE KEY `uk_config` (`config_key`, `is_deleted`)
 ); -- ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 -- 算子
@@ -80,63 +80,62 @@ CREATE TABLE IF NOT EXISTS `aio_operator` (
 `op_code` varchar(50) NOT NULL COMMENT '算子标识',
 `op_name` varchar(50) NOT NULL COMMENT '算子名称',
 `op_status` varchar(50) NOT NULL COMMENT '算子状态',
-`algo_language` varchar(50) NOT NULL COMMENT '编程语言',
-`algo_code` varchar(20000) NOT NULL COMMENT '算子代码',
-`algo_path` varchar(1000) NOT NULL COMMENT '算子地址',
+`programming_language` varchar(50) NOT NULL COMMENT '编程语言',
+`algorithm_code` varchar(20000) NOT NULL COMMENT '算法代码',
+`algorithm_path` varchar(1000) NOT NULL COMMENT '算法地址',
 `input_param` varchar(4000) NOT NULL COMMENT '输入参数',
 `output_param` varchar(4000) NOT NULL COMMENT '输出参数',
 PRIMARY KEY (`id`),
 UNIQUE KEY `uk_operator` (`op_code`)
 ); -- ENGINE=InnoDB DEFAULT CHARSET=utf8
 
--- 画布（算子编排）
-CREATE TABLE IF NOT EXISTS `aio_experiment` (
+-- 算子编排
+CREATE TABLE IF NOT EXISTS `aio_operator_dag` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', -- ON UPDATE CURRENT_TIMESTAMP
 `is_deleted` int(11) NOT NULL DEFAULT 0 COMMENT '删除标记',
-`ex_name` varchar(50) NOT NULL COMMENT '画布名称',
-`ex_desc` varchar(200) NOT NULL COMMENT '画布描述',
-`ex_status` varchar(50) NOT NULL COMMENT '画布状态',
-`node_dag` varchar(20000) NOT NULL COMMENT '节点dag',
-`publish_type` varchar(50) NOT NULL COMMENT '部署类型',
-`publish_config` varchar(1000) NOT NULL COMMENT '部署配置',
+`dag_name` varchar(50) NOT NULL COMMENT 'dag名称',
+`dag_desc` varchar(200) NOT NULL COMMENT 'dag描述',
+`dag_status` varchar(50) NOT NULL COMMENT 'dag状态',
+`dag_nodes` varchar(20000) NOT NULL COMMENT 'dag节点',
+`publish_type` varchar(50) NOT NULL COMMENT '发布类型',
+`publish_config` varchar(1000) NOT NULL COMMENT '发布配置',
 PRIMARY KEY (`id`)
 ); -- ENGINE=InnoDB DEFAULT CHARSET=utf8
 
--- 算子实例
-CREATE TABLE IF NOT EXISTS `aio_node_instance` (
+-- 算法节点
+CREATE TABLE IF NOT EXISTS `aio_operator_node` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', -- ON UPDATE CURRENT_TIMESTAMP
 `is_deleted` int(11) NOT NULL DEFAULT 0 COMMENT '删除标记',
-`ex_id` int(11) NOT NULL COMMENT '画布ID',
-`op_id` int(11) NOT NULL COMMENT '算子ID',
-`op_code` varchar(50) NOT NULL COMMENT '算子标识',
 `node_name` varchar(50) NOT NULL COMMENT '节点名称',
-`input_mapping` varchar(4000) NOT NULL COMMENT '入参映射',
 `node_config` varchar(1000) NOT NULL COMMENT '节点配置',
+`dag_id` int(11) NOT NULL COMMENT 'dagId',
+`op_id` int(11) NOT NULL COMMENT '算子Id',
+`op_code` varchar(50) NOT NULL COMMENT '算子标识',
+`input_mapping` varchar(4000) NOT NULL COMMENT '入参映射',
 PRIMARY KEY (`id`),
-UNIQUE KEY `uk_node_instance` (`ex_id`,`op_code`, `is_deleted`)
+UNIQUE KEY `uk_operator_node` (`dag_id`,`op_code`, `is_deleted`)
 ); -- ENGINE=InnoDB DEFAULT CHARSET=utf8
 
--- api服务
-CREATE TABLE IF NOT EXISTS `aio_api` (
+-- 服务
+CREATE TABLE IF NOT EXISTS `aio_service` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', -- ON UPDATE CURRENT_TIMESTAMP
 `is_deleted` int(11) NOT NULL DEFAULT 0 COMMENT '删除标记',
-`api_uuid` varchar(50) NOT NULL COMMENT 'api通用唯一标识',
-`api_name` varchar(50) NOT NULL COMMENT 'api名称',
-`api_type` varchar(50) NOT NULL COMMENT 'api类型',
-`api_status` varchar(50) NOT NULL COMMENT 'api状态',
-`type_id` int(11) NOT NULL COMMENT '类型id',
-`api_url` varchar(1000) NOT NULL COMMENT 'api地址',
+`svc_uuid` varchar(50) NOT NULL COMMENT '服务标识',
+`svc_name` varchar(50) NOT NULL COMMENT '服务名称',
+`svc_status` varchar(50) NOT NULL COMMENT '服务状态',
+`svc_type` varchar(50) NOT NULL COMMENT '服务类型（算子服务、dag服务）',
+`svc_biz_id` int(11) NOT NULL COMMENT '服务业务id（算子id、dagId）',
+`svc_url` varchar(1000) NOT NULL COMMENT '服务地址',
 `input_param` varchar(4000) NOT NULL COMMENT '输入参数',
 `output_param` varchar(4000) NOT NULL COMMENT '输出参数',
 `invoke_type` varchar(20) NOT NULL COMMENT '调用类型',
 `callback_url` varchar(1000) NOT NULL COMMENT '回调地址',
 PRIMARY KEY (`id`),
-UNIQUE KEY `uk_api` (`api_uuid`, `is_deleted`)
+UNIQUE KEY `uk_service` (`svc_uuid`, `is_deleted`)
 ); -- ENGINE=InnoDB DEFAULT CHARSET=utf8
-
