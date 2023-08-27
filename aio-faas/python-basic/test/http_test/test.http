@@ -1,8 +1,8 @@
 ### python-basic健康检查
-GET http://localhost:32184/aio/faas/health/check
+GET http://localhost:6001/aio/faas/health/check
 
 ### 调用服务
-POST http://localhost:30520/aio/faas/invoke
+POST http://localhost:6001/aio/faas/invoke
 Content-Type: application/json
 
 {

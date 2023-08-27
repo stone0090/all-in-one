@@ -11,17 +11,9 @@ api_blueprint = Blueprint('api', __name__, url_prefix='/aio/faas')
 
 @api_blueprint.route('/invoke', methods=['POST'])
 def invoke():
-    response = ''
+    response = {'success': False, 'message': 'unknown error'}
     try:
-        logger.info('before invoke...')
-        input_data = request.json
-        logger.info('input_data: ' + json.dumps(input_data))
-        # dynamic inject code start #
-        result = main(input_data)
-        # dynamic inject code end #
-        response = {'success': True, 'data': result}
-        logger.info('output_data: ' + json.dumps(response))
-        logger.info('after invoke...')
+        response = {'success': True, 'data': main(request.json)}
     except Exception as e:
         msg = traceback.format_exc()
         logger.error(msg)
@@ -30,5 +22,4 @@ def invoke():
         else:
             response = {'success': False, 'message': msg}
     finally:
-        logger.info('teardown invoke...')
         return json.dumps(response, ensure_ascii=False)

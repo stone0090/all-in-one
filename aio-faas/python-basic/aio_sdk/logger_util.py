@@ -5,6 +5,7 @@ from logging.handlers import RotatingFileHandler
 
 from aio_sdk import env_util
 
+print(f'log dir is [{env_util.get_log_dir()}]')
 rotating_type = 'size'
 max_bytes = 1024 * 1024 * 10
 backup_count = 5

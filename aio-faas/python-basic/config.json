@@ -1,0 +1,5 @@
+{
+  "flask_port": 6001,
+  "resource_id": "000001",
+  "algo_code": "# import start\n\n# customer code start\ndef main(input_data):\n    a = input_data[\"a\"]\n    b = input_data[\"b\"]\n    return {\n        \"sum\": a + b\n    }\n# customer code end\n"
+}
