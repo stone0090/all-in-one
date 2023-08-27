@@ -20,7 +20,7 @@ func main() {
 
 func initEnv() {
 	var err error
-	workDir := os.Getenv("AIO_SCHEDULER_WD")
+	workDir := os.Getenv("AIO_SCHEDULER_WORK_DIR")
 	if workDir == "" {
 		workDir, err = os.Getwd()
 		if err != nil {
@@ -40,11 +40,13 @@ func initEnv() {
 		panic("加载配置文件失败！" + err.Error())
 	}
 	global.Enver = &global.Env{
-		Mode:         *mode,
-		LogPath:      global.GetFromOsOrConf(config, "self", "logPath"),
-		SchedulerUrl: global.GetFromOsOrConf(config, "self", "schedulerUrl"),
-		FaasPath:     global.GetFromOsOrConf(config, "faas", "faasPath"),
-		FaasUrl:      global.GetFromOsOrConf(config, "faas", "faasUrl"),
+		Mode:          *mode,
+		LogPath:       global.GetFromOsOrConf(config, "self", "logPath"),
+		SchedulerHost: global.GetFromOsOrConf(config, "self", "schedulerHost"),
+		SchedulerPort: global.GetFromOsOrConf(config, "self", "schedulerPort"),
+		FaasPath:      global.GetFromOsOrConf(config, "faas", "faasPath"),
+		FaasHost:      global.GetFromOsOrConf(config, "faas", "faasHost"),
+		FaasPort:      global.GetFromOsOrConf(config, "faas", "faasPort"),
 	}
 }
 
@@ -66,13 +68,12 @@ func initWeb() {
 	group := engine.Group("/aio/scheduler")
 	{
 		group.GET("/health/check", controller.Check)
-		group.POST("/python/deploy", controller.PythonDeploy)
-		group.POST("/python/invoke", controller.PythonInvoke)
-		group.GET("/python/health/check", controller.PythonHealthCheck)
+		group.POST("/faas/deploy", controller.Deploy)
+		group.POST("/faas/invoke", controller.Invoke)
+		group.GET("/faas/health/check", controller.HealthCheck)
 	}
 	//engine.POST("/command/exec", controller.ExecCommand)
-	// TODO：接口切面打印日志
-	err := engine.Run(global.Enver.SchedulerUrl)
+	err := engine.Run(global.Enver.SchedulerHost + ":" + global.Enver.SchedulerPort)
 	if err != nil {
 		log.Fatal(err.Error())
 	}

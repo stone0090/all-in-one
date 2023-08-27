@@ -8,12 +8,14 @@ import (
 var Enver *Env
 
 type Env struct {
-	Mode         string // 运行模式，dev：开发模式，prod：生产模式
-	LogPath      string // 日志路径，/home/admin/logs
-	WorkPath     string // 工作路径，/home/admin/aio-scheduler
-	SchedulerUrl string // 调度服务地址，http://0.0.0.0:6000
-	FaasPath     string // faas路径，/home/admin/aio-faas/python-basic
-	FaasUrl      string // faas服务地址，http://0.0.0.0:6001
+	Mode          string // 运行模式，dev：开发模式，prod：生产模式
+	LogPath       string // 日志路径，/home/admin/logs
+	WorkPath      string // 工作路径，/home/admin/aio-scheduler
+	SchedulerHost string // 调度服务地址，http://0.0.0.0
+	SchedulerPort string // 调度服务端口，http://6000
+	FaasPath      string // faas路径，/home/admin/aio-faas/python-basic
+	FaasHost      string // faas服务地址，http://0.0.0.0
+	FaasPort      string // faas服务端口，6001
 }
 
 func GetFromOsOrConf(config *goconfig.ConfigFile, section string, key string) string {

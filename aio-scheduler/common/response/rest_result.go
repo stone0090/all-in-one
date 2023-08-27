@@ -8,11 +8,11 @@ type RestResult struct {
 	Data    interface{} `json:"data"`
 }
 
-func Success(date interface{}) *RestResult {
+func Success(data interface{}) *RestResult {
 	return &RestResult{
 		Success: true,
 		Message: constants.Success,
-		Data:    date,
+		Data:    data,
 	}
 }
 
