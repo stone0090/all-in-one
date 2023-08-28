@@ -17,7 +17,7 @@ public class OperatorDagDO {
 
     private String dagStatus;
 
-    private String dagNodes;
+    private String dagData;
 
     private String publishType;
 
@@ -79,12 +79,12 @@ public class OperatorDagDO {
         this.dagStatus = dagStatus == null ? null : dagStatus.trim();
     }
 
-    public String getDagNodes() {
-        return dagNodes;
+    public String getDagData() {
+        return dagData;
     }
 
-    public void setDagNodes(String dagNodes) {
-        this.dagNodes = dagNodes == null ? null : dagNodes.trim();
+    public void setDagData(String dagData) {
+        this.dagData = dagData == null ? null : dagData.trim();
     }
 
     public String getPublishType() {

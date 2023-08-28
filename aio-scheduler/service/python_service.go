@@ -9,8 +9,8 @@ import (
 	"os/exec"
 )
 
-func DeployPython(node model.Node, port int) {
-	file, err := os.OpenFile(global.Enver.FaasPath+"/config.json", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+func deployPython(node model.Node, port int) {
+	file, err := os.OpenFile(global.Enver.FaasWorkPath+"/config.json", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Error("创建config.json失败！" + err.Error())
 		return
@@ -38,8 +38,10 @@ func DeployPython(node model.Node, port int) {
 		log.Error("写入config.json失败！" + err.Error())
 		return
 	}
-	log.Infof("写入config.json成功！%v", config)
-	cmd := exec.Command("/bin/bash", global.Enver.FaasPath+"/start.sh")
+	log.Info("写入config.json成功！")
+	startShell := global.Enver.FaasWorkPath + "/start.sh"
+	log.Info("开始执行start.sh，" + startShell)
+	cmd := exec.Command("/bin/bash", startShell)
 	output, err := cmd.Output()
 	if err != nil {
 		log.Error("执行start.sh失败！" + err.Error())

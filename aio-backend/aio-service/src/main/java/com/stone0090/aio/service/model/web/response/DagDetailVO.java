@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 @Data
 public class DagDetailVO extends DagBriefVO implements Serializable {
-    private String dagNodes;
+    private String dagData;
     private String publishType;
     private String publishConfig;
 }

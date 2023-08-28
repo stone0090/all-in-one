@@ -21,7 +21,7 @@ func Deploy(context *gin.Context) {
 		context.JSON(200, response.Failure("节点信息不能为空！"))
 		return
 	}
-	err = service.Deploy(deployInfo)
+	go service.Deploy(deployInfo)
 	if err != nil {
 		context.JSON(200, response.Failure(err.Error()))
 		return

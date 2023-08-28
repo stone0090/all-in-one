@@ -24,6 +24,7 @@
         <junit.version>4.12</junit.version>
         <kubernetes.version>10.0.0</kubernetes.version>
         <spring.version>5.2.12.RELEASE</spring.version>
+        <fastjson.version>1.2.76</fastjson.version>
     </properties>
 
     <modules>
@@ -157,6 +158,11 @@
                 <artifactId>spring-web</artifactId>
                 <version>${spring.version}</version>
                 <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -7,24 +7,24 @@ parser.add_argument('--mode', choices=['dev', 'prod'], default='dev', help='exec
 args = parser.parse_args()
 print(f"running in [{args.mode}] mode")
 
-with open(os.path.join(os.getenv('AIO_FAAS_PYTHON_WORK_DIR'), 'config.json'), 'r') as config_file:
+with open(os.path.join(os.getenv('AIO_FAAS_WORK_PATH'), 'config.json'), 'r') as config_file:
     config = json.load(config_file)
 
 
-def get_flask_port():
-    return config['flask_port']
+def get_service_port():
+    return config['service_port']
 
 
 def get_work_dir():
     if args.mode == 'prod':
-        return os.getenv('AIO_FAAS_PYTHON_WORK_DIR') + "-" + str(get_flask_port())
+        return os.getenv('AIO_FAAS_WORK_PATH') + "-" + str(get_service_port())
     else:
         return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def get_log_dir():
     if args.mode == 'prod':
-        return os.getenv('AIO_FAAS_PYTHON_LOG_DIR') + '-' + str(get_flask_port())
+        return os.getenv('AIO_FAAS_LOG_PATH') + '-' + str(get_service_port())
     else:
         return os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'logs')
 

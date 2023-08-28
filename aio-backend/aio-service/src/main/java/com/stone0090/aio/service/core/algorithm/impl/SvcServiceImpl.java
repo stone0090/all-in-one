@@ -1,5 +1,6 @@
 package com.stone0090.aio.service.core.algorithm.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.stone0090.aio.dao.mybatis.entity.ServiceDO;
 import com.stone0090.aio.dao.mybatis.entity.ServiceDOExample;
@@ -10,6 +11,7 @@ import com.stone0090.aio.service.common.Constants;
 import com.stone0090.aio.service.core.algorithm.SvcCallback;
 import com.stone0090.aio.service.enums.SvcStatusEnum;
 import com.stone0090.aio.service.enums.DataTypeEnum;
+import com.stone0090.aio.service.model.service.dag.DeployInfo;
 import io.kubernetes.client.openapi.models.V1Deployment;
 import io.kubernetes.client.openapi.models.V1Service;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +22,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,26 +55,30 @@ public class SvcServiceImpl {
                 ? "localhost:" + service.getSpec().getPorts().get(0).getNodePort()
                 : resourceId + "-svc.aio:6000";
         serviceDO.setSvcUrl(svcUrl);
-        // 注入算法代码，轮询检查服务状态，30秒超时
-        injectAndHealthCheck(serviceDO, resourceId, callback);
+        // 部署和轮询检查服务状态，30秒超时
+        deployAndHealthCheck(serviceDO, resourceId, callback);
         serviceDO.setSvcStatus(SvcStatusEnum.ONLINE.name());
         return save(serviceDO);
     }
 
     public int offline(String type, Integer typeId) {
-        ServiceDO serviceDO = getServiceByBizId(type, typeId);
-        if (serviceDO == null || !SvcStatusEnum.ONLINE.name().equals(serviceDO.getSvcStatus())) {
-            throw new RuntimeException("服务下线失败，服务不存在或未上线！");
-        }
-        String resourceId = buildResourceId(serviceDO.getSvcType(), serviceDO.getSvcBizId());
+//        ServiceDO serviceDO = getServiceByBizId(type, typeId);
+//        if (serviceDO == null || !SvcStatusEnum.ONLINE.name().equals(serviceDO.getSvcStatus())) {
+//            throw new RuntimeException("服务下线失败，服务不存在或未上线！");
+//        }
+        String resourceId = buildResourceId(type, typeId);
         try {
             k8sClient.deleteDeployment(resourceId);
             k8sClient.deleteService(resourceId);
         } catch (Exception e) {
             log.warn("k8s资源删除失败，忽略", e);
         }
-        serviceDO.setSvcStatus(SvcStatusEnum.OFFLINE.name());
-        return save(serviceDO);
+        ServiceDO serviceDO = getServiceByBizId(type, typeId);
+        if (serviceDO != null) {
+            serviceDO.setSvcStatus(SvcStatusEnum.OFFLINE.name());
+            return save(serviceDO);
+        }
+        return 1;
     }
 
     public String invoke(String type, Integer typeId, String inputParam) {
@@ -93,10 +98,10 @@ public class SvcServiceImpl {
         } catch (JoseException e) {
             throw new RuntimeException("服务调用失败，入参格式有误！");
         }
-        return httpUtil.post(serviceDO.getSvcUrl() + "/aio/scheduler/python/invoke", inputParam);
+        return httpUtil.post(serviceDO.getSvcUrl() + "/aio/scheduler/faas/invoke", inputParam);
     }
 
-    public void injectAndHealthCheck(ServiceDO serviceDO, String resourceId, SvcCallback callback) {
+    public void deployAndHealthCheck(ServiceDO serviceDO, String resourceId, SvcCallback callback) {
         boolean schedulerHealthCheck = false;
         boolean faasHealthCheck = false;
         int count = 0;
@@ -109,20 +114,20 @@ public class SvcServiceImpl {
             String result = Constants.FAILURE;
             if (!schedulerHealthCheck) {
                 try {
+                    log.info("scheduler健康检查[" + count + "]次，耗时[" + count * 500 + "]毫秒...");
                     result = httpUtil.get(serviceDO.getSvcUrl() + "/aio/scheduler/health/check");
                 } catch (Exception e) {
                     log.warn("scheduler健康检查失败，url:" + serviceDO.getSvcUrl(), e);
                 }
                 if (Constants.SUCCESS.equals(result)) {
                     schedulerHealthCheck = true;
-                    Map<String, String> deployInfo = new HashMap<>();
-                    deployInfo.put("resourceId", resourceId);
-                    callback.inject(deployInfo);
-                    httpUtil.post(serviceDO.getSvcUrl() + "/aio/scheduler/python/deploy", JsonUtil.toJson(deployInfo));
+                    DeployInfo deployInfo = callback.buildDeployInfo();
+                    httpUtil.post(serviceDO.getSvcUrl() + "/aio/scheduler/faas/deploy", JSON.toJSONString(deployInfo));
                 }
             } else {
                 try {
-                    result = httpUtil.get(serviceDO.getSvcUrl() + "/aio/scheduler/python/health/check");
+                    log.info("faas健康检查[" + count + "]次，耗时[" + count * 500 + "]毫秒...");
+                    result = httpUtil.get(serviceDO.getSvcUrl() + "/aio/scheduler/faas/health/check");
                 } catch (Exception e) {
                     log.warn("faas健康检查失败，url:" + serviceDO.getSvcUrl(), e);
                 }

@@ -1,7 +1,7 @@
 package com.stone0090.aio.service.core.algorithm;
 
-import java.util.Map;
+import com.stone0090.aio.service.model.service.dag.DeployInfo;
 
 public interface SvcCallback {
-    void inject(Map<String, String> deployInfo);
+    DeployInfo buildDeployInfo();
 }

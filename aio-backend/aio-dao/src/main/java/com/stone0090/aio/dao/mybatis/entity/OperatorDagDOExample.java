@@ -555,73 +555,73 @@ public class OperatorDagDOExample {
             return (Criteria) this;
         }
 
-        public Criteria andDagNodesIsNull() {
-            addCriterion("DAG_NODES is null");
+        public Criteria andDagDataIsNull() {
+            addCriterion("DAG_DATA is null");
             return (Criteria) this;
         }
 
-        public Criteria andDagNodesIsNotNull() {
-            addCriterion("DAG_NODES is not null");
+        public Criteria andDagDataIsNotNull() {
+            addCriterion("DAG_DATA is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDagNodesEqualTo(String value) {
-            addCriterion("DAG_NODES =", value, "dagNodes");
+        public Criteria andDagDataEqualTo(String value) {
+            addCriterion("DAG_DATA =", value, "dagData");
             return (Criteria) this;
         }
 
-        public Criteria andDagNodesNotEqualTo(String value) {
-            addCriterion("DAG_NODES <>", value, "dagNodes");
+        public Criteria andDagDataNotEqualTo(String value) {
+            addCriterion("DAG_DATA <>", value, "dagData");
             return (Criteria) this;
         }
 
-        public Criteria andDagNodesGreaterThan(String value) {
-            addCriterion("DAG_NODES >", value, "dagNodes");
+        public Criteria andDagDataGreaterThan(String value) {
+            addCriterion("DAG_DATA >", value, "dagData");
             return (Criteria) this;
         }
 
-        public Criteria andDagNodesGreaterThanOrEqualTo(String value) {
-            addCriterion("DAG_NODES >=", value, "dagNodes");
+        public Criteria andDagDataGreaterThanOrEqualTo(String value) {
+            addCriterion("DAG_DATA >=", value, "dagData");
             return (Criteria) this;
         }
 
-        public Criteria andDagNodesLessThan(String value) {
-            addCriterion("DAG_NODES <", value, "dagNodes");
+        public Criteria andDagDataLessThan(String value) {
+            addCriterion("DAG_DATA <", value, "dagData");
             return (Criteria) this;
         }
 
-        public Criteria andDagNodesLessThanOrEqualTo(String value) {
-            addCriterion("DAG_NODES <=", value, "dagNodes");
+        public Criteria andDagDataLessThanOrEqualTo(String value) {
+            addCriterion("DAG_DATA <=", value, "dagData");
             return (Criteria) this;
         }
 
-        public Criteria andDagNodesLike(String value) {
-            addCriterion("DAG_NODES like", value, "dagNodes");
+        public Criteria andDagDataLike(String value) {
+            addCriterion("DAG_DATA like", value, "dagData");
             return (Criteria) this;
         }
 
-        public Criteria andDagNodesNotLike(String value) {
-            addCriterion("DAG_NODES not like", value, "dagNodes");
+        public Criteria andDagDataNotLike(String value) {
+            addCriterion("DAG_DATA not like", value, "dagData");
             return (Criteria) this;
         }
 
-        public Criteria andDagNodesIn(List<String> values) {
-            addCriterion("DAG_NODES in", values, "dagNodes");
+        public Criteria andDagDataIn(List<String> values) {
+            addCriterion("DAG_DATA in", values, "dagData");
             return (Criteria) this;
         }
 
-        public Criteria andDagNodesNotIn(List<String> values) {
-            addCriterion("DAG_NODES not in", values, "dagNodes");
+        public Criteria andDagDataNotIn(List<String> values) {
+            addCriterion("DAG_DATA not in", values, "dagData");
             return (Criteria) this;
         }
 
-        public Criteria andDagNodesBetween(String value1, String value2) {
-            addCriterion("DAG_NODES between", value1, value2, "dagNodes");
+        public Criteria andDagDataBetween(String value1, String value2) {
+            addCriterion("DAG_DATA between", value1, value2, "dagData");
             return (Criteria) this;
         }
 
-        public Criteria andDagNodesNotBetween(String value1, String value2) {
-            addCriterion("DAG_NODES not between", value1, value2, "dagNodes");
+        public Criteria andDagDataNotBetween(String value1, String value2) {
+            addCriterion("DAG_DATA not between", value1, value2, "dagData");
             return (Criteria) this;
         }
 

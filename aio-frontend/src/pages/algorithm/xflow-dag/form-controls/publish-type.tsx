@@ -7,7 +7,7 @@ export const PublishTypeShape: React.FC<NsJsonSchemaForm.IControlProps> = props 
   const {controlSchema} = props
   const {required, tooltip, extra, name, label, } = controlSchema
   if (controlSchema.value == 'SECOND_SCHEDULING') {
-    message.warn('暂不支持【秒级调度】，已切换为【API服务】！');
+    message.warn('暂不支持【秒级调度】，已切换为【在线服务】！');
   }
   return (
     <FormItemWrapper schema={controlSchema}>
@@ -17,7 +17,7 @@ export const PublishTypeShape: React.FC<NsJsonSchemaForm.IControlProps> = props 
             <Form.Item
               name={name}
               label={label}
-              initialValue={'API_SERVICE'}
+              initialValue={'ONLINE_SERVICE'}
               tooltip={tooltip}
               extra={extra}
               required={required}
@@ -27,7 +27,7 @@ export const PublishTypeShape: React.FC<NsJsonSchemaForm.IControlProps> = props 
                 style={{width: '100%'}}
                 options={
                   [
-                    {value: 'API_SERVICE', label: 'API服务'},
+                    {value: 'ONLINE_SERVICE', label: '在线服务'},
                     // {value: 'SECOND_SCHEDULING', label: '秒级调度'}
                   ]}
                 // value={selectedValue}

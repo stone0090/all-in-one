@@ -10,6 +10,8 @@ import com.stone0090.aio.service.common.Converter;
 import com.stone0090.aio.service.core.algorithm.SvcService;
 import com.stone0090.aio.service.core.algorithm.OperatorService;
 import com.stone0090.aio.service.enums.*;
+import com.stone0090.aio.service.model.service.dag.DeployInfo;
+import com.stone0090.aio.service.model.service.dag.DeployNode;
 import com.stone0090.aio.service.model.web.protocal.PageRequest;
 import com.stone0090.aio.service.model.web.protocal.PageResult;
 import com.stone0090.aio.service.model.web.request.IdRequest;
@@ -27,10 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -155,8 +154,16 @@ public class OperatorServiceImpl implements OperatorService, SvcService {
             throw new RuntimeException("服务上线失败，算子不存在！");
         }
         ServiceDO serviceDO = buildServiceDO(operatorDO, AlgorithmTypeEnum.OPERATOR);
-        return svcServiceImpl.online(serviceDO, (deployInfo) -> {
-            deployInfo.put("algoCode", operatorDO.getAlgorithmCode());
+        return svcServiceImpl.online(serviceDO, () -> {
+            DeployNode deployNode = new DeployNode();
+            deployNode.setNeedDeploy(true);
+            deployNode.setLanguage("python");
+            deployNode.setNodeId(operatorDO.getId().toString());
+            deployNode.setAlgoCode(operatorDO.getAlgorithmCode());
+            DeployInfo deployInfo = new DeployInfo();
+            deployInfo.setRequestId(UuidUtil.getUuid());
+            deployInfo.setNodes(Collections.singletonList(deployNode));
+            return deployInfo;
         });
     }
 

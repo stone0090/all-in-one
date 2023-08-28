@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `aio_operator_dag` (
 `dag_name` varchar(50) NOT NULL COMMENT 'dag名称',
 `dag_desc` varchar(200) NOT NULL COMMENT 'dag描述',
 `dag_status` varchar(50) NOT NULL COMMENT 'dag状态',
-`dag_nodes` varchar(20000) NOT NULL COMMENT 'dag节点',
+`dag_data` varchar(20000) NOT NULL COMMENT 'dag数据',
 `publish_type` varchar(50) NOT NULL COMMENT '发布类型',
 `publish_config` varchar(1000) NOT NULL COMMENT '发布配置',
 PRIMARY KEY (`id`)

@@ -66,7 +66,7 @@ public class K8sClient {
                 .withVolumes(Lists.newArrayList())
                 .build();
         HashMap<String, String> labels = new HashMap<String, String>() {{
-            put("app", "aio-faas-python-basic");
+            put("app", resourceId);
         }};
         V1PodTemplateSpec v1PodTemplateSpec = new V1PodTemplateSpecBuilder()
                 .withSpec(v1PodSpec)
@@ -129,9 +129,9 @@ public class K8sClient {
         return containers;
     }
 
-    public V1Service createService(String bizId) {
+    public V1Service createService(String resourceId) {
         HashMap<String, String> labels = new HashMap<String, String>() {{
-            put("app", "aio-faas-python-basic");
+            put("app", resourceId);
         }};
         V1ServicePort v1ServicePort1 = new V1ServicePortBuilder()
                 .withPort(6000)
@@ -152,7 +152,7 @@ public class K8sClient {
                 .withApiVersion("v1")
                 .withKind("Service")
                 .withMetadata(new V1ObjectMetaBuilder()
-                        .withName(bizId.toLowerCase() + "-svc")
+                        .withName(resourceId.toLowerCase() + "-svc")
                         .withNamespace(NAMESPACE)
                         .build())
                 .withSpec(v1ServiceSpec)

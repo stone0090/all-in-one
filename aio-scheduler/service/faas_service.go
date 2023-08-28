@@ -5,26 +5,26 @@ import (
 	"aio-scheduler/common/constants"
 	"aio-scheduler/dal/model"
 	"aio-scheduler/service/global"
-	"errors"
 	"github.com/labstack/gommon/log"
 	"strconv"
 	"time"
 )
 
-func Deploy(deployInfo model.DeployInfo) (err error) {
+func Deploy(deployInfo model.DeployInfo) {
 
 	// 1、校验部署状态
 	success := global.CasDeployStatus(constants.Init, constants.Deploying)
 	if !success {
-		return errors.New("部署失败：[" + global.GetDeployStatus() + "]状态不允许部署！")
+		log.Error("部署失败：[" + global.GetDeployStatus() + "]状态不允许部署！")
 	}
 
 	// 2、部署节点
 	faasPort, _ := strconv.Atoi(global.Enver.FaasPort)
 	for index, node := range deployInfo.Nodes {
-		log.Infof("正在部署节点：%s", node.NodeId)
+		port := faasPort + index
+		log.Infof("正在部署节点[%v]，端口为[%v]", node.NodeId, port)
 		if node.Language == constants.Python {
-			go DeployPython(node, faasPort+index)
+			deployPython(node, port)
 		}
 	}
 
@@ -39,12 +39,11 @@ func Deploy(deployInfo model.DeployInfo) (err error) {
 		healthCheckResult = healthCheckResult && <-healthCheckChan
 	}
 	if !healthCheckResult {
-		return errors.New("部署失败：健康检查失败！")
+		log.Error("部署失败：健康检查失败！")
 	}
 
 	// 4、更新部署状态
 	global.CasDeployStatus(constants.Deploying, constants.Deployed)
-	return nil
 }
 
 func healthCheck(port int, healthCheckChan *chan bool) {
@@ -59,6 +58,7 @@ func healthCheck(port int, healthCheckChan *chan bool) {
 		result, err := client.HealthCheck(strconv.Itoa(port))
 		log.Infof("[%v]端口，已检查[%v]次，耗时[%v]毫秒...", port, i+1, (i+1)*100)
 		if result == constants.Success && err == nil {
+			log.Infof("[%v]端口健康检查成功！", port)
 			*healthCheckChan <- true
 			return
 		}

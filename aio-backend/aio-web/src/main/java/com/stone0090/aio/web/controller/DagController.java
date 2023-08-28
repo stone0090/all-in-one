@@ -1,11 +1,14 @@
 package com.stone0090.aio.web.controller;
 
-import com.stone0090.aio.service.core.algorithm.OperatorDagService;
+import com.stone0090.aio.service.core.algorithm.DagService;
+import com.stone0090.aio.service.core.algorithm.SvcService;
 import com.stone0090.aio.service.model.web.protocal.PageRequest;
 import com.stone0090.aio.service.model.web.protocal.PageResult;
 import com.stone0090.aio.service.model.web.protocal.RestResult;
 import com.stone0090.aio.service.model.web.request.DagQueryRequest;
 import com.stone0090.aio.service.model.web.request.IdRequest;
+import com.stone0090.aio.service.model.web.request.SvcInvokeRequest;
+import com.stone0090.aio.service.model.web.request.SvcRequest;
 import com.stone0090.aio.service.model.web.request.save.DagSaveBriefRequest;
 import com.stone0090.aio.service.model.web.request.save.DagSaveDetailRequest;
 import com.stone0090.aio.service.model.web.response.DagBriefVO;
@@ -13,6 +16,7 @@ import com.stone0090.aio.service.model.web.response.DagDetailVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -25,7 +29,11 @@ import org.springframework.web.bind.annotation.*;
 public class DagController {
 
     @Autowired
-    private OperatorDagService service;
+    private DagService service;
+
+    @Autowired
+    @Qualifier("dagService")
+    private SvcService svcService;
 
     @ApiOperation("获取Dag列表")
     @GetMapping("/list")
@@ -67,6 +75,27 @@ public class DagController {
     public RestResult remove(@RequestBody IdRequest request) {
         int count = service.remove(request);
         return RestResult.success(count);
+    }
+
+    @ApiOperation("上线Dag服务")
+    @PostMapping("/onlineSvc")
+    public RestResult online(@RequestBody SvcRequest request) {
+        int count = svcService.onlineSvc(request);
+        return RestResult.success(count);
+    }
+
+    @ApiOperation("下线Dag服务")
+    @PostMapping("/offlineSvc")
+    public RestResult offline(@RequestBody SvcRequest request) {
+        int count = svcService.offlineSvc(request);
+        return RestResult.success(count);
+    }
+
+    @ApiOperation("调用Dag服务")
+    @PostMapping("/invokeSvc")
+    public RestResult invokeApi(@RequestBody SvcInvokeRequest request) {
+        String result = svcService.invokeSvc(request);
+        return RestResult.success(result);
     }
 
 }

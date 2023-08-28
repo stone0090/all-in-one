@@ -1,19 +1,27 @@
 ### 健康检查
-GET http://localhost:5000/aio/scheduler/health/check
+GET http://localhost:6000/aio/scheduler/health/check
 
-### 启动python服务
-POST http://localhost:5000/aio/scheduler/python/deploy
+### 启动faas服务
+POST http://localhost:30683/aio/scheduler/faas/deploy
 Content-Type: application/json
 
 {
-    "algoCode": "# import start\n\n# customer code start\ndef main(input_data):\n    a = input_data['a']\n    b = input_data['b']\n    return {\n        'product': a * b\n    }\n# customer code end\n"
+  "nodes": [
+    {
+      "algoCode": "# import start\n\n# customer code start\ndef main(input_data):\n    a = input_data[\"a\"]\n    b = input_data[\"b\"]\n    return {\n        \"product\": a * b\n    }\n# customer code end",
+      "language": "python",
+      "needDeploy": true,
+      "nodeId": "2"
+    }
+  ],
+  "requestId": "136423b8e4c740b294e04e869b0dbbd3"
 }
 
-### 调用python健康检查
-GET http://localhost:5000/aio/scheduler/python/health/check
+### 调用faas健康检查
+GET http://localhost:6000/aio/scheduler/faas/health/check
 
-### 调用python服务
-POST http://localhost:5000/aio/scheduler/python/invoke
+### 调用faas服务
+POST http://localhost:6000/aio/scheduler/faas/invoke
 Content-Type: application/json
 
 {

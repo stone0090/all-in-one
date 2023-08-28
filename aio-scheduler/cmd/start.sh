@@ -1,3 +1,3 @@
 #!/bin/bash
 set +e
-/home/admin/aio-scheduler/aio-scheduler -mode prod
+/bin/bash -c "${AIO_SCHEDULER_WORK_PATH}/aio-scheduler --mode prod"

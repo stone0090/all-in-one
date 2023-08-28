@@ -37,8 +37,8 @@ export namespace MockApi {
   /** 加载图数据的api */
   export const loadGraphData = async (graphMeta: NsGraph.IGraphMeta) => {
     console.log('loadGraphData', graphMeta)
-    const {dagNodes = {}} = graphMeta?.dag || {}
-    const nodeDagJson = JSON.parse(dagNodes)
+    const {dagData = {}} = graphMeta?.dag || {}
+    const nodeDagJson = JSON.parse(dagData)
     const nodes: NsGraph.INodeConfig[] = nodeDagJson["nodes"]
     const edges: NsGraph.IEdgeConfig[] = nodeDagJson["edges"]
     return {nodes, edges}
@@ -48,10 +48,10 @@ export namespace MockApi {
     graphMeta: NsGraph.IGraphMeta,
     graphData: NsGraph.IGraphData,
   ) => {
-    console.log('saveGraphData', graphMeta, graphData)
+    console.log('saveGraphData graphMeta graphData', graphMeta, graphData)
     const record = {
       "id": graphMeta.flowId,
-      "dagNodes": JSON.stringify(graphData),
+      "dagData": JSON.stringify(graphData),
     };
     const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/dag/editDetail', record);
     if (result?.success) {
@@ -88,6 +88,10 @@ export namespace MockApi {
         type: NsGraph.AnchorType.INPUT,
         group: NsGraph.AnchorGroup.TOP,
         tooltip: inputParamJson[key].name + " (" + inputParamJson[key].type + ")",
+        opParamCode: key,
+        opParamName: inputParamJson[key].name,
+        opParamType: inputParamJson[key].type,
+        opParamRequired: inputParamJson[key].required,
       })
     }
     for (const key in outputParamJson) {
@@ -95,6 +99,10 @@ export namespace MockApi {
         type: NsGraph.AnchorType.OUTPUT,
         group: NsGraph.AnchorGroup.BOTTOM,
         tooltip: outputParamJson[key].name + " (" + outputParamJson[key].type + ")",
+        opParamCode: key,
+        opParamName: outputParamJson[key].name,
+        opParamType: outputParamJson[key].type,
+        opParamRequired: outputParamJson[key].required,
       })
     }
     const {id, ports = portItems, groupChildren} = args.nodeConfig
@@ -107,6 +115,8 @@ export namespace MockApi {
       ports: (ports as NsGraph.INodeAnchor[]).map(port => {
         return {...port, id: uuidv4()}
       }),
+      opCode: operator.opCode,
+      opName: operator.opName,
     }
     /** group没有链接桩 */
     if (groupChildren && groupChildren.length) {
