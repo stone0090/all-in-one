@@ -7,7 +7,7 @@ from aio_sdk import env_util, logger_util
 from api import api_blueprint
 
 logger = logger_util.get_logger("platform")
-logger.info(f'work dir is [{env_util.get_work_dir()}]')
+logger.info(f'work path is [{env_util.get_work_path()}]')
 
 app = Flask(__name__)
 app.register_blueprint(api_blueprint)

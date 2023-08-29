@@ -15,7 +15,6 @@ import com.stone0090.aio.service.model.web.protocal.PageRequest;
 import com.stone0090.aio.service.model.web.protocal.PageResult;
 import com.stone0090.aio.service.model.web.request.DagQueryRequest;
 import com.stone0090.aio.service.model.web.request.SvcInvokeRequest;
-import com.stone0090.aio.service.model.web.request.SvcRequest;
 import com.stone0090.aio.service.model.web.request.save.DagSaveBriefRequest;
 import com.stone0090.aio.service.model.web.request.save.DagSaveDetailRequest;
 import com.stone0090.aio.service.model.web.request.IdRequest;
@@ -112,23 +111,31 @@ public class DagServiceImpl implements DagService, SvcService {
     }
 
     @Override
-    public int onlineSvc(SvcRequest request) {
-        if (!AlgorithmTypeEnum.DAG.name().equals(request.getSvcType())) {
-            throw new RuntimeException("服务上线失败，类型不正确！");
-        }
+    public int onlineSvc(IdRequest request) {
         OperatorDagDO dagDO = getOperatorDagDO(request.getId());
         if (dagDO == null) {
             throw new RuntimeException("服务上线失败，算子编排不存在！");
         }
-        ServiceDO serviceDO = buildServiceDO(dagDO, AlgorithmTypeEnum.OPERATOR);
+        DagData dagData = JSON.parseObject(dagDO.getDagData(), DagData.class);
+        ServiceDO serviceDO = buildServiceDO(dagDO, dagData, AlgorithmTypeEnum.DAG);
         return svcServiceImpl.online(serviceDO, () -> {
             DeployInfo deployInfo = new DeployInfo();
+            deployInfo.setRequestId(UuidUtil.getUuid());
+            deployInfo.setNodes(new ArrayList<>());
+            dagData.getNodes().forEach(node -> {
+                DeployNode deployNode = new DeployNode();
+                deployNode.setNeedDeploy(true);
+                deployNode.setLanguage("python");
+                deployNode.setNodeId(node.getId());
+                deployNode.setAlgoCode(node.getAlgorithmCode());
+                deployInfo.getNodes().add(deployNode);
+            });
             return deployInfo;
         });
     }
 
     @Override
-    public int offlineSvc(SvcRequest request) {
+    public int offlineSvc(IdRequest request) {
         return 0;
     }
 
@@ -144,7 +151,7 @@ public class DagServiceImpl implements DagService, SvcService {
         return result.size() > 0 ? result.get(0) : null;
     }
 
-    public ServiceDO buildServiceDO(OperatorDagDO dagDO, AlgorithmTypeEnum typeEnum) {
+    public ServiceDO buildServiceDO(OperatorDagDO dagDO, DagData dagData, AlgorithmTypeEnum typeEnum) {
         ServiceDO serviceDO = new ServiceDO();
         serviceDO.setSvcUuid(UuidUtil.getUuid());
         serviceDO.setSvcName(dagDO.getDagName());
@@ -154,14 +161,13 @@ public class DagServiceImpl implements DagService, SvcService {
         serviceDO.setSvcUrl("");
         serviceDO.setCallbackUrl("");
         serviceDO.setSvcStatus(SvcStatusEnum.OFFLINE.name());
-        Pair<String, String> dagParam = buildDagParam(dagDO.getDagData());
+        Pair<String, String> dagParam = buildDagParam(dagData);
         serviceDO.setInputParam(dagParam.getKey());
         serviceDO.setOutputParam(dagParam.getValue());
         return serviceDO;
     }
 
-    private Pair<String, String> buildDagParam(String dagDataStr) {
-        DagData dagData = JSON.parseObject(dagDataStr, DagData.class);
+    private Pair<String, String> buildDagParam(DagData dagData) {
         if (CollectionUtils.isEmpty(Arrays.asList(dagData.getNodes()))) {
             return new Pair<>("", "");
         }

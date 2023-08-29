@@ -8,7 +8,6 @@ import com.stone0090.aio.service.model.web.protocal.RestResult;
 import com.stone0090.aio.service.model.web.request.DagQueryRequest;
 import com.stone0090.aio.service.model.web.request.IdRequest;
 import com.stone0090.aio.service.model.web.request.SvcInvokeRequest;
-import com.stone0090.aio.service.model.web.request.SvcRequest;
 import com.stone0090.aio.service.model.web.request.save.DagSaveBriefRequest;
 import com.stone0090.aio.service.model.web.request.save.DagSaveDetailRequest;
 import com.stone0090.aio.service.model.web.response.DagBriefVO;
@@ -79,14 +78,14 @@ public class DagController {
 
     @ApiOperation("上线Dag服务")
     @PostMapping("/onlineSvc")
-    public RestResult online(@RequestBody SvcRequest request) {
+    public RestResult online(@RequestBody IdRequest request) {
         int count = svcService.onlineSvc(request);
         return RestResult.success(count);
     }
 
     @ApiOperation("下线Dag服务")
     @PostMapping("/offlineSvc")
-    public RestResult offline(@RequestBody SvcRequest request) {
+    public RestResult offline(@RequestBody IdRequest request) {
         int count = svcService.offlineSvc(request);
         return RestResult.success(count);
     }

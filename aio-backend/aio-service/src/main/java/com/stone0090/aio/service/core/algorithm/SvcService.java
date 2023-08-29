@@ -1,7 +1,7 @@
 package com.stone0090.aio.service.core.algorithm;
 
+import com.stone0090.aio.service.model.web.request.IdRequest;
 import com.stone0090.aio.service.model.web.request.SvcInvokeRequest;
-import com.stone0090.aio.service.model.web.request.SvcRequest;
 import org.springframework.validation.annotation.Validated;
 
 /**
@@ -11,9 +11,9 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public interface SvcService {
 
-    int onlineSvc(SvcRequest request);
+    int onlineSvc(IdRequest request);
 
-    int offlineSvc(SvcRequest request);
+    int offlineSvc(IdRequest request);
 
     String invokeSvc(SvcInvokeRequest request);
 

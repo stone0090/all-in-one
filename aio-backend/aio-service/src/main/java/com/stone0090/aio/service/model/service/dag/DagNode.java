@@ -52,6 +52,18 @@ public class DagNode {
      * 算子名称
      */
     private String opName;
+    /**
+     * 编程语言
+     */
+    private String programmingLanguage;
+    /**
+     * 算法代码
+     */
+    private String algorithmCode;
+    /**
+     * 算法路径
+     */
+    private String algorithmPath;
 }
 
 

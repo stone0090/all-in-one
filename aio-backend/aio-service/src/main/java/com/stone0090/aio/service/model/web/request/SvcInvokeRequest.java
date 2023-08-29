@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class SvcInvokeRequest extends SvcRequest implements Serializable{
+public class SvcInvokeRequest extends IdRequest implements Serializable{
 
     private String inputParam;
 

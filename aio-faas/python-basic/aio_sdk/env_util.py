@@ -1,30 +1,29 @@
 import argparse
 import os
-import json
 
 parser = argparse.ArgumentParser(description='flask app with mode')
 parser.add_argument('--mode', choices=['dev', 'prod'], default='dev', help='execution mode')
+parser.add_argument('--port', default='6001', help='service port')
 args = parser.parse_args()
-print(f"running in [{args.mode}] mode")
-
-with open(os.path.join(os.getenv('AIO_FAAS_WORK_PATH'), 'config.json'), 'r') as config_file:
-    config = json.load(config_file)
+print(f"正在启动faas服务，运行模式为：[{args.mode}]，服务端口为：[{args.port}]")
 
 
 def get_service_port():
-    return config['service_port']
-
-
-def get_work_dir():
     if args.mode == 'prod':
-        return os.getenv('AIO_FAAS_WORK_PATH') + "-" + str(get_service_port())
+        return str(args.port)
+    else:
+        return '6001'
+
+
+def get_work_path():
+    if args.mode == 'prod':
+        return os.getenv('AIO_FAAS_WORK_PATH') + "-" + str(args.port)
     else:
         return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def get_log_dir():
+def get_log_path():
     if args.mode == 'prod':
-        return os.getenv('AIO_FAAS_LOG_PATH') + '-' + str(get_service_port())
+        return os.getenv('AIO_FAAS_LOG_PATH') + '-' + str(args.port)
     else:
         return os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'logs')
-

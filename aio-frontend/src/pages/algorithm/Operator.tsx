@@ -125,7 +125,6 @@ const Operator: React.FC = () => {
     setSvcLoading(true);
     const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/operator/onlineSvc', {
       "id": record.id,
-      "svcType": 'OPERATOR',
     });
     setSvcLoading(false);
     if (result?.success) {
@@ -139,7 +138,6 @@ const Operator: React.FC = () => {
   const handleOfflineSvc = async (record: any) => {
     const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/operator/offlineSvc', {
       "id": record.id,
-      "svcType": 'OPERATOR',
     });
     if (result?.success) {
       message.success('下线成功！');

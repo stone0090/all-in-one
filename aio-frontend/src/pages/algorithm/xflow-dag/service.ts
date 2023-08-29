@@ -64,10 +64,16 @@ export namespace MockApi {
   }
   /** 部署图数据的api */
   export const deployDagService: NsDeployDagCmd.IDeployDagService = async (
-    meta: NsGraph.IGraphMeta,
+    graphMeta: NsGraph.IGraphMeta,
     graphData: NsGraph.IGraphData,
   ) => {
-    console.log('deployService api', meta, graphData)
+    console.log('deployDagService graphMeta graphData', graphMeta, graphData)
+    const result: Protocol.RestResult = await requestPost<Protocol.RestResult>('/aio/dag/onlineSvc', {
+      "id": graphMeta.flowId,
+    });
+    if (result?.success) {
+      message.success('部署成功！');
+    }
     return {
       success: true,
       data: graphData,
@@ -117,6 +123,9 @@ export namespace MockApi {
       }),
       opCode: operator.opCode,
       opName: operator.opName,
+      programmingLanguage: operator.programmingLanguage,
+      algorithmCode: operator.algorithmCode,
+      algorithmPath: operator.algorithmPath,
     }
     /** group没有链接桩 */
     if (groupChildren && groupChildren.length) {

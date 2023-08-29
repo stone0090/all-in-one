@@ -17,7 +17,6 @@ import com.stone0090.aio.service.model.web.protocal.PageResult;
 import com.stone0090.aio.service.model.web.request.IdRequest;
 import com.stone0090.aio.service.model.web.request.OperatorQueryRequest;
 import com.stone0090.aio.service.model.web.request.SvcInvokeRequest;
-import com.stone0090.aio.service.model.web.request.SvcRequest;
 import com.stone0090.aio.service.model.web.request.save.OperatorSaveRequest;
 import com.stone0090.aio.service.model.web.response.OperatorAndGroupVO;
 import com.stone0090.aio.service.model.web.response.OperatorVO;
@@ -145,41 +144,34 @@ public class OperatorServiceImpl implements OperatorService, SvcService {
     }
 
     @Override
-    public int onlineSvc(SvcRequest request) {
-        if (!AlgorithmTypeEnum.OPERATOR.name().equals(request.getSvcType())) {
-            throw new RuntimeException("服务上线失败，类型不正确！");
-        }
+    public int onlineSvc(IdRequest request) {
         OperatorDO operatorDO = getOperatorDO(request.getId());
         if (operatorDO == null) {
             throw new RuntimeException("服务上线失败，算子不存在！");
         }
         ServiceDO serviceDO = buildServiceDO(operatorDO, AlgorithmTypeEnum.OPERATOR);
         return svcServiceImpl.online(serviceDO, () -> {
-            DeployNode deployNode = new DeployNode();
-            deployNode.setNeedDeploy(true);
-            deployNode.setLanguage("python");
-            deployNode.setNodeId(operatorDO.getId().toString());
-            deployNode.setAlgoCode(operatorDO.getAlgorithmCode());
             DeployInfo deployInfo = new DeployInfo();
             deployInfo.setRequestId(UuidUtil.getUuid());
-            deployInfo.setNodes(Collections.singletonList(deployNode));
+            {
+                DeployNode deployNode = new DeployNode();
+                deployNode.setNeedDeploy(true);
+                deployNode.setLanguage("python");
+                deployNode.setNodeId(svcServiceImpl.buildResourceId(serviceDO.getSvcType(), serviceDO.getSvcBizId()));
+                deployNode.setAlgoCode(operatorDO.getAlgorithmCode());
+                deployInfo.setNodes(Collections.singletonList(deployNode));
+            }
             return deployInfo;
         });
     }
 
     @Override
-    public int offlineSvc(SvcRequest request) {
-        if (!AlgorithmTypeEnum.OPERATOR.name().equals(request.getSvcType())) {
-            throw new RuntimeException("服务下线失败，类型不正确！");
-        }
+    public int offlineSvc(IdRequest request) {
         return svcServiceImpl.offline(AlgorithmTypeEnum.OPERATOR.name(), request.getId());
     }
 
     @Override
     public String invokeSvc(SvcInvokeRequest request) {
-        if (!AlgorithmTypeEnum.OPERATOR.name().equals(request.getSvcType())) {
-            throw new RuntimeException("服务调用失败，类型不正确！");
-        }
         OperatorDO operatorDO = getOperatorDO(request.getId());
         if (operatorDO == null) {
             throw new RuntimeException("服务调用失败，算子不存在！");
