@@ -8,7 +8,7 @@ import {requestGet, requestPost} from '@/services/api';
 import CodeEditor from '@/components/CodeEditor';
 import TextArea from "antd/es/input/TextArea";
 
-import styles from './Operator.less';
+import styles from './common.less';
 
 const Operator: React.FC = () => {
 

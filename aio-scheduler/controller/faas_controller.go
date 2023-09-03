@@ -3,29 +3,30 @@ package controller
 import (
 	"aio-scheduler/client"
 	"aio-scheduler/common/constants"
+	"aio-scheduler/common/request"
 	"aio-scheduler/common/response"
-	"aio-scheduler/dal/model"
 	"aio-scheduler/service"
 	"aio-scheduler/service/global"
+	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"github.com/labstack/gommon/log"
 )
 
 func Deploy(context *gin.Context) {
-	var deployInfo model.DeployInfo
+	var deployInfo request.DeployInfo
 	err := context.ShouldBind(&deployInfo)
 	if err != nil {
 		context.JSON(200, response.Failure(err.Error()))
 		return
 	}
-	if len(deployInfo.Nodes) == 0 {
-		context.JSON(200, response.Failure("节点信息不能为空！"))
-		return
-	}
-	go service.Deploy(deployInfo)
+	jsonData, err := json.Marshal(deployInfo)
+	log.Infof("正在部署，DeployInfo为: %s", string(jsonData))
+	err = service.CheckDeployInfo(deployInfo)
 	if err != nil {
 		context.JSON(200, response.Failure(err.Error()))
 		return
 	}
+	go service.Deploy(deployInfo)
 	context.JSON(200, response.Success(nil))
 }
 

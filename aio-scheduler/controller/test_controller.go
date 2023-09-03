@@ -1,14 +1,14 @@
 package controller
 
 import (
+	"aio-scheduler/common/request"
 	"aio-scheduler/common/response"
-	"aio-scheduler/dal/model"
 	"github.com/gin-gonic/gin"
 	"os/exec"
 )
 
 func ExecCommand(context *gin.Context) {
-	commandInfo := model.CommandInfo{}
+	commandInfo := request.CommandInfo{}
 	err := context.ShouldBind(&commandInfo)
 	if err != nil {
 		context.JSON(200, response.Failure(err.Error()))

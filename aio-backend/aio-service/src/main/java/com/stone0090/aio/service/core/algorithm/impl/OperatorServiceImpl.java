@@ -1,5 +1,6 @@
 package com.stone0090.aio.service.core.algorithm.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.stone0090.aio.dao.mybatis.entity.OperatorDO;
 import com.stone0090.aio.dao.mybatis.entity.OperatorDOExample;
@@ -10,8 +11,8 @@ import com.stone0090.aio.service.common.Converter;
 import com.stone0090.aio.service.core.algorithm.SvcService;
 import com.stone0090.aio.service.core.algorithm.OperatorService;
 import com.stone0090.aio.service.enums.*;
+import com.stone0090.aio.service.model.service.dag.DagNode;
 import com.stone0090.aio.service.model.service.dag.DeployInfo;
-import com.stone0090.aio.service.model.service.dag.DeployNode;
 import com.stone0090.aio.service.model.web.protocal.PageRequest;
 import com.stone0090.aio.service.model.web.protocal.PageResult;
 import com.stone0090.aio.service.model.web.request.IdRequest;
@@ -56,10 +57,13 @@ public class OperatorServiceImpl implements OperatorService, SvcService {
         }
         PageHelper.startPage(pageRequest.getCurrent(), pageRequest.getPageSize());
         List<OperatorDO> result = operatorDOMapper.selectByExample(example);
+        if (org.apache.commons.collections4.CollectionUtils.isEmpty(result)) {
+            return PageResult.buildPageResult(result);
+        }
         List<ServiceDO> serviceDOList = svcServiceImpl.listServiceByBizIds(AlgorithmTypeEnum.OPERATOR.name(),
                 result.stream().map(OperatorDO::getId).collect(Collectors.toList()));
-        Map<Integer, ServiceDO> serviceMap = serviceDOList.stream().collect(Collectors.toMap(ServiceDO::getSvcBizId,
-                serviceDO -> serviceDO));
+        Map<Integer, ServiceDO> serviceMap = serviceDOList.stream()
+                .collect(Collectors.toMap(ServiceDO::getSvcBizId, serviceDO -> serviceDO));
         PageResult<OperatorVO> pageResult = PageResult.buildPageResult(result);
         pageResult.setList(result.stream().map(operatorDO -> Converter.toOperatorVO(operatorDO, serviceMap))
                 .collect(Collectors.toList()));
@@ -69,7 +73,7 @@ public class OperatorServiceImpl implements OperatorService, SvcService {
     @Override
     public OperatorVO get(IdRequest request) {
         OperatorDO result = getOperatorDO(request.getId());
-        return result != null ? Converter.toOperatorVO(result, null) : null;
+        return result != null ? Converter.toOperatorVO(result) : null;
     }
 
     @Override
@@ -153,14 +157,11 @@ public class OperatorServiceImpl implements OperatorService, SvcService {
         return svcServiceImpl.online(serviceDO, () -> {
             DeployInfo deployInfo = new DeployInfo();
             deployInfo.setRequestId(UuidUtil.getUuid());
-            {
-                DeployNode deployNode = new DeployNode();
-                deployNode.setNeedDeploy(true);
-                deployNode.setLanguage("python");
-                deployNode.setNodeId(svcServiceImpl.buildResourceId(serviceDO.getSvcType(), serviceDO.getSvcBizId()));
-                deployNode.setAlgoCode(operatorDO.getAlgorithmCode());
-                deployInfo.setNodes(Collections.singletonList(deployNode));
-            }
+            DagNode node = new DagNode();
+            node.setProgrammingLanguage("python");
+            node.setId(svcServiceImpl.buildResourceId(serviceDO.getSvcType(), serviceDO.getSvcBizId()));
+            node.setAlgorithmCode(operatorDO.getAlgorithmCode());
+            deployInfo.setNodes(Collections.singletonList(node));
             return deployInfo;
         });
     }
@@ -232,6 +233,13 @@ public class OperatorServiceImpl implements OperatorService, SvcService {
                     } else {
                         if (!(inputParamDetailMap.get("required") instanceof Boolean)) {
                             throw new RuntimeException("算子保存失败，算子" + paramType + "[" + k + "]的格式有误，属性[required]只能是true/false！");
+                        }
+                    }
+                    if (inputParamDetailMap.get("defaultValue") == null) {
+                        throw new RuntimeException("算子保存失败，算子" + paramType + "[" + k + "]的格式有误，属性[defaultValue]不能为空！");
+                    } else {
+                        if (!DataTypeEnum.checkType(inputParamDetailMap.get("type").toString(), inputParamDetailMap.get("defaultValue"))) {
+                            throw new RuntimeException("算子保存失败，算子" + paramType + "[" + k + "]的格式有误，属性[defaultValue]数据格式必须为[" + inputParamDetailMap.get("type").toString() + "]！");
                         }
                     }
                 }

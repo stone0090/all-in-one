@@ -5,7 +5,10 @@ go 1.20
 require (
 	github.com/Unknwon/goconfig v1.0.0
 	github.com/gin-gonic/gin v1.9.1
+	github.com/hashicorp/golang-lru/v2 v2.0.6
 	github.com/labstack/gommon v0.4.0
+	github.com/robfig/cron/v3 v3.0.1
+	github.com/satori/go.uuid v1.2.0
 )
 
 require (

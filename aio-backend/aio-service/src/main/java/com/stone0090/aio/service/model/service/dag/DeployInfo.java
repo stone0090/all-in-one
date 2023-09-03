@@ -1,10 +1,9 @@
 package com.stone0090.aio.service.model.service.dag;
 
 import lombok.Data;
-import java.util.List;
 
 @Data
-public class DeployInfo {
+public class DeployInfo extends DagData {
     String requestId;
-    List<DeployNode> nodes;
+    ScheduleInfo scheduleInfo;
 }

@@ -18,7 +18,7 @@ pip3 install dist/aio_sdk-latest.tar.gz
 
 # 准备镜像中需要用到的文件
 mkdir -p aio-scheduler/conf/
-cp ../../aio-scheduler/cmd/start.sh aio-scheduler/
+cp ../../aio-scheduler/cmd/aio-scheduler-builder/start.sh aio-scheduler/
 cp ../../aio-scheduler/aio-scheduler aio-scheduler/
 cp ../../aio-scheduler/conf/prod.ini aio-scheduler/conf/
 

@@ -3,14 +3,18 @@ package service
 import (
 	"aio-scheduler/client"
 	"aio-scheduler/common/constants"
-	"aio-scheduler/dal/model"
+	"aio-scheduler/common/request"
 	"aio-scheduler/service/global"
 	"github.com/labstack/gommon/log"
 	"strconv"
 	"time"
 )
 
-func Deploy(deployInfo model.DeployInfo) {
+func CheckDeployInfo(deployInfo request.DeployInfo) error {
+	return nil
+}
+
+func Deploy(deployInfo request.DeployInfo) {
 
 	// 1、校验部署状态
 	success := global.CasDeployStatus(constants.Init, constants.Deploying)
@@ -20,10 +24,12 @@ func Deploy(deployInfo model.DeployInfo) {
 
 	// 2、部署节点
 	faasPort, _ := strconv.Atoi(global.Enver.FaasPort)
+	nodeId2ServicePortMap := make(map[string]int)
 	for index, node := range deployInfo.Nodes {
 		port := faasPort + index
-		log.Infof("正在部署节点[%v]，端口为[%v]", node.NodeId, port)
-		if node.Language == constants.Python {
+		log.Infof("正在部署节点[%v]，端口为[%v]", node.Id, port)
+		nodeId2ServicePortMap[node.Id] = port
+		if node.ProgrammingLanguage == constants.Python {
 			deployPython(node, port)
 		}
 	}
@@ -38,12 +44,17 @@ func Deploy(deployInfo model.DeployInfo) {
 	for range deployInfo.Nodes {
 		healthCheckResult = healthCheckResult && <-healthCheckChan
 	}
+
+	// 5、更新部署状态和执行信息
 	if !healthCheckResult {
 		log.Error("部署失败：健康检查失败！")
+		return
 	}
-
-	// 4、更新部署状态
+	runInfo := global.NewRunInfo(deployInfo, nodeId2ServicePortMap)
 	global.CasDeployStatus(constants.Deploying, constants.Deployed)
+
+	// 6、启动调度任务
+	taskSchedule(runInfo)
 }
 
 func healthCheck(port int, healthCheckChan *chan bool) {
@@ -66,4 +77,24 @@ func healthCheck(port int, healthCheckChan *chan bool) {
 	}
 	log.Errorf("[%v]端口健康检查超时！", port)
 	*healthCheckChan <- false
+}
+
+func taskSchedule(runInfo global.RunInfo) {
+	scheduleInfo := runInfo.DeployInfo.ScheduleInfo
+	if scheduleInfo.Type == "" ||
+		scheduleInfo.Type == constants.ScheduleTypeNone ||
+		scheduleInfo.Expression == "" {
+		return // 不需要调度
+	}
+	// 创建任务超时队列
+	taskQueue := global.NewTaskQueue(3)
+	// 创建定时调度任务
+	newScheduleTask(scheduleInfo, func() {
+		runContext := newRunContext(runInfo)
+		log.Infof("开始执行调度任务，RequestId为: %v", runContext.RequestId)
+		taskQueue.AddTaskAndCallback(runContext.RequestId, runContext.StartTime, func() {
+			run(runInfo, taskQueue, runContext)
+			log.Infof("调度任务执行完成，RequestId为: %v", runContext.RequestId)
+		})
+	})
 }

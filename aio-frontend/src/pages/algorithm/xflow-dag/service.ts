@@ -93,22 +93,24 @@ export namespace MockApi {
       portItems.push({
         type: NsGraph.AnchorType.INPUT,
         group: NsGraph.AnchorGroup.TOP,
-        tooltip: inputParamJson[key].name + " (" + inputParamJson[key].type + ")",
+        tooltip: "[" + inputParamJson[key].type + "] " + inputParamJson[key].name + key,
         opParamCode: key,
         opParamName: inputParamJson[key].name,
         opParamType: inputParamJson[key].type,
         opParamRequired: inputParamJson[key].required,
+        opParamDefaultValue: inputParamJson[key].defaultValue,
       })
     }
     for (const key in outputParamJson) {
       portItems.push({
         type: NsGraph.AnchorType.OUTPUT,
         group: NsGraph.AnchorGroup.BOTTOM,
-        tooltip: outputParamJson[key].name + " (" + outputParamJson[key].type + ")",
+        tooltip:  "[" + outputParamJson[key].type + "] " + outputParamJson[key].name + key,
         opParamCode: key,
         opParamName: outputParamJson[key].name,
         opParamType: outputParamJson[key].type,
         opParamRequired: outputParamJson[key].required,
+        opParamDefaultValue: outputParamJson[key].defaultValue,
       })
     }
     const {id, ports = portItems, groupChildren} = args.nodeConfig

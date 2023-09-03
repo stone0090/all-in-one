@@ -10,7 +10,7 @@ import java.util.Date;
  * @date 2023/07/30
  */
 @Data
-public class DagBriefVO implements Serializable {
+public class DagBriefVO extends ServiceBriefVO implements Serializable {
     private Integer id;
     private Date gmtCreate;
     private Date gmtModified;

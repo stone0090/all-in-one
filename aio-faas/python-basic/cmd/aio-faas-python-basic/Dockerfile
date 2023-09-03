@@ -20,6 +20,5 @@ RUN pip3 install /tmp/aio_sdk-latest.tar.gz  \
     && rm -rf /tmp/requirements.txt
 
 EXPOSE 6000
-EXPOSE 6001
 
 CMD ["/bin/bash", "-c", "${AIO_SCHEDULER_WORK_PATH}/start.sh"]

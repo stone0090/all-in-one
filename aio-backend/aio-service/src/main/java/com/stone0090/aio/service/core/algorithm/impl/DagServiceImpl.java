@@ -51,8 +51,16 @@ public class DagServiceImpl implements DagService, SvcService {
         }
         PageHelper.startPage(pageRequest.getCurrent(), pageRequest.getPageSize());
         List<OperatorDagDO> result = operatorDagDOMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(result)) {
+            return PageResult.buildPageResult(result);
+        }
+        List<ServiceDO> serviceDOList = svcServiceImpl.listServiceByBizIds(AlgorithmTypeEnum.DAG.name(),
+                result.stream().map(OperatorDagDO::getId).collect(Collectors.toList()));
+        Map<Integer, ServiceDO> serviceMap = serviceDOList.stream()
+                .collect(Collectors.toMap(ServiceDO::getSvcBizId, serviceDO -> serviceDO));
         PageResult<DagBriefVO> pageResult = PageResult.buildPageResult(result);
-        pageResult.setList(result.stream().map(Converter::toDagBriefVO).collect(Collectors.toList()));
+        pageResult.setList(result.stream().map(operatorDagDO -> Converter.toDagDetailVO(operatorDagDO, serviceMap))
+                .collect(Collectors.toList()));
         return pageResult;
     }
 
@@ -121,14 +129,13 @@ public class DagServiceImpl implements DagService, SvcService {
         return svcServiceImpl.online(serviceDO, () -> {
             DeployInfo deployInfo = new DeployInfo();
             deployInfo.setRequestId(UuidUtil.getUuid());
-            deployInfo.setNodes(new ArrayList<>());
-            dagData.getNodes().forEach(node -> {
-                DeployNode deployNode = new DeployNode();
-                deployNode.setNeedDeploy(true);
-                deployNode.setLanguage("python");
-                deployNode.setNodeId(node.getId());
-                deployNode.setAlgoCode(node.getAlgorithmCode());
-                deployInfo.getNodes().add(deployNode);
+            deployInfo.setNodes(dagData.getNodes());
+            deployInfo.setEdges(dagData.getEdges());
+            deployInfo.setScheduleInfo(new ScheduleInfo() {
+                {
+                    setType(ScheduleTypeEnum.interval.name());
+                    setExpression("1000000");
+                }
             });
             return deployInfo;
         });
@@ -136,12 +143,16 @@ public class DagServiceImpl implements DagService, SvcService {
 
     @Override
     public int offlineSvc(IdRequest request) {
-        return 0;
+        return svcServiceImpl.offline(AlgorithmTypeEnum.DAG.name(), request.getId());
     }
 
     @Override
     public String invokeSvc(SvcInvokeRequest request) {
-        return null;
+        OperatorDagDO dagDO = getOperatorDagDO(request.getId());
+        if (dagDO == null) {
+            throw new RuntimeException("服务调用失败，算子编排不存在！");
+        }
+        return svcServiceImpl.invoke(AlgorithmTypeEnum.OPERATOR.name(), request.getId(), request.getInputParam());
     }
 
     public OperatorDagDO getOperatorDagDO(Integer id) {
@@ -168,7 +179,7 @@ public class DagServiceImpl implements DagService, SvcService {
     }
 
     private Pair<String, String> buildDagParam(DagData dagData) {
-        if (CollectionUtils.isEmpty(Arrays.asList(dagData.getNodes()))) {
+        if (CollectionUtils.isEmpty(dagData.getNodes())) {
             return new Pair<>("", "");
         }
         Map<String, DagPort> inputPortMap = new HashMap<>();
@@ -176,6 +187,8 @@ public class DagServiceImpl implements DagService, SvcService {
         for (DagNode dagNode : dagData.getNodes()) {
             if (dagNode.getPorts() != null) {
                 for (DagPort dagPort : dagNode.getPorts()) {
+                    dagPort.setNodeId(dagNode.getId());
+                    dagPort.setNodeLabel(dagNode.getLabel());
                     if (dagPort.getType().equals(DagPortTypeEnum.input.name())) {
                         inputPortMap.put(dagPort.getId(), dagPort);
                     } else {
@@ -184,7 +197,7 @@ public class DagServiceImpl implements DagService, SvcService {
                 }
             }
         }
-        if (CollectionUtils.isNotEmpty(Arrays.asList(dagData.getEdges()))) {
+        if (CollectionUtils.isNotEmpty(dagData.getEdges())) {
             for (DagEdge dagEdge : dagData.getEdges()) {
                 inputPortMap.remove(dagEdge.getTargetPortId());
                 outputPortMap.remove(dagEdge.getSourcePortId());
@@ -192,7 +205,7 @@ public class DagServiceImpl implements DagService, SvcService {
         }
         Map<String, Object> inputParamMap = buildParam(inputPortMap);
         Map<String, Object> outputParamMap = buildParam(outputPortMap);
-        return new Pair<>(JSON.toJSONString(inputParamMap), JSON.toJSONString(outputParamMap));
+        return new Pair<>(JSON.toJSONString(inputParamMap, true), JSON.toJSONString(outputParamMap, true));
     }
 
     private Map<String, Object> buildParam(Map<String, DagPort> portMap) {
@@ -203,7 +216,8 @@ public class DagServiceImpl implements DagService, SvcService {
             param.put("name", dagPort.getOpParamName());
             param.put("type", dagPort.getOpParamType());
             param.put("required", dagPort.getOpParamRequired());
-            paramMap.put(dagPort.getOpParamCode(), param);
+            param.put("node_label", dagPort.getNodeLabel());
+            paramMap.put(dagPort.getNodeId() + "." + dagPort.getOpParamCode(), param);
         }
         return paramMap;
     }

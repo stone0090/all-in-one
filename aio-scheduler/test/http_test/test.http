@@ -2,19 +2,174 @@
 GET http://localhost:6000/aio/scheduler/health/check
 
 ### 启动faas服务
-POST http://localhost:30683/aio/scheduler/faas/deploy
+POST http://localhost:6000/aio/scheduler/faas/deploy
 Content-Type: application/json
 
 {
-  "nodes": [
+  "requestId": "123456",
+  "scheduleInfo": {
+    "type": "interval",
+    "expression": "60000"
+  },
+  "edges": [
     {
-      "algoCode": "# import start\n\n# customer code start\ndef main(input_data):\n    a = input_data[\"a\"]\n    b = input_data[\"b\"]\n    return {\n        \"product\": a * b\n    }\n# customer code end",
-      "language": "python",
-      "needDeploy": true,
-      "nodeId": "2"
+      "id": "94d957c7-f90b-4f03-8550-4edb8a1f03d7",
+      "source": "7580acc7-cafa-414a-9d96-ff5274dbeaee",
+      "sourcePortId": "5c8b78b9-0142-4470-8351-749758f4b0ce",
+      "target": "c4d1b37a-2ddd-4e4f-8de9-6d1f42cada22",
+      "targetPortId": "96a0302f-fc17-4b67-8a57-a015297dbb20"
+    },
+    {
+      "id": "92e65129-8b67-444f-a9a6-b4038a9266dd",
+      "source": "4af06373-c696-4dbc-b3a2-d210512d0709",
+      "sourcePortId": "c8efe1b1-efde-45b5-9e2e-2b7c00ca51c9",
+      "target": "c4d1b37a-2ddd-4e4f-8de9-6d1f42cada22",
+      "targetPortId": "f4cf7cfc-98d4-445f-979a-f048500bd166"
     }
   ],
-  "requestId": "136423b8e4c740b294e04e869b0dbbd3"
+  "nodes": [
+    {
+      "algorithmCode": "# import start\n\n# customer code start\ndef main(input_data):\n    a = input_data[\"a\"]\n    b = input_data[\"b\"]\n    return {\n        \"product\": a + b\n    }\n# customer code end",
+      "algorithmPath": "",
+      "height": 36,
+      "id": "4af06373-c696-4dbc-b3a2-d210512d0709",
+      "label": "两数之和",
+      "opCode": "sum",
+      "opName": "两数之和",
+      "ports": [
+        {
+          "group": "top",
+          "id": "81066526-ce0c-4d45-b632-9007bee7e205",
+          "opParamCode": "a",
+          "opParamDefaultValue": 2,
+          "opParamName": "参数",
+          "opParamRequired": true,
+          "opParamType": "int",
+          "tooltip": "[int] 参数a",
+          "type": "input"
+        },
+        {
+          "group": "top",
+          "id": "c56dc12c-5b00-4310-bba2-e2bcc90de5c0",
+          "opParamCode": "b",
+          "opParamDefaultValue": 3,
+          "opParamName": "参数",
+          "opParamRequired": true,
+          "opParamType": "int",
+          "tooltip": "[int] 参数b",
+          "type": "input"
+        },
+        {
+          "group": "bottom",
+          "id": "c8efe1b1-efde-45b5-9e2e-2b7c00ca51c9",
+          "opParamCode": "sum",
+          "opParamName": "两数之和",
+          "opParamType": "int",
+          "tooltip": "[int] 两数之和sum",
+          "type": "output"
+        }
+      ],
+      "programmingLanguage": "python",
+      "renderKey": "DND_NDOE",
+      "width": 180,
+      "x": 570,
+      "y": 170
+    },
+    {
+      "algorithmCode": "# import start\n\n# customer code start\ndef main(input_data):\n    a = input_data[\"a\"]\n    b = input_data[\"b\"]\n    return {\n        \"product\": a * b\n    }\n# customer code end",
+      "algorithmPath": "",
+      "height": 36,
+      "id": "c4d1b37a-2ddd-4e4f-8de9-6d1f42cada22",
+      "label": "两数之积",
+      "opCode": "product",
+      "opName": "两数之积",
+      "ports": [
+        {
+          "group": "top",
+          "id": "96a0302f-fc17-4b67-8a57-a015297dbb20",
+          "opParamCode": "a",
+          "opParamDefaultValue": 2,
+          "opParamName": "参数",
+          "opParamRequired": true,
+          "opParamType": "int",
+          "tooltip": "[int] 参数a",
+          "type": "input"
+        },
+        {
+          "group": "top",
+          "id": "f4cf7cfc-98d4-445f-979a-f048500bd166",
+          "opParamCode": "b",
+          "opParamDefaultValue": 3,
+          "opParamName": "参数",
+          "opParamRequired": true,
+          "opParamType": "int",
+          "tooltip": "[int] 参数b",
+          "type": "input"
+        },
+        {
+          "group": "bottom",
+          "id": "de85745e-37be-4ab7-9471-e4fc9ef22521",
+          "opParamCode": "product",
+          "opParamName": "两数之积",
+          "opParamType": "int",
+          "tooltip": "[int] 两数之积product",
+          "type": "output"
+        }
+      ],
+      "programmingLanguage": "python",
+      "renderKey": "DND_NDOE",
+      "width": 180,
+      "x": 370,
+      "y": 330
+    },
+    {
+      "algorithmCode": "# import start\n\n# customer code start\ndef main(input_data):\n    a = input_data[\"a\"]\n    b = input_data[\"b\"]\n    return {\n        \"product\": a + b\n    }\n# customer code end",
+      "algorithmPath": "",
+      "height": 36,
+      "id": "7580acc7-cafa-414a-9d96-ff5274dbeaee",
+      "label": "两数之和",
+      "opCode": "sum",
+      "opName": "两数之和",
+      "ports": [
+        {
+          "group": "top",
+          "id": "c6bb3d05-7ef8-4a89-a24b-2769dcac6b19",
+          "opParamCode": "a",
+          "opParamDefaultValue": 2,
+          "opParamName": "参数",
+          "opParamRequired": true,
+          "opParamType": "int",
+          "tooltip": "[int] 参数a",
+          "type": "input"
+        },
+        {
+          "group": "top",
+          "id": "e91c9612-070e-486d-a9a4-4475c88ac5d4",
+          "opParamCode": "b",
+          "opParamDefaultValue": 3,
+          "opParamName": "参数",
+          "opParamRequired": true,
+          "opParamType": "int",
+          "tooltip": "[int] 参数b",
+          "type": "input"
+        },
+        {
+          "group": "bottom",
+          "id": "5c8b78b9-0142-4470-8351-749758f4b0ce",
+          "opParamCode": "sum",
+          "opParamName": "两数之和",
+          "opParamType": "int",
+          "tooltip": "[int] 两数之和sum",
+          "type": "output"
+        }
+      ],
+      "programmingLanguage": "python",
+      "renderKey": "DND_NDOE",
+      "width": 180,
+      "x": 230,
+      "y": 90
+    }
+  ]
 }
 
 ### 调用faas健康检查

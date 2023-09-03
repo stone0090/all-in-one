@@ -13,4 +13,6 @@ public class DagPort {
     private String opParamType;
     private Boolean opParamRequired;
     private Object opParamDefaultValue;
+    private String nodeId;
+    private String nodeLabel;
 }

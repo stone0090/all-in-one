@@ -1,7 +1,7 @@
 package service
 
 import (
-	"aio-scheduler/dal/model"
+	"aio-scheduler/common/request"
 	"aio-scheduler/service/global"
 	"encoding/json"
 	"github.com/labstack/gommon/log"
@@ -9,7 +9,7 @@ import (
 	"os/exec"
 )
 
-func deployPython(node model.Node, port int) {
+func deployPython(node request.Node, port int) {
 	file, err := os.OpenFile(global.Enver.FaasWorkPath+"/config.json", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Error("创建config.json失败！" + err.Error())
@@ -27,10 +27,10 @@ func deployPython(node model.Node, port int) {
 		log.Error("清空config.json失败！" + err.Error())
 		return
 	}
-	config := model.FaasConfig{
-		ServiceId:   node.NodeId,
+	config := request.FaasConfig{
+		ServiceId:   node.Id,
 		ServicePort: port,
-		AlgoCode:    node.AlgoCode,
+		AlgoCode:    node.AlgorithmCode,
 	}
 	encoder := json.NewEncoder(file)
 	err = encoder.Encode(config)

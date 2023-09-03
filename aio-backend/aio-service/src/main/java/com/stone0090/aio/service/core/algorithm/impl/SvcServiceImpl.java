@@ -12,6 +12,7 @@ import com.stone0090.aio.service.core.algorithm.SvcCallback;
 import com.stone0090.aio.service.enums.SvcStatusEnum;
 import com.stone0090.aio.service.enums.DataTypeEnum;
 import com.stone0090.aio.service.model.service.dag.DeployInfo;
+import com.stone0090.aio.service.model.web.protocal.RestResult;
 import io.kubernetes.client.openapi.models.V1Deployment;
 import io.kubernetes.client.openapi.models.V1Service;
 import lombok.extern.slf4j.Slf4j;
@@ -62,17 +63,8 @@ public class SvcServiceImpl {
     }
 
     public int offline(String type, Integer typeId) {
-//        ServiceDO serviceDO = getServiceByBizId(type, typeId);
-//        if (serviceDO == null || !SvcStatusEnum.ONLINE.name().equals(serviceDO.getSvcStatus())) {
-//            throw new RuntimeException("服务下线失败，服务不存在或未上线！");
-//        }
         String resourceId = buildResourceId(type, typeId);
-        try {
-            k8sClient.deleteDeployment(resourceId);
-            k8sClient.deleteService(resourceId);
-        } catch (Exception e) {
-            log.warn("k8s资源删除失败，忽略", e);
-        }
+        releaseResource(resourceId);
         ServiceDO serviceDO = getServiceByBizId(type, typeId);
         if (serviceDO != null) {
             serviceDO.setSvcStatus(SvcStatusEnum.OFFLINE.name());
@@ -98,7 +90,9 @@ public class SvcServiceImpl {
         } catch (JoseException e) {
             throw new RuntimeException("服务调用失败，入参格式有误！");
         }
-        return httpUtil.post(serviceDO.getSvcUrl() + "/aio/scheduler/faas/invoke", inputParam);
+        String result = httpUtil.post(serviceDO.getSvcUrl() + "/aio/scheduler/faas/invoke", inputParam);
+        RestResult restResult = JSON.parseObject(result, RestResult.class);
+        return JSON.toJSONString(restResult, true);
     }
 
     public void deployAndHealthCheck(ServiceDO serviceDO, String resourceId, SvcCallback callback) {
@@ -122,7 +116,12 @@ public class SvcServiceImpl {
                 if (Constants.SUCCESS.equals(result)) {
                     schedulerHealthCheck = true;
                     DeployInfo deployInfo = callback.buildDeployInfo();
-                    httpUtil.post(serviceDO.getSvcUrl() + "/aio/scheduler/faas/deploy", JSON.toJSONString(deployInfo));
+                    result = httpUtil.post(serviceDO.getSvcUrl() + "/aio/scheduler/faas/deploy", JSON.toJSONString(deployInfo));
+                    RestResult restResult = JSON.parseObject(result, RestResult.class);
+                    if (!restResult.getSuccess()) {
+                        releaseResource(resourceId);
+                        throw new RuntimeException("服务上线失败，调用scheduler部署接口失败！");
+                    }
                 }
             } else {
                 try {
@@ -138,12 +137,7 @@ public class SvcServiceImpl {
             }
         }
         if (!schedulerHealthCheck || !faasHealthCheck) {
-            try {
-                k8sClient.deleteDeployment(resourceId);
-                k8sClient.deleteService(resourceId);
-            } catch (Exception e) {
-                log.warn("k8s资源删除失败，忽略", e);
-            }
+            releaseResource(resourceId);
             throw new RuntimeException("服务失败上线，健康检查失败！");
         }
     }
@@ -184,6 +178,15 @@ public class SvcServiceImpl {
 
     public String buildResourceId(String svcType, Integer bizId) {
         return svcType + "-" + String.format("%06d", bizId);
+    }
+
+    private void releaseResource(String resourceId) {
+        try {
+            k8sClient.deleteDeployment(resourceId);
+            k8sClient.deleteService(resourceId);
+        } catch (Exception e) {
+            log.warn("k8s资源删除失败，忽略", e);
+        }
     }
 
 }

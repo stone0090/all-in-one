@@ -10,7 +10,7 @@ import java.util.Date;
  * @date 2023/06/22
  */
 @Data
-public class OperatorVO implements Serializable {
+public class OperatorVO extends ServiceBriefVO implements Serializable {
     private Integer id;
     private Date gmtCreate;
     private Date gmtModified;
@@ -21,9 +21,4 @@ public class OperatorVO implements Serializable {
     private String programmingLanguage;
     private String algorithmCode;
     private String algorithmPath;
-    private String inputParam;
-    private String outputParam;
-    private String svcStatus;
-    private String svcStatusName;
-    private String svcUrl;
 }

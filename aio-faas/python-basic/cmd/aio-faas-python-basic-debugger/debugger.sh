@@ -1,0 +1,1 @@
+docker run -p 2345:2345 -p 6000:6000 shi0090/aio-faas-python-basic:debugger

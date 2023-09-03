@@ -5,20 +5,20 @@ from logging.handlers import RotatingFileHandler
 
 from aio_sdk import env_util
 
-print(f'log dir is [{env_util.get_log_dir()}]')
+print(f'log dir is [{env_util.get_log_path()}]')
 rotating_type = 'size'
 max_bytes = 1024 * 1024 * 10
 backup_count = 5
 log_level = 'INFO'
 log_format = '%(asctime)s %(levelname)s %(filename)s %(funcName)s %(lineno)d %(message)s'
 log_date_format = '%Y-%m-%d %H:%M:%S'
-log_dir = env_util.get_log_dir()
-log_file = log_dir + '/{}.log'.format(os.path.basename(sys.argv[0]).split('.')[0])
+log_path = env_util.get_log_path()
+log_file = log_path + '/{}.log'.format(os.path.basename(sys.argv[0]).split('.')[0])
 
 
 def get_logger(name=None):
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
+    if not os.path.exists(log_path):
+        os.makedirs(log_path)
 
     logger = logging.getLogger(name)
     if logger.hasHandlers():

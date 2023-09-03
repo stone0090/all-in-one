@@ -164,7 +164,7 @@ export namespace NSToolbarConfig {
 
     return [
       { name: 'graphData', items: toolbarGroup1 },
-      { name: 'groupOperations', items: toolbarGroup2 },
+      // { name: 'groupOperations', items: toolbarGroup2 },
     ]
   }
 }

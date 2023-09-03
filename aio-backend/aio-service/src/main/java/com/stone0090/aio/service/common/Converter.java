@@ -1,5 +1,6 @@
 package com.stone0090.aio.service.common;
 
+import com.alibaba.fastjson.JSON;
 import com.stone0090.aio.dao.mybatis.entity.*;
 import com.stone0090.aio.service.enums.SvcStatusEnum;
 import com.stone0090.aio.service.enums.DagStatusEnum;
@@ -79,6 +80,7 @@ public class Converter {
         BeanUtils.copyProperties(param, result);
         result.setOpStatusName(OpStatusEnum.getDescByCode(param.getOpStatus()));
         if (MapUtils.isNotEmpty(serviceMap) && serviceMap.containsKey(param.getId())) {
+            result.setInputParam(rebuildInputParam(result.getInputParam()));
             result.setSvcStatus(serviceMap.get(param.getId()).getSvcStatus());
             result.setSvcStatusName(SvcStatusEnum.getDescByCode(serviceMap.get(param.getId()).getSvcStatus()));
             result.setSvcUrl("/aio/svc/invoke?serviceId=" + serviceMap.get(param.getId()).getSvcUuid());
@@ -86,6 +88,15 @@ public class Converter {
             result.setSvcUrl("/aio/svc/invoke?serviceId=");
         }
         return result;
+    }
+
+    private static String rebuildInputParam(String inputParam) {
+        Map<String, Object> inputParamDef = JSON.parseObject(inputParam);
+        inputParamDef.forEach((k, v) -> {
+            Map<String, Object> paramDef = (Map<String, Object>) v;
+            inputParamDef.put(k, paramDef.get("defaultValue"));
+        });
+        return JSON.toJSONString(inputParamDef, true);
     }
 
     public static OperatorDO toOperatorDO(OperatorSaveRequest param) {
@@ -105,6 +116,22 @@ public class Converter {
         DagDetailVO result = new DagDetailVO();
         BeanUtils.copyProperties(param, result);
         result.setDagStatusName(DagStatusEnum.getDescByCode(param.getDagStatus()));
+        return result;
+    }
+
+    public static DagDetailVO toDagDetailVO(OperatorDagDO param, Map<Integer, ServiceDO> serviceMap) {
+        DagDetailVO result = new DagDetailVO();
+        BeanUtils.copyProperties(param, result);
+        result.setDagStatusName(DagStatusEnum.getDescByCode(param.getDagStatus()));
+        if (MapUtils.isNotEmpty(serviceMap) && serviceMap.containsKey(param.getId())) {
+            result.setInputParam(serviceMap.get(param.getId()).getInputParam());
+            result.setOutputParam(serviceMap.get(param.getId()).getOutputParam());
+            result.setSvcStatus(serviceMap.get(param.getId()).getSvcStatus());
+            result.setSvcStatusName(SvcStatusEnum.getDescByCode(serviceMap.get(param.getId()).getSvcStatus()));
+            result.setSvcUrl("/aio/svc/invoke?serviceId=" + serviceMap.get(param.getId()).getSvcUuid());
+        } else {
+            result.setSvcUrl("/aio/svc/invoke?serviceId=");
+        }
         return result;
     }
 

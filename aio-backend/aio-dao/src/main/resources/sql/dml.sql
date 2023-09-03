@@ -17,7 +17,7 @@ MERGE INTO `aio_role_permission_relation`(id, role_code, permission_code) VALUES
 MERGE INTO `aio_role_permission_relation`(id, role_code, permission_code) VALUES ('4', 'admin', 'select_one_user'); -- REPLACE INTO
 MERGE INTO `aio_role_permission_relation`(id, role_code, permission_code) VALUES ('5', 'admin', 'select_all_user'); -- REPLACE INTO
 MERGE INTO `aio_role_permission_relation`(id, role_code, permission_code) VALUES ('6', 'visitor', 'select_all_user'); -- REPLACE INTO
-MERGE INTO `aio_config`(id, config_key, config_value) VALUES ('1', 'operator_algorithm_code_template', '# import start
+MERGE INTO `aio_config`(id, config_key, config_value) VALUES ('1', 'operator_algo_code_template', '# import start
 
 # customer code start
 def main(input_data):
@@ -30,19 +30,21 @@ def main(input_data):
 '); -- REPLACE INTO
 MERGE INTO `aio_config`(id, config_key, config_value) VALUES ('2', 'operator_input_param_template', '{
     "a": {
-        "name": "参数a",
+        "name": "参数",
         "type": "int/double/string/boolean",
-        "required": true
+        "required": true,
+        "defaultValue": 2
     },
     "b": {
-        "name": "参数b",
+        "name": "参数",
         "type": "int/double/string/boolean",
-        "required": true
-    },
+        "required": true,
+        "defaultValue": 3
+    }
 }'); -- REPLACE INTO
 MERGE INTO `aio_config`(id, config_key, config_value) VALUES ('3', 'operator_output_param_template', '{
-    "sum": {
-        "name": "两数之和sum",
+    "product": {
+        "name": "两数之积",
         "type": "int/double/string/boolean"
     }
 }'); -- REPLACE INTO
@@ -90,18 +92,20 @@ def main(input_data):
     }
 # customer code end	', '', '{
     "a": {
-        "name": "参数a",
+        "name": "参数",
         "type": "int",
-        "required": true
+        "required": true,
+        "defaultValue": 2
     },
     "b": {
-        "name": "参数b",
+        "name": "参数",
         "type": "int",
-        "required": true
+        "required": true,
+        "defaultValue": 3
     }
 }', '{
     "sum": {
-        "name": "两数之和sum",
+        "name": "两数之和",
         "type": "int"
     }
 }'); -- REPLACE INTO
@@ -117,18 +121,20 @@ def main(input_data):
     }
 # customer code end	', '', '{
     "a": {
-        "name": "参数a",
+        "name": "参数",
         "type": "int",
-        "required": true
+        "required": true,
+        "defaultValue": 2
     },
     "b": {
-        "name": "参数b",
+        "name": "参数",
         "type": "int",
-        "required": true
+        "required": true,
+        "defaultValue": 3
     }
 }', '{
     "product": {
-        "name": "两数之积product",
+        "name": "两数之积",
         "type": "int"
     }
 }'); -- REPLACE INTO
