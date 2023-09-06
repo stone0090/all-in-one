@@ -84,17 +84,16 @@ func taskSchedule(runInfo global.RunInfo) {
 	if scheduleInfo.Type == "" ||
 		scheduleInfo.Type == constants.ScheduleTypeNone ||
 		scheduleInfo.Expression == "" {
+		log.Infof("不需要调度，ScheduleInfo为: %v", scheduleInfo)
 		return // 不需要调度
 	}
 	// 创建任务超时队列
 	taskQueue := global.NewTaskQueue(3)
 	// 创建定时调度任务
 	newScheduleTask(scheduleInfo, func() {
-		runContext := newRunContext(runInfo)
-		log.Infof("开始执行调度任务，RequestId为: %v", runContext.RequestId)
-		taskQueue.AddTaskAndCallback(runContext.RequestId, runContext.StartTime, func() {
-			run(runInfo, taskQueue, runContext)
-			log.Infof("调度任务执行完成，RequestId为: %v", runContext.RequestId)
+		taskRunContext := NewTaskRunContext()
+		taskQueue.AddTaskAndCallback(taskRunContext.RequestId, taskRunContext.StartTime, func() {
+			Run(taskRunContext)
 		})
 	})
 }

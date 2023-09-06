@@ -26,10 +26,10 @@ func NewRunInfo(deployInfo request.DeployInfo, nodeId2ServicePortMap map[string]
 	runInfo.PortId2NodeMap = make(map[string]request.Node)
 	runInfo.PortId2PortMap = make(map[string]request.Port)
 	for _, edge := range deployInfo.Edges {
-		fromPortId := edge.SourcePortId
-		toPortId := edge.TargetPortId
-		runInfo.Out2InPortIdMap[toPortId] = fromPortId
-		runInfo.In2OutPortIdMap[fromPortId] = toPortId
+		outPortId := edge.SourcePortId
+		inPortId := edge.TargetPortId
+		runInfo.In2OutPortIdMap[inPortId] = outPortId
+		runInfo.Out2InPortIdMap[outPortId] = inPortId
 	}
 	for _, node := range deployInfo.Nodes {
 		runInfo.NodeId2NodeMap[node.Id] = node
@@ -38,5 +38,9 @@ func NewRunInfo(deployInfo request.DeployInfo, nodeId2ServicePortMap map[string]
 			runInfo.PortId2NodeMap[port.Id] = node
 		}
 	}
+	return runInfo
+}
+
+func GetRunInfo() RunInfo {
 	return runInfo
 }

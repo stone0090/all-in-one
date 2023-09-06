@@ -134,7 +134,7 @@ public class DagServiceImpl implements DagService, SvcService {
             deployInfo.setScheduleInfo(new ScheduleInfo() {
                 {
                     setType(ScheduleTypeEnum.interval.name());
-                    setExpression("1000000");
+                    setExpression("5000");
                 }
             });
             return deployInfo;

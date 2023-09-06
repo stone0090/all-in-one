@@ -30,6 +30,12 @@ func Deploy(context *gin.Context) {
 	context.JSON(200, response.Success(nil))
 }
 
+func Run(context *gin.Context) {
+	taskRunContext := service.NewTaskRunContext()
+	service.Run(taskRunContext)
+	context.JSON(200, response.Success(constants.Success))
+}
+
 func Invoke(context *gin.Context) {
 	rawData, err := context.GetRawData()
 	if err != nil {

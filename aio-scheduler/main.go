@@ -72,6 +72,7 @@ func initWeb() {
 	{
 		group.GET("/health/check", controller.Check)
 		group.POST("/faas/deploy", controller.Deploy)
+		group.POST("/faas/run", controller.Run)
 		group.POST("/faas/invoke", controller.Invoke)
 		group.GET("/faas/health/check", controller.HealthCheck)
 	}

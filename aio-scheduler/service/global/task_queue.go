@@ -10,13 +10,13 @@ var taskQueue TaskQueue
 var rwLock sync.RWMutex
 
 type TaskQueue struct {
-	size     int
+	Size     int
 	lruCache *lru.Cache[string, int64]
 }
 
 func NewTaskQueue(size int) TaskQueue {
 	taskQueue = TaskQueue{}
-	taskQueue.size = size
+	taskQueue.Size = size
 	taskQueue.lruCache, _ = lru.New[string, int64](size)
 	return taskQueue
 }
@@ -29,7 +29,7 @@ func (tq *TaskQueue) AddTaskAndCallback(key string, val int64, callback func()) 
 	case 0:
 		tq.lruCache.Add(key, val)
 		go callback()
-	case tq.size:
+	case tq.Size:
 		tq.lruCache.Purge()
 		tq.lruCache.Add(key, val)
 		go callback()
@@ -58,4 +58,8 @@ func (tq *TaskQueue) RemoveAllTask(key string) {
 		tq.lruCache.Purge()
 		log.Info("清空LRU队列成功！")
 	}
+}
+
+func GetTaskQueue() TaskQueue {
+	return taskQueue
 }

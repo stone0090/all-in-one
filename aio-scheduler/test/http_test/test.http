@@ -1,6 +1,9 @@
 ### 健康检查
 GET http://localhost:6000/aio/scheduler/health/check
 
+### 运行faas服务
+POST http://localhost:6000/aio/scheduler/faas/run
+
 ### 启动faas服务
 POST http://localhost:6000/aio/scheduler/faas/deploy
 Content-Type: application/json
@@ -8,8 +11,8 @@ Content-Type: application/json
 {
   "requestId": "123456",
   "scheduleInfo": {
-    "type": "interval",
-    "expression": "60000"
+    "type": "none",
+    "expression": "30000"
   },
   "edges": [
     {
@@ -29,7 +32,7 @@ Content-Type: application/json
   ],
   "nodes": [
     {
-      "algorithmCode": "# import start\n\n# customer code start\ndef main(input_data):\n    a = input_data[\"a\"]\n    b = input_data[\"b\"]\n    return {\n        \"product\": a + b\n    }\n# customer code end",
+      "algorithmCode": "# import start\n\n# customer code start\ndef main(input_data):\n    a = input_data[\"a\"]\n    b = input_data[\"b\"]\n    return {\n        \"sum\": a + b\n    }\n# customer code end",
       "algorithmPath": "",
       "height": 36,
       "id": "4af06373-c696-4dbc-b3a2-d210512d0709",
@@ -123,7 +126,7 @@ Content-Type: application/json
       "y": 330
     },
     {
-      "algorithmCode": "# import start\n\n# customer code start\ndef main(input_data):\n    a = input_data[\"a\"]\n    b = input_data[\"b\"]\n    return {\n        \"product\": a + b\n    }\n# customer code end",
+      "algorithmCode": "# import start\n\n# customer code start\ndef main(input_data):\n    a = input_data[\"a\"]\n    b = input_data[\"b\"]\n    return {\n        \"sum\": a + b\n    }\n# customer code end",
       "algorithmPath": "",
       "height": 36,
       "id": "7580acc7-cafa-414a-9d96-ff5274dbeaee",
